@@ -1,8 +1,15 @@
 package com.tranhulovu.doop.todocardsystem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.tranhulovu.doop.todocardsystem.events.Event;
+
+import java.util.List;
+
 public class ToDoCard
 {
-    public enum Status
+    public enum CheckStatus
     {
         NOT_STARTED,
         DONE,
@@ -10,87 +17,49 @@ public class ToDoCard
         OVERDUED
     }
 
+    public enum ArchivalStatus
+    {
+        ARCHIVED,
+        NOT_ARCHIVED
+    }
+
     public static class DateTime
     {
         public static DateTime NOT_SPECIFIED;
     }
-    
-    //
-    //---// FIELDS //--------------------------//
-    //
-    String mCardId;
-    String mName;
-    DateTime mStartDateTime;
-    DateTime mEndDateTime;
-    Status mStatus;
-    int mPriority;
-    String mGroup;
-    String[] mTags;
-    String mDescription;
-    String mNote;
-    Notification mNotification;
 
-    ToDoCardBuilder mBuilder = null;
-
-    public ToDoCard(String cardId,
-                    String name,
-                    DateTime startDateTime,
-                    DateTime endDateTime,
-                    int priority,
-                    String group,
-                    String[] tags,
-                    String description,
-                    String note,
-                    Notification notification)
+    public static class Builder
     {
-        this.mCardId = cardId;
-        this.mName = name;
-        this.mStartDateTime = startDateTime;
-        this.mEndDateTime = endDateTime;
-        this.mPriority = priority;
-        this.mGroup = group;
-        this.mTags = tags;
-        this.mDescription = description;
-        this.mNote = note;
-        this.mNotification = notification;
-        impliesStatus();
+
     }
 
-    public ToDoCardBuilder getBuilder()
-    {
-        if (mBuilder == null)
-            mBuilder = ToDoCardBuilder.fromToDoCard(this);
-        return mBuilder;
-    }
 
-    private void impliesStatus()
-    {
-        if (mEndDateTime == null)
-            return;
+    //////////////////////////////////////////////////
+    //---// Fields
+    private String mId;         // Id for referential purposes
 
-        // TODO
-    }
+    // All explanatory fields
+    private String mName;
+    private String mDescription;
+    private String mNote;
+    private String mGroup;
+    private List<String> mTags;
+    private int mPriority;
 
-    //
-    //---// GETTERS //--------------------------//
-    //
-    public String getCardId() { return mCardId; }
+    // DateTime
+    private DateTime mStart;
+    private DateTime mEnd;
 
-    public String getName() { return mName; }
+    // Statuses
+    private ArchivalStatus mArchivalStatus;
 
-    public DateTime getStartDateTime() { return mStartDateTime; }
+    // Notification
+    private String mNotificationId;
+    private NotificationInfo mOfflineNotifInfo;
 
-    public DateTime getEndDateTime() { return mEndDateTime; }
+    // Events
+    private Event<Void> mOnCheck;
+    private Event<CheckStatus> mOnCheckStatusChanged;
+    private Event<ArchivalStatus> mOnArchivalStatusChanged;
 
-    public int getPriority() { return mPriority; }
-
-    public String getGroup() { return mGroup; }
-
-    public String[] getTags() { return mTags; }
-
-    public String getDescription() { return mDescription; }
-
-    public String getNote() { return mNote; }
-
-    public Notification getNotification() { return mNotification; }
 }
