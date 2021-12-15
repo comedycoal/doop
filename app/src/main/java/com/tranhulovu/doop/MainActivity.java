@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private static CardManager mCardManager;
     public static CardManager getCardManagerInstance() {
         if (mCardManager == null) {
-            mCardManager = new CardManager();
+            mCardManager = new CardManager(); // CONSTRUCTOR CHANGED, sorry
         }
         return mCardManager;
     }
