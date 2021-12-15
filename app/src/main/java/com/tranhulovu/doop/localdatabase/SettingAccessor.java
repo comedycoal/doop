@@ -9,11 +9,16 @@ public class SettingAccessor {
         this.mSettingPath = dataPath;
     }
 
-    public void initialize() {}
+    public void initialize() {
 
-    public void write(String name, Object value) {}
+    }
+
+    public void write(String name, Object value) {
+
+    }
 
     public Object read(String name) {
+
         return null;
     }
 }
