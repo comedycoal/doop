@@ -69,7 +69,7 @@ public class ToDoCard
 
         private Modifier() { }
 
-        //////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////
         //---// Methods
 
         /**
@@ -90,25 +90,10 @@ public class ToDoCard
             mAssociatedCard.impliesCheckStatus();
         }
 
-        //////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////
         //---// Setters
 
-        public Modifier setName(String name) { this.mName = name; return this; }
-
-        public Modifier setDescription(String description) { this.mDescription = description; return this; }
-
-        public Modifier setNote(String note) { this.mNote = note; return this; }
-
-        public Modifier setGroup(String group) { this.mGroup = group; return this; }
-
-        public Modifier setTags(List<String> tags) { this.mTags = tags; return this; }
-
-        public Modifier addTag(String tag) { this.mTags.add(tag); return this; }
-
-        public Modifier removeTag(String tag) { this.mTags.removeIf(x -> x.equals(tag)); return this; }
-
-        public Modifier setPriority(int priority) { this.mPriority = priority; return this; }
-
+        // These needs explaining?
         /**
          * Set starting and ending timestamp of a card
          * @param start Starting timestamp of a card
@@ -122,14 +107,45 @@ public class ToDoCard
             return this;
         }
 
+        /**
+         * Mark the associated as Done
+         * @return The current {@code ToDoCard.Modifier}
+         */
         public Modifier markDone() { mDone = true; return this; }
 
+        /**
+         * Remove the Done status, if marked.
+         * @return The current {@code ToDoCard.Modifier}
+         */
         public Modifier markNotDone() { mDone = false; return this; }
 
-        public Modifier archive() { this.mArchivalStatus = ArchivalStatus.ARCHIVED; return this; }
+        /**
+         * Mark the card as archived.
+         * @return The current {@code ToDoCard.Modifier}
+         */
+        public Modifier archive()
+        {
+            this.mArchivalStatus = ArchivalStatus.ARCHIVED;
+            // TODO: What happens when a card is archived?
+            // TODO: Probably nothing, except that the UI needs to reload or something,
+            // TODO: which I totally don't have to care about.
+            return this;
+        }
 
-        public Modifier unarchive() { this.mArchivalStatus = ArchivalStatus.NOT_ARCHIVED; return this; }
+        /**
+         * Remove the card's archival status, if marked.
+         * Probably used to implement UI's "Undo action", if that happens.
+         * @return The current {@code ToDoCard.Modifier}
+         */
+        public Modifier unarchive()
+        {
+            this.mArchivalStatus = ArchivalStatus.NOT_ARCHIVED;
+            return this;
+        }
 
+
+
+        // This one is subject to change, also pretty complicated
         public Modifier setNotification(String id)
         {
             //TODO
@@ -137,29 +153,88 @@ public class ToDoCard
             return this;
         }
 
+
+
+        // Explanatory setters //
+        public Modifier setName(String name) { this.mName = name; return this; }
+
+        public Modifier setDescription(String description)
+        {
+            this.mDescription = description;
+            return this;
+        }
+
+        public Modifier setNote(String note) { this.mNote = note; return this; }
+
+        public Modifier setGroup(String group) { this.mGroup = group; return this; }
+
+        public Modifier setTags(List<String> tags) { this.mTags = tags; return this; }
+
+        public Modifier addTag(String tag) { this.mTags.add(tag); return this; }
+
+        public Modifier removeTag(String tag)
+        {
+            this.mTags.removeIf(x -> x.equals(tag));
+            return this;
+        }
+
+        public Modifier setPriority(int priority) { this.mPriority = priority; return this; }
+
+
+        // These are event subscribing methods.
+        /**
+         * Subscribe to the "OnCheck" event (invoked when a card is marked as DONE).
+         * The subscription is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
         public Modifier subscribeOnCheck(Subscriber<Void> subscriber)
         {
-            mAssociatedCard.mOnCheck.addSubscriber(subscriber);
+            mAssociatedCard.getOnCheckEvent().addSubscriber(subscriber);
             return this;
         }
+
+        /**
+         * Subscribe to the "OnCheckStatusChanged" event
+         * (invoked when a card is marked as DONE, or unmarked).
+         * The subscription is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
         public Modifier subscribeOnCheckStatusChanged(Subscriber<CheckStatus> subscriber)
         {
-            mAssociatedCard.mOnCheckStatusChanged.addSubscriber(subscriber);
+            mAssociatedCard.getOnCheckStatusChanged().addSubscriber(subscriber);
             return this;
         }
+
+        /**
+         * Subscribe to the "sOnArchivalStatusChanged" event
+         * (invoked when a card is marked as ARCHIVED, or unmarked).
+         * The subscription is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
         public Modifier subscribeOnArchivalStatusChanged( Subscriber<ArchivalStatus> subscriber)
         {
-            mAssociatedCard.mOnArchivalStatusChanged.addSubscriber(subscriber);
+            mAssociatedCard.getOnArchivalStatusChanged().addSubscriber(subscriber);
             return this;
         }
+
+        /**
+         * Subscribe to the "OnModified" event (invoked when the card's properties change,
+         * notification changes that are not ID change also count).
+         * The subscription is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
         public Modifier subscribeOnModified(Subscriber<Void> subscriber)
         {
-            mAssociatedCard.mOnCheck.addSubscriber(subscriber);
+            mAssociatedCard.getOnModifiedEvent().addSubscriber(subscriber);
             return this;
         }
     }
 
-    //////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
     private String mId;         // Id for referential purposes
 
@@ -190,7 +265,7 @@ public class ToDoCard
     private Event<Void> mOnModified;
 
 
-    //////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Constructors
 
     /**
@@ -219,14 +294,19 @@ public class ToDoCard
     }
 
 
-    //////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Methods
     public void setEventTriggers()
     {
 
     }
 
-    Modifier makeBuilder()
+    /**
+     * Create a modifier for this {@code ToDoCard}.
+     * Multiple modifiers can co-exist, though highly advised against.
+     * @return a new {@code ToDoCard.Modifier} object.
+     */
+    Modifier makeModifier()
     {
         Modifier b = new Modifier();
         b.mAssociatedCard = this;
@@ -243,13 +323,20 @@ public class ToDoCard
         return b;
     }
 
+    /**
+     * Derive Check status of the card based on its due and start time,
+     * its Done and Archived status.
+     * Usually called when card's info is changed or a time check happens.
+     */
     private void impliesCheckStatus()
     {
 
     }
 
-    //////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Getters
+
+    // Self-explanatory //
     public String getId() { return mId; }
 
     public String getName() { return mName; }
@@ -260,6 +347,11 @@ public class ToDoCard
 
     public String getGroup() { return mGroup; }
 
+    /**
+     * Return a list of Tags for the card.
+     * The tag list is not modifiable.
+     * @return An unmodifiable {@code List<String>}
+     */
     public List<String> getTags() { return Collections.unmodifiableList(mTags);}
 
     public int getPriority() { return mPriority; }
@@ -272,6 +364,11 @@ public class ToDoCard
 
     public String getNotificationId() { return mNotificationId; }
 
+    /**
+     * Retrieve the cached notification info in the card, without querying the manager.
+     * This is mostly used to quickly return the notification id.
+     * @return a {@code NotificationInfo} object.
+     */
     public NotificationInfo getOfflineNotifInfo() { return mOfflineNotifInfo; }
 
     public CheckStatus getCheckStatus()
