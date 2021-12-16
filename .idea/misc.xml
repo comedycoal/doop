@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/java/com/tranhulovu/doop/applicationui/layout/activity_main.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/drawable/ic_tasks.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/drawable/outline_article_24.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/drawable/outline_assessment_24.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/drawable/outline_settings_24.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/layout/authenticatorfragment.xml" value="0.1296875" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/layout/mainfragment.xml" value="0.1296875" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/layout/settingsfragment.xml" value="0.1296875" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/layout/statisticsfragment.xml" value="0.1296875" />
+        <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/menu/menu_bottom_nav.xml" value="0.264" />
         <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
       </map>
     </option>
