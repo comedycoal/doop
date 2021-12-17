@@ -1,14 +1,18 @@
 package com.tranhulovu.doop.todocardsystem;
 
+import androidx.annotation.NonNull;
+
 import com.tranhulovu.doop.todocardsystem.events.Event;
 import com.tranhulovu.doop.todocardsystem.events.PersistentEvent;
 import com.tranhulovu.doop.todocardsystem.events.Subscriber;
+import com.tranhulovu.doop.todocardsystem.filter.StringFieldGetter;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Class encapsulating a ToDoCard
@@ -16,7 +20,7 @@ import java.util.Map;
  * Any exposure of a ToDoCard instance's properties are unintentional and should be regarded as a
  * bug.
  */
-public class ToDoCard
+public class ToDoCard implements StringFieldGetter
 {
     /**
      * Enumeration for status of a {@code ToDoCard}
@@ -45,11 +49,19 @@ public class ToDoCard
     public static class DateTime
     {
         public static DateTime NOT_SPECIFIED;
+
+        @NonNull
+        @Override
+        public String toString()
+        {
+            return super.toString();
+        }
     }
 
     /**
      * "Builder" for a {@code ToDoCard}.
-     * Allow for modifying an existing {@code ToDoCard} via setters, rather than helping creating one.
+     * Allow for modifying an existing {@code ToDoCard} via setters,
+     * rather than helping creating one.
      * Calling {@code build()} method commit all modifications.
      */
     public static class Modifier
@@ -87,6 +99,8 @@ public class ToDoCard
             mAssociatedCard.mEnd = mEnd;
             mAssociatedCard.mArchivalStatus = mArchivalStatus;
             mAssociatedCard.mNotificationId = mNotificationId;
+
+            // TODO: Do stuff to react to changing, like trigger events and stuff
             mAssociatedCard.impliesCheckStatus();
         }
 
@@ -144,7 +158,6 @@ public class ToDoCard
         }
 
 
-
         // This one is subject to change, also pretty complicated
         public Modifier setNotification(String id)
         {
@@ -152,7 +165,6 @@ public class ToDoCard
             this.mNotificationId = mNotificationId;
             return this;
         }
-
 
 
         // Explanatory setters //
@@ -234,8 +246,11 @@ public class ToDoCard
         }
     }
 
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
+
     private String mId;         // Id for referential purposes
 
     // All explanatory fields
@@ -256,13 +271,14 @@ public class ToDoCard
 
     // Notification
     private String mNotificationId;
-    private NotificationInfo mOfflineNotifInfo;
+    private Map<String, Object> mOfflineNotifInfo;
 
     // Events
     private Event<Void> mOnCheck;
     private Event<CheckStatus> mOnCheckStatusChanged;
     private Event<ArchivalStatus> mOnArchivalStatusChanged;
     private Event<Void> mOnModified;
+
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -294,11 +310,70 @@ public class ToDoCard
     }
 
 
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Methods
+
+    /**
+     * Retrieve a {@code String} value of this {@code ToDoCard}'s properties.
+     * @param field property to retrieve. Can be {@code "name"}, {@code "description"},
+     * {@code "note"}, {@code "group"}, {@code "priority"}, {@code "start"}, {@code "end"},
+     * {@code "start"}, {@code "archivalStatus"}, {@code "notificationId"}, {@code "status"},
+     * or {@code "tag_<number of the tag>"}
+     * @return the corresponding string value.
+     *
+     * @throws InvalidParameterException when {@code field} is not one of those listed above.
+     * @throws NumberFormatException when {@code <number of the tag>} is not parsable to int.
+     * @throws IndexOutOfBoundsException when {@code <number of the tag>} is out of bounds.
+     */
+    public String getValueOf(String field) throws InvalidParameterException,
+                                                    NumberFormatException,
+                                                    IndexOutOfBoundsException
+    {
+        switch (field)
+        {
+            case "name": return mName;
+            case "description": return mDescription;
+            case "note": return mNote;
+            case "group": return mGroup;
+            case "priority": return String.valueOf(mPriority);
+            case "start": return mStart.toString();
+            case "end": return mEnd.toString();
+            case "archivalStatus": return mArchivalStatus.name();
+            case "notificationId": return mNotificationId;
+            case "status": return getCheckStatus().name();
+            default:
+            {
+                String[] f = field.split("_");
+                if (f.length == 2 && f[0].equals("note"))
+                {
+                    int idx = Integer.parseInt(f[1]);
+                    return mTags.get(idx);
+                }
+                else
+                    throw new InvalidParameterException(
+                            field + " does not correspond to any getter of ToDoCard");
+            }
+        }
+    }
+
+    /**
+     * Helper function to create a String-value getter for a field.
+     * It probably works, I don't know.
+     * @param field property to retrieve. Can be {@code "name"}, {@code "description"},
+     * {@code "note"}, {@code "group"}, {@code "priority"}, {@code "start"}, {@code "end"},
+     * {@code "start"}, {@code "archivalStatus"}, {@code "notificationId"}, {@code "status"},
+     * or {@code "tag_<number of the tag>"}
+     * @return A getter function, in form of {@code Function<ToDoCard, String>}
+     */
+    public static Function<ToDoCard, String> getGetterOf(String field)
+    {
+        return toDoCard -> toDoCard.getValueOf(field);
+    }
+
     public void setEventTriggers()
     {
-
+        // TODO
     }
 
     /**
@@ -315,6 +390,7 @@ public class ToDoCard
         b.mNote = mNote;
         b.mGroup = mGroup;
         b.mTags = mTags;
+        b.mDone = mDone;
         b.mPriority = mPriority;
         b.mStart = mStart;
         b.mEnd = mEnd;
@@ -330,7 +406,7 @@ public class ToDoCard
      */
     private void impliesCheckStatus()
     {
-
+        // TODO
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,7 +445,7 @@ public class ToDoCard
      * This is mostly used to quickly return the notification id.
      * @return a {@code NotificationInfo} object.
      */
-    public NotificationInfo getOfflineNotifInfo() { return mOfflineNotifInfo; }
+    public Map<String, Object> getOfflineNotifInfo() { return mOfflineNotifInfo; }
 
     public CheckStatus getCheckStatus()
     {
