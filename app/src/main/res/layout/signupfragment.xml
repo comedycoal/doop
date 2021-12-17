@@ -45,7 +45,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:hint="Username/email"
+            android:hint="Username"
             android:padding="5dp"
             app:boxStrokeColor="@color/highlight_red"
             app:boxCornerRadiusBottomEnd="12dp"
@@ -67,28 +67,82 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/authentication_password_layout"
+            android:id="@+id/authentication_email_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
-            android:hint="Password"
+            android:hint="Email"
             android:padding="5dp"
-            app:boxStrokeColor="@color/highlight_red"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="@color/highlight_red"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/authentication_username_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/authentication_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/authentication_password_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Password"
+            android:padding="5dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="@color/highlight_red"
             app:boxStrokeWidth="1dp"
             app:boxStrokeWidthFocused="0dp"
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="@+id/authentication_username_layout"
             app:layout_constraintStart_toStartOf="@+id/authentication_username_layout"
-            app:layout_constraintTop_toBottomOf="@+id/authentication_username_layout">
+            app:layout_constraintTop_toBottomOf="@+id/authentication_email_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/authentication_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/authentication_confirmPassword_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Confirm password"
+            android:padding="5dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="@color/highlight_red"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="@+id/authentication_username_layout"
+            app:layout_constraintStart_toStartOf="@+id/authentication_username_layout"
+            app:layout_constraintTop_toBottomOf="@+id/authentication_password_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/authentication_confirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -99,46 +153,11 @@
             android:id="@+id/authentication_signInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:drawableLeft="@drawable/ic_tasks"
-            android:text="Login"
+            android:text="Create Account"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/authentication_password_layout" />
-
-        <TextView
-            android:id="@+id/registerText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:gravity="center"
-            android:text="Don't have an account?"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/authentication_signUpButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/authentication_signUpButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:drawableLeft="@drawable/ic_tasks"
-            android:text="Sign up"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:padding="5dp"
-            android:text="Or continue without login"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/authentication_confirmPassword_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,4 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green_dark">#38817A</color>
     <color name="gray">#D1D1D1</color>
+    <color name="light_gray">#E4E0E0</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color">#00ff00</color>
+    <color name="foreground">#A18166</color>
+    <color name="notification_on">#A18166</color>
+    <color name="notification_off">#8D3E97</color>
+    <color name="highlight_red">#DA6363</color>
+
 </resources>
