@@ -3,7 +3,6 @@ package com.tranhulovu.doop.todocardsystem;
 import androidx.annotation.NonNull;
 
 import com.tranhulovu.doop.todocardsystem.events.Event;
-import com.tranhulovu.doop.todocardsystem.events.PersistentEvent;
 import com.tranhulovu.doop.todocardsystem.events.Subscriber;
 import com.tranhulovu.doop.todocardsystem.filter.StringFieldGetter;
 
@@ -55,6 +54,24 @@ public class ToDoCard implements StringFieldGetter
         public String toString()
         {
             return super.toString();
+        }
+
+        public long currentTimeMillis()
+        {
+            // TODO
+            return 999;
+        }
+
+        public String getStringDate(String formatter)
+        {
+            // TODO
+            return "YYYYMMDD";
+        }
+
+        public String getStringTime(String formatter)
+        {
+            // TODO
+            return "HHmm";
         }
     }
 
@@ -226,7 +243,7 @@ public class ToDoCard implements StringFieldGetter
          * @param subscriber the subscriber.
          * @return the current {@code ToDoCard.Modifier}
          */
-        public Modifier subscribeOnArchivalStatusChanged( Subscriber<ArchivalStatus> subscriber)
+        public Modifier subscribeOnArchivalStatusChanged(Subscriber<ArchivalStatus> subscriber)
         {
             mAssociatedCard.getOnArchivalStatusChanged().addSubscriber(subscriber);
             return this;
@@ -304,9 +321,10 @@ public class ToDoCard implements StringFieldGetter
         mNotificationId = null;
         mOfflineNotifInfo = null;
 
-        mOnCheck = new PersistentEvent<>();
-        mOnArchivalStatusChanged = new PersistentEvent<>();
-        mOnCheckStatusChanged = new PersistentEvent<>();
+        mOnCheck = new Event<>();
+        mOnArchivalStatusChanged = new Event<>();
+        mOnCheckStatusChanged = new Event<>();
+        mOnModified = new Event<>();
     }
 
 

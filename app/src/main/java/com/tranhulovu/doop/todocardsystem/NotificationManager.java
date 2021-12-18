@@ -1,5 +1,6 @@
 package com.tranhulovu.doop.todocardsystem;
 
+import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
 import com.tranhulovu.doop.todocardsystem.events.Callback;
 
@@ -15,6 +16,8 @@ public class NotificationManager
 
     private Collection<String> mDeletedNotifications;
     private Collection<String> mModifiedNotification;
+
+    private NotificationRequestResponder mResponder;
 
     private CardManager mCardManager;
     private LocalAccessorFacade mLocalAccessor;
@@ -34,6 +37,8 @@ public class NotificationManager
         mDeletedNotifications = new HashSet<>();
         mModifiedNotification = new HashSet<>();
 
+        mResponder = new NotificationRequestResponder();
+
         onCreate();
     }
 
@@ -44,12 +49,40 @@ public class NotificationManager
         // TODO: Spawn a thread to fetch all notification data, maybe?
         //       This is such a demo app so fetch all notification sounds about right.
 
+
+        // TODO: Start Service
     }
 
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Methods
+
+    private int generateManagedId()
+    {
+        // TODO
+        return 0;
+    }
+
+    private void registerNotification(String id)
+    {
+        if (mNotifications.containsKey(id))
+        {
+            Notification n = mNotifications.get(id);
+            if (n != null)
+                n.registerNotification(mResponder);
+        }
+    }
+
+    private void cancelNotification(String id)
+    {
+        if (mNotifications.containsKey(id))
+        {
+            Notification n = mNotifications.get(id);
+            if (n != null)
+                n.cancelNotification(mResponder);
+        }
+    }
 
     /**
      * Performs a write to disk for all notifications modified

@@ -1,10 +1,15 @@
 package com.tranhulovu.doop.todocardsystem.events;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class Event<T>
+/**
+ * Class for event. An event has a list of subscribers and
+ * @param <T>
+ */
+public class Event<T>
 {
     protected Set<Subscriber<T>> mSubscribers;
 
@@ -18,5 +23,17 @@ public abstract class Event<T>
         mSubscribers.remove(s);
     }
 
-    public abstract void invoke(T data);
+    public void invoke(T data)
+    {
+        Set<Subscriber<T>> newL = new HashSet<>(mSubscribers);
+
+        for (Subscriber<T> s : mSubscribers)
+        {
+            s.update(data);
+            if (s.isPersistent())
+                newL.remove(s);
+        }
+
+        mSubscribers = newL;
+    }
 }
