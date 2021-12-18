@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/menu_main_window_layout"
+        android:background="@drawable/rectangle_16_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -88,17 +88,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
-                android:drawableEnd="@drawable/ic_about"
                 android:text="1 Urgent Task"
-                android:textColor="@color/urgent_task"/>
+                android:textColor="@color/urgent_task"
+                app:drawableEndCompat="@drawable/ic_about" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
                 android:text="1 Overdued Task"
-                android:drawableEnd="@drawable/ic_logout"
-                android:textColor="@color/highlight_red"/>
+                android:textColor="@color/highlight_red"
+                app:drawableEndCompat="@drawable/ic_logout" />
 
         </LinearLayout>
 
