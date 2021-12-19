@@ -6,7 +6,7 @@ import com.tranhulovu.doop.onlinedatabase.UserProfile;
 public class UserManager {
     private UserProfile mUserProfile;
 
-    public UserProfile getUserInfo() {
+    public UserProfile getUserProfile() {
         return mUserProfile;
     }
 
