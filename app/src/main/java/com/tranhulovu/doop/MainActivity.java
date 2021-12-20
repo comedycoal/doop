@@ -101,16 +101,15 @@ public class MainActivity extends AppCompatActivity {
         return mCardManager;
     }
 
-    private static NotificationManager mNotificationManager;
-    public static NotificationManager getNotificationManagerInstance() {
-        if (mNotificationManager == null) {
-            mNotificationManager = new NotificationManager();
-        }
-        return mNotificationManager;
-    }
+//    private static NotificationManager mNotificationManager;
+//    public static NotificationManager getNotificationManagerInstance() {
+//        if (mNotificationManager == null) {
+//            mNotificationManager = new NotificationManager();
+//        }
+//        return mNotificationManager;
+//    }
 
     public void initialize() {
-
     }
 
 //    public void onNavigateTo(ManagedFragment dest) {

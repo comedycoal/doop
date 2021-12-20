@@ -23,7 +23,7 @@ public class OnlineDatabaseAccessor {
     private final FirebaseFirestore mFirebaseFirestore;
     private FirebaseUser mFirebaseUser;
     private String mUserID;
-    private UserProfile mCachedUSerProfile;
+    private UserProfile mCachedUserProfile;
     private Statistics mCachedStatistics;
 
     public OnlineDatabaseAccessor(String email, String password) {
@@ -34,7 +34,7 @@ public class OnlineDatabaseAccessor {
             String fullName = mFirebaseUser.getDisplayName();
             Uri profileImageUri = mFirebaseUser.getPhotoUrl();
             Date userJoinDate = new Date(Objects.requireNonNull(mFirebaseUser.getMetadata()).getCreationTimestamp());
-            mCachedUSerProfile = new UserProfile(mUserID, fullName, profileImageUri, userJoinDate);
+            mCachedUserProfile = new UserProfile(mUserID, fullName, profileImageUri, userJoinDate);
         }
 
         mFirebaseFirestore = FirebaseFirestore.getInstance();
@@ -85,8 +85,8 @@ public class OnlineDatabaseAccessor {
         return mUserID;
     }
 
-    public UserProfile getUSerProfile() {
-        return mCachedUSerProfile;
+    public UserProfile getUserProfile() {
+        return mCachedUserProfile;
     }
 
     public  Statistics getUserStatistics() {
@@ -116,7 +116,15 @@ public class OnlineDatabaseAccessor {
     }
 
     public void modifyUserProfile(String id, Object value) {
-        // Dunno what should be here
+        UserProfile userProfile;
+        if (value instanceof String) {
+            userProfile = new UserProfile(id, (String) value, mCachedUserProfile.getUserProfileImageUri(), null);
+            modifyUserProfile(userProfile);
+        }
+        else if (value instanceof Uri) {
+            userProfile = new UserProfile(id, mCachedUserProfile.getFullName(), (Uri) value, null);
+            modifyUserProfile(userProfile);
+        }
     }
 
     public void registerChangedStatistics(Statistics newStats) {
