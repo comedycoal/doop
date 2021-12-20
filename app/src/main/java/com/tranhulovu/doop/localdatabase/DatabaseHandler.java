@@ -35,7 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String CARD_NOTE = "card_note";
     public static final String CARD_NOTIFICATION = "card_notification";
 
-    // Notification table with Notification id column, associated card id column ,time column,
+    // Notification table with Notification id column, time column,
     // status column, type column and frequency column
     public static final String TABLE_NOTIFICATION_NAME = "notification_name";
     public static final String NOTIFICATION_ID = "notification_id";
