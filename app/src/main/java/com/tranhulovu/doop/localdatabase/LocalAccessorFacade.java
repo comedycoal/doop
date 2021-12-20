@@ -12,7 +12,7 @@ public class LocalAccessorFacade {
     private SettingAccessor mSettingAccessor;
 
     public void writeCard(ToDoCard card) {
-
+        this.mCardAccessor = new ToDoCardDataAccessor(null);
     }
 
     public void writeBulkCards(List<ToDoCard> cards) {
