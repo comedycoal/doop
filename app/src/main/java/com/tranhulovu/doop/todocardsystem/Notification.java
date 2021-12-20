@@ -52,21 +52,27 @@ public class Notification
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
+    private int mId;
     private String mToDoCardId;
+    private String mCardName;
     private Type mType;
     private ToDoCard.DateTime mAlarmDeadline;
     private long mMinutesPrior;
 
-
+    // Statuses
+    private boolean mIsRegistered;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Constructors
-    Notification(String toDoCardId)
+    Notification(String toDoCardId, String name)
     {
         mToDoCardId = toDoCardId;
+        mCardName = name;
         mType = Type.NOTIFICATION;
         mMinutesPrior = 12 * 60;
         mAlarmDeadline = null;  // TODO: Set time at tomorrow, maybe.
+
+        mIsRegistered = false;
     }
 
     Notification(String toDoCardId,
@@ -85,11 +91,26 @@ public class Notification
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Methods
 
-    private void registerNotification()
+    public void registerNotification(NotificationRequestResponder responder)
     {
-        // TODO: Add to notification service.
+        if (!mIsRegistered)
+        {
+            // TODO: Add to notification service.
+
+            mIsRegistered = true;
+        }
     }
 
+    public void cancelNotification(NotificationRequestResponder responder)
+    {
+        if (mIsRegistered)
+        {
+            // TODO: Remove from notification service.
+
+
+            mIsRegistered = false;
+        }
+    }
 
     public String getValueOf(String field) throws InvalidParameterException
     {
@@ -120,6 +141,16 @@ public class Notification
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Getters
+    public int getManagedId()
+    {
+        return mId;
+    }
+
+    public String getCardName()
+    {
+        return mCardName;
+    }
+
     public String getToDoCardId()
     {
         return mToDoCardId;
@@ -138,5 +169,11 @@ public class Notification
     public long getMinutesPrior()
     {
         return mMinutesPrior;
+    }
+
+    public long getCorrectNotificationTimeInMillis()
+    {
+        // TODO;
+        return 99;
     }
 }
