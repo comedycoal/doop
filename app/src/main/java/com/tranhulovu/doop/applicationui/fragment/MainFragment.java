@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.tranhulovu.doop.R;
 
 public class MainFragment extends ManagerFragment {
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
