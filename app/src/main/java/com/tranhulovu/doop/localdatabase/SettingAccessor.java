@@ -1,12 +1,16 @@
 package com.tranhulovu.doop.localdatabase;
 
+import android.content.Context;
 import android.net.Uri;
 
 public class SettingAccessor {
-    private Uri mSettingPath;
+//    private Uri mSettingPath;
+    private Context mContext;
+    private DatabaseHandler mDatabaseHandler;
 
-    public SettingAccessor(Uri dataPath) {
-        this.mSettingPath = dataPath;
+    public SettingAccessor(Context context) {
+        this.mContext = context;
+        mDatabaseHandler = new DatabaseHandler(context);
     }
 
     public void initialize() {
