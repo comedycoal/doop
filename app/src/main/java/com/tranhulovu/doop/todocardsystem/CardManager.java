@@ -211,17 +211,8 @@ public class CardManager
                         "CardManager instance does not recognize card with id " + id);
             }
 
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("name", card.getName());
-            map.put("description", card.getDescription());
-            map.put("note", card.getNote());
-            map.put("group", card.getGroup());
-            map.put("tags", card.getTags());
-            map.put("priority", card.getPriority());
-            map.put("start", card.getStart());
-            map.put("end", card.getEnd());
-            map.put("archivalStatus", card.getArchivalStatus());
-            map.put("notificationId", card.getNotificationId());
+            Map<String, Object> map = card.toMap();
+
 
             if (onCardInfoFetchedCallback != null)
                 onCardInfoFetchedCallback.execute(map);

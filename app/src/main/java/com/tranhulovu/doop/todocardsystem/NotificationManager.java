@@ -3,12 +3,13 @@ package com.tranhulovu.doop.todocardsystem;
 import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
 import com.tranhulovu.doop.todocardsystem.events.Callback;
+import com.tranhulovu.doop.todocardsystem.events.Subscriber;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
-public class NotificationManager
+public class NotificationManager implements Subscriber<Notification>
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
@@ -50,7 +51,8 @@ public class NotificationManager
         //       This is such a demo app so fetch all notification sounds about right.
 
 
-        // TODO: Start Service
+        // TODO: Do an exhaustive search in AlarmManager for unregistered notifications.
+
     }
 
 
@@ -58,69 +60,42 @@ public class NotificationManager
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Methods
 
-    private int generateManagedId()
+    @Override
+    public boolean isPersistent()
     {
-        // TODO
-        return 0;
+        return true;
     }
 
-    private void registerNotification(String id)
+    @Override
+    public void update(Notification data)
     {
-        if (mNotifications.containsKey(id))
-        {
-            Notification n = mNotifications.get(id);
-            if (n != null)
-                n.registerNotification(mResponder);
-        }
+        String id = data.getToDoCardId();
+        
     }
 
-    private void cancelNotification(String id)
+    public void addNotificationToWatch(ToDoCard card)
     {
-        if (mNotifications.containsKey(id))
-        {
-            Notification n = mNotifications.get(id);
-            if (n != null)
-                n.cancelNotification(mResponder);
-        }
+
     }
 
-    /**
-     * Performs a write to disk for all notifications modified
-     * prior to when this method is called.
-     */
-    public void actualizeModification()
+    public void addNotificationToWatch(String cardId)
     {
-        // TODO: Write notification data using LocalAccessor
+
     }
 
-    /**
-     * Performs a deletion from disk for all notifications marked as deleted
-     * prior to when this method is called.
-     */
-    public void actualizeDeletion()
+    public void removeFromWatch(ToDoCard card)
     {
-        // TODO: Delete notification data using LocalAccessor
+
     }
 
-
-    public void modifyNotification(String associatedCardId,
-                                   Callback<Notification.Modifier> onCreationCallback)
+    public void removeFromWatch(Notification notification)
     {
-        // TODO
-        throw new UnsupportedOperationException();
+
     }
 
-    public void getNotificationInfo(String id,
-                                    Callback<Map<String, Object>> onFetchCallback)
+    public void removeFromWatch(String cardId)
     {
-        // TODO
-        throw new UnsupportedOperationException();
+
     }
 
-    public void requestDeleteNotification(String id,
-                                          Callback<Map<String, Object>> onDeletionCallback)
-    {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
 }

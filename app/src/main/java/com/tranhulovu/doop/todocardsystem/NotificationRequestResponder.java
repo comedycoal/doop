@@ -26,10 +26,10 @@ public class NotificationRequestResponder extends BroadcastReceiver
 
     private PendingIntent makePendingIntent(Context context, Notification notification)
     {
-        int id = notification.getManagedId();
+        int id = notification.getIntId();
         Intent intent = new Intent(context, NotificationRequestResponder.class);
 
-        intent.putExtra("title", notification.getCardName());
+        intent.putExtra("title", notification.getIntId());
         intent.putExtra("type", notification.getType().name());
 
         PendingIntent pi = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -41,7 +41,9 @@ public class NotificationRequestResponder extends BroadcastReceiver
     {
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pi = makePendingIntent(context, notification);
-        am.setExact(AlarmManager.RTC_WAKEUP, notification.getCorrectNotificationTimeInMillis(), pi);
+        am.setExact(AlarmManager.RTC_WAKEUP,
+                notification.getExactNotificationTime().toInstant().toEpochMilli(),
+                pi);
     }
 
     public void cancelNotification(Context context, Notification notification)
