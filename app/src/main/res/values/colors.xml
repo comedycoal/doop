@@ -16,5 +16,7 @@
     <color name="notification_on">#A18166</color>
     <color name="notification_off">#8D3E97</color>
     <color name="highlight_red">#DA6363</color>
+    <color name="yellow_urgent">#FBD66F</color>
+    <color name="red_overdue">#DA6363</color>
 
 </resources>
