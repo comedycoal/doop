@@ -1,6 +1,7 @@
 package com.tranhulovu.doop.localdatabase;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 public class SettingAccessor {
@@ -18,7 +19,8 @@ public class SettingAccessor {
     }
 
     public void write(String name, Object value) {
-
+        SQLiteDatabase sqLiteDatabase = this.mDatabaseHandler.getWritableDatabase();
+        
     }
 
     public Object read(String name) {

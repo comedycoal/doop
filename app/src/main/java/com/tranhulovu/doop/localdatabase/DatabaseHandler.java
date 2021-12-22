@@ -33,12 +33,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Notification table with Notification id column, time column,
     // status column, type column and frequency column
     public static final String TABLE_NOTIFICATION_NAME = "notification_table";
-    public static final String NOTIFICATION_ID = "notification_id";
-//    public static final String ASSOCIATED_CARD_ID = "card_id";
-    public static final String NOTIFICATION_TIME = "time";
-    public static final String NOTIFICATION_STATUS = "status";
+//    public static final String NOTIFICATION_ID = "notification_id";
+    public static final String ASSOCIATED_CARD_ID = "card_id";
+    public static final String NOTIFICATION_DEALINE = "time";
+    public static final String NOTIFICATION_MINUTESPRIOR = "minutes_prior";
     public static final String NOTIFICATION_TYPE = "type";
-    public static final String NOTIFICATION_FREQUENCY = "frequency";
+    public static final String NOTIFICATION_NAME = "name";
+//    public static final String NOTIFICATION_FREQUENCY = "frequency";
 
     // Setting table with NotificationSetting column, AutoArchieveCard column, TimeFormat column
     // and DateSetting column
@@ -70,17 +71,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             " TEXT NOT NULL," + CARD_NOTE + " TEXT NOT NULL," +
             CARD_GROUP + " TEXT NOT NULL," +
             CARD_PRIORITY + " TEXT NOT NULL," +
-            CARD_NOTIFICATION + " TEXT NOT NULL REFERENCES " +
-            TABLE_NOTIFICATION_NAME + "(" + NOTIFICATION_ID + ") ON DELETE CASCADE)"
+            CARD_NOTIFICATION + " TEXT NOT NULL)"
             ;
 
     //creating notification table query
     private static final String CREATE_NOTIFICATION_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_NOTIFICATION_NAME + "(" + NOTIFICATION_ID +
-            " TEXT NOT NULL PRIMARY KEY AUTOINCREMENT," + NOTIFICATION_TIME +
-            " TEXT NOT NULL," + NOTIFICATION_STATUS + " TEXT NOT NULL," +
-            NOTIFICATION_TYPE + " TEXT NOT NULL," + NOTIFICATION_FREQUENCY +
-            " TEXT NOT NULL)"
+            + TABLE_NOTIFICATION_NAME + "(" + NOTIFICATION_NAME + " TEXT NOT NULL,"
+            + NOTIFICATION_DEALINE + " TEXT NOT NULL,"
+            + NOTIFICATION_MINUTESPRIOR + " INTEGER NOT NULL,"
+            + NOTIFICATION_TYPE + " TEXT NOT NULL,"
+            + "FOREIGN KEY(" + NOTIFICATION_TYPE + ") REFERENCES "
+            + TABLE_TODO_CARD_NAME + "(" + CARD_NOTIFICATION + ") ON DELETE CASCADE, "
+            + "FOREIGN KEY(" + ASSOCIATED_CARD_ID + ") REFERENCES "
+            + TABLE_TODO_CARD_NAME + "(" + TODO_CARD_ID + ") ON DELETE CASCADE, "
+            + "PRIMARY KEY(" + NOTIFICATION_TYPE + ", " + ASSOCIATED_CARD_ID + ")"
+            +")"
             ;
 
     private static final String CREATE_SETTING_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS "

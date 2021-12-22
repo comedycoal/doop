@@ -39,13 +39,13 @@ public class ToDoCardDataAccessor {
         ContentValues contentCardValues = new ContentValues();
         contentCardValues.put(DatabaseHandler.TODO_CARD_ID, card.getId());
         contentCardValues.put(DatabaseHandler.TODO_CARD_NAME, card.getName());
-        contentCardValues.put(DatabaseHandler.TIME_START, String.valueOf(card.getStart()));
-        contentCardValues.put(DatabaseHandler.TIME_END, String.valueOf(card.getEnd()));
-        contentCardValues.put(DatabaseHandler.CARD_STATUS, String.valueOf(card.getCheckStatus()));
+        contentCardValues.put(DatabaseHandler.TIME_START, card.getValueOf("start"));
+        contentCardValues.put(DatabaseHandler.TIME_END, card.getValueOf("end"));
+        contentCardValues.put(DatabaseHandler.CARD_STATUS, card.getValueOf("archivalStatus"));
         contentCardValues.put(DatabaseHandler.CARD_DESCRIPTION, card.getDescription());
-        contentCardValues.put(DatabaseHandler.CARD_NOTIFICATION, card.getNotificationId());
+        contentCardValues.put(DatabaseHandler.CARD_NOTIFICATION, card.getValueOf("notificationType"));
         contentCardValues.put(DatabaseHandler.CARD_GROUP, card.getGroup());
-        contentCardValues.put(DatabaseHandler.CARD_PRIORITY, card.getPriority());
+        contentCardValues.put(DatabaseHandler.CARD_PRIORITY, card.getValueOf("priority"));
 
         ContentValues contentTagValues = new ContentValues();
         List<String> tagList = card.getTags();
@@ -96,7 +96,16 @@ public class ToDoCardDataAccessor {
     }
 
     public ToDoCard read(String cardId) {
+        SQLiteDatabase sqLiteDatabase = this.mDatabaseHandler.getReadableDatabase();
 
+        String findCardQuery = "SELECT * FROM " + this.mDatabaseHandler.TABLE_TODO_CARD_NAME
+                + " WHERE " + this.mDatabaseHandler.TODO_CARD_ID + " = ?"
+                ;
+
+        Cursor cursor = sqLiteDatabase.rawQuery(findCardQuery, new String[] {cardId});
+        if (cursor.moveToFirst()) {
+            // implement
+        }
         return null;
     }
 }
