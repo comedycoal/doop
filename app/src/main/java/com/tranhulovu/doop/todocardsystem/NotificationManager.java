@@ -1,30 +1,31 @@
 package com.tranhulovu.doop.todocardsystem;
 
-import com.tranhulovu.doop.MainActivity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Pair;
+
+import androidx.annotation.NonNull;
+
 import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
-import com.tranhulovu.doop.todocardsystem.events.Callback;
 import com.tranhulovu.doop.todocardsystem.events.Subscriber;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
 
-public class NotificationManager implements Subscriber<Notification>
+public class NotificationManager
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
     private Map<String, Notification> mNotifications;
-
-    private Collection<String> mDeletedNotifications;
-    private Collection<String> mModifiedNotification;
 
     private NotificationRequestResponder mResponder;
 
     private CardManager mCardManager;
     private LocalAccessorFacade mLocalAccessor;
 
-    // TODO: Android background notification service
-
+    private Subscriber<Notification> mNotificationChangeResponder;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,12 +36,28 @@ public class NotificationManager implements Subscriber<Notification>
         mCardManager = cardManager;
         mLocalAccessor = facade;
 
-        mDeletedNotifications = new HashSet<>();
-        mModifiedNotification = new HashSet<>();
-
         mResponder = new NotificationRequestResponder();
 
-        onCreate();
+        mNotificationChangeResponder = new Subscriber<Notification>()
+        {
+            @Override
+            public boolean isPersistent()
+            {
+                return true;
+            }
+
+            @Override
+            public void update(Notification data)
+            {
+                // TODO: WARNING: CHANGE CONTEXT FROM NULL
+                if (data.getType() == Notification.Type.SILENT)
+                {
+                    mResponder.cancelNotification(null, data);
+                }
+                else
+                    mResponder.setNotification(null, data);
+            }
+        };
     }
 
     private void onCreate()
@@ -56,46 +73,35 @@ public class NotificationManager implements Subscriber<Notification>
     }
 
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Methods
-
-    @Override
-    public boolean isPersistent()
+    public Notification getNotification(String cardId)
     {
-        return true;
+        return mNotifications.get(cardId);
     }
 
-    @Override
-    public void update(Notification data)
+    public void saveNotification(Notification notification)
     {
-        String id = data.getToDoCardId();
-        
+        mNotifications.put(notification.getToDoCardId(), notification);
+
+        // TODO: Save notification to disk
     }
 
-    public void addNotificationToWatch(ToDoCard card)
+    public void deleteNotification(@NonNull Notification notification)
     {
+        mNotifications.remove(notification.getToDoCardId());
 
+        // TODO: Delete notification to disk
     }
 
-    public void addNotificationToWatch(String cardId)
+    public void watch(@NonNull ToDoCard card)
     {
-
+        card.getNotificationChangeEvent().addSubscriber(mNotificationChangeResponder);
     }
 
-    public void removeFromWatch(ToDoCard card)
+    public void removeWtach(@NonNull ToDoCard card)
     {
-
-    }
-
-    public void removeFromWatch(Notification notification)
-    {
-
-    }
-
-    public void removeFromWatch(String cardId)
-    {
-
+        card.getNotificationChangeEvent().removeSubscriber(mNotificationChangeResponder);
     }
 
 }

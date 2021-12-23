@@ -3,6 +3,7 @@
     package="com.tranhulovu.doop">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -20,6 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <receiver android:process=":remote"
+            android:name=".todocardsystem.NotificationRequestResponder"/>
+    </application>
 </manifest>
