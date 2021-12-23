@@ -19,5 +19,7 @@
     <color name="highlight_red">#DA6363</color>
     <color name="urgent_task">#F5F093</color>
 
+    <color name="yellow_urgent">#FBD66F</color>
+    <color name="red_overdue">#DA6363</color>
 
 </resources>

@@ -1,8 +1,14 @@
 package com.tranhulovu.doop.todocardsystem;
 
-import java.lang.reflect.Type;
-import java.security.InvalidParameterException;
+import androidx.annotation.Nullable;
 
+import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * FOJO object for a Notifcation
+ */
 public class Notification
 {
     public static enum Type
@@ -12,40 +18,73 @@ public class Notification
         ALARM
     }
 
-    public static class Modifier
+    public static enum DeadlineType
     {
-        Notification mAssociatedNotification;
-        private Type mType;
-        private ToDoCard.DateTime mAlarmDeadline;
-        private long mMinutesPrior;
+        START,
+        END
+    }
 
-        private Modifier() { }
+    public static class Builder
+    {
+        private String toDoCardId = null;
+        private String name = "Name of Card";
+        private Type type = Type.NOTIFICATION;
+        private DeadlineType deadlineType = DeadlineType.END;
+        private ZonedDateTime deadline = ZonedDateTime.now().plusDays(7);
+        private long minutesPrior = 60 * 12;
 
-        public void build()
+        public Builder() {}
+
+        public Builder(Notification notification)
         {
-            mAssociatedNotification.mAlarmDeadline = mAlarmDeadline;
-            mMinutesPrior = mMinutesPrior;
-            mType = mType;
-
-            // TODO: Re-register notification, or something
+            toDoCardId = notification.mToDoCardId;
+            name = notification.mName;
+            type = notification.mType;
+            deadlineType = notification.mDeadlineType;
+            deadline = notification.mAlarmDeadline;
+            minutesPrior = notification.mMinutesPrior;
         }
 
-        public Modifier setType(Type type)
+        public Builder setAssociatedCard(String toDoCardId)
         {
-            this.mType = type;
+            this.toDoCardId = toDoCardId;
             return this;
         }
 
-        public Modifier setAlarmDeadline(ToDoCard.DateTime alarmDeadline)
+        public Builder setName(String name)
         {
-            this.mAlarmDeadline = alarmDeadline;
+            this.name = name;
             return this;
         }
 
-        public Modifier setMinutesPrior(long minutesPrior)
+        public Builder setType(Type type)
         {
-            this.mMinutesPrior = minutesPrior;
+            this.type = type;
             return this;
+        }
+
+        public Builder setDeadlineType(DeadlineType deadlineType)
+        {
+            this.deadlineType = deadlineType;
+            return this;
+        }
+
+        public Builder setDeadline(ZonedDateTime deadline)
+        {
+            this.deadline = deadline;
+            return this;
+        }
+
+        public Builder setMinutesPrior(long minutesPrior)
+        {
+            this.minutesPrior = minutesPrior;
+            return this;
+        }
+
+        public Notification build()
+        {
+            if (name == null) return null;
+            return new Notification(toDoCardId, name, type, deadlineType, deadline, minutesPrior);
         }
     }
 
@@ -53,70 +92,44 @@ public class Notification
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
     private String mToDoCardId;
+    private String mName;                       // For quick access
     private Type mType;
-    private ToDoCard.DateTime mAlarmDeadline;
+    private DeadlineType mDeadlineType;
+    private ZonedDateTime mAlarmDeadline;
     private long mMinutesPrior;
-
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Constructors
-    Notification(String toDoCardId)
-    {
-        mToDoCardId = toDoCardId;
-        mType = Type.NOTIFICATION;
-        mMinutesPrior = 12 * 60;
-        mAlarmDeadline = null;  // TODO: Set time at tomorrow, maybe.
-    }
-
-    Notification(String toDoCardId,
-                 Type type,
-                 ToDoCard.DateTime alarmDeadline,
-                 long minutesPrior)
-    {
-        this.mToDoCardId = toDoCardId;
-        this.mType = type;
-        this.mAlarmDeadline = alarmDeadline;
-        this.mMinutesPrior = minutesPrior;
-    }
-
+    private Notification(String toDoCardId, String name, Type type, DeadlineType deadlineType,
+                         ZonedDateTime deadline, long minutesPrior) { }
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Methods
 
-    private void registerNotification()
+
+    @Override
+    public boolean equals(@Nullable Object obj)
     {
-        // TODO: Add to notification service.
+        return obj instanceof Notification
+                && mToDoCardId.equals(((Notification) obj).mToDoCardId)
+                && mDeadlineType == ((Notification) obj).mDeadlineType
+                && mAlarmDeadline.compareTo(((Notification) obj).mAlarmDeadline) == 0
+                && mName.equals(((Notification) obj).mName)
+                && mType == ((Notification) obj).mType
+                && mMinutesPrior == ((Notification) obj).mMinutesPrior;
     }
 
-
-    public String getValueOf(String field) throws InvalidParameterException
+    public Map<String, Object> toMap()
     {
-        switch (field)
-        {
-            case "toDoCardId": return mToDoCardId;
-            case "type": return mType.name();
-            case "deadlineTime": return mAlarmDeadline.toString();
-            case "minutesPrior": return String.valueOf(mMinutesPrior);
-            default:
-            {
-                throw new InvalidParameterException(
-                        field + " does not correspond to any getter of ToDoCard");
-            }
-        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", this.getName());
+        map.put("type", this.getType());
+        map.put("deadline", this.getAlarmDeadline());
+        map.put("min_prior", this.getMinutesPrior());
+        return map;
     }
-
-    public Modifier createModifier()
-    {
-        Modifier m = new Modifier();
-        m.mAssociatedNotification = this;
-        m.mType = mType;
-        m.mAlarmDeadline = mAlarmDeadline;
-        m.mMinutesPrior = mMinutesPrior;
-        return m;
-    }
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Getters
@@ -125,12 +138,27 @@ public class Notification
         return mToDoCardId;
     }
 
+    public int getIntId()
+    {
+        return Integer.parseInt(mToDoCardId);
+    }
+
+    public String getName()
+    {
+        return mName;
+    }
+
     public Type getType()
     {
         return mType;
     }
 
-    public ToDoCard.DateTime getAlarmDeadline()
+    public DeadlineType getDeadlineType()
+    {
+        return mDeadlineType;
+    }
+
+    public ZonedDateTime getAlarmDeadline()
     {
         return mAlarmDeadline;
     }
@@ -138,5 +166,10 @@ public class Notification
     public long getMinutesPrior()
     {
         return mMinutesPrior;
+    }
+
+    public ZonedDateTime getExactNotificationTime()
+    {
+        return mAlarmDeadline.minusMinutes(mMinutesPrior);
     }
 }

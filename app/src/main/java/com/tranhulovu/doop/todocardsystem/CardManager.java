@@ -5,7 +5,6 @@ import com.tranhulovu.doop.todocardsystem.events.Callback;
 import com.tranhulovu.doop.todocardsystem.filter.FilterOption;
 import com.tranhulovu.doop.todocardsystem.filter.SortOption;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -29,15 +28,58 @@ public class CardManager
         NOT_READY
     }
 
+    public static class AutogenerationConfirmer
+    {
+        private Map<String, ToDoCard> mPendingCards;
+        private Callback<Collection<ToDoCard>> mConfirmCallback;
+
+        public AutogenerationConfirmer(Collection<ToDoCard> cards,
+                                       Callback<Collection<ToDoCard>> confirmCallback)
+        {
+            mPendingCards = new HashMap<>();
+            for (ToDoCard card : cards)
+            {
+                mPendingCards.put(card.getId(), card);
+            }
+            mConfirmCallback = confirmCallback;
+        }
+
+        public void confirm()
+        {
+            if (mConfirmCallback != null)
+                mConfirmCallback.execute(null);
+        }
+
+        public void discard()
+        {
+            mConfirmCallback = null;
+        }
+
+        public Set<String> getAllIds()
+        {
+            return mPendingCards.keySet();
+        }
+
+        public Map<String, Object> getPendingCard(String id)
+        {
+            return mPendingCards.containsKey(id)
+                    ? mPendingCards.get(id).toMap() : null;
+        }
+
+        public ToDoCard.Modifier getModifier(String id)
+        {
+            return mPendingCards.containsKey(id) ?
+                    mPendingCards.get(id).makeModifier() : null;
+        }
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
     private DynamicStatistics mDynamicStatistics;
-    private Map<String, ToDoCard> mActiveCards;
-    private Map<String, ToDoCard> mArchivedCards;
+    private Map<String, ToDoCard> mCards;
 
-    private Collection<String> mModifiedCards;
-    private Collection<String> mDeletedCards;
+    private Collection<String> mNeedsWritingCards;
 
     private NotificationManager mNotifManager;
     private LocalAccessorFacade mLocalAccessor;
@@ -53,8 +95,7 @@ public class CardManager
         mNotifManager = notifManagerRef;
         mLocalAccessor = facade;
 
-        mDeletedCards = new HashSet<>();
-        mModifiedCards = new HashSet<>();
+        mNeedsWritingCards = new HashSet<>();
 
         onCreate();
     }
@@ -87,7 +128,14 @@ public class CardManager
      */
     public void actualizeModification()
     {
-        // TODO: Write cards using LocalAccessor
+        for (String id : mNeedsWritingCards)
+        {
+            // TODO: Write cards using LocalAccessor
+
+            mNotifManager.saveNotification(mCards.get(id).getNotification());
+        }
+
+        mNeedsWritingCards = new HashSet<>();
     }
 
     /**
@@ -96,35 +144,39 @@ public class CardManager
      */
     public void actualizeDeletion()
     {
-        // TODO: Delete cards using LocalAccessor
+        // Filter deleted cards
+        List<String> list
+                = mCards.entrySet().stream()
+                    .filter(p -> p.getValue().getStatus() == ToDoCard.CheckStatus.DELETED)
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+
+        for (String id : list)
+        {
+            // TODO: Delete cards using LocalAccessor
+
+            mNotifManager.deleteNotification(mCards.get(id).getNotification());
+        }
     }
 
 
     private String generateId()
     {
         // TODO: Maybe generate id base on time created instead
-        return String.valueOf(mActiveCards.size());
+        return String.valueOf(mCards.size());
     }
 
     private Collection<ToDoCard> getAllCards()
     {
-        return mActiveCards.values();
+        return mCards.values();
     }
 
-    private ToDoCard checkAndFetch(String id)
+    ToDoCard checkAndFetch(String id)
     {
         ToDoCard card = null;
-        if (mActiveCards.containsKey(id))
+        if (mCards.containsKey(id))
         {
-            card = mActiveCards.get(id);
-            if (card == null)
-            {
-                // TODO: Call LocalFacade to load card
-            }
-        }
-        else if (mArchivedCards.containsKey(id))
-        {
-            card = mArchivedCards.get(id);
+            card = mCards.get(id);
             if (card == null)
             {
                 // TODO: Call LocalFacade to load card
@@ -147,11 +199,11 @@ public class CardManager
             String id = generateId();
             ToDoCard newC = new ToDoCard(id);
 
+            // Add new ToDoCard reference
+            mCards.put(id, newC);
 
-            // TODO: Add new ToDoCard reference
-
-            // TODO: Add card to local database
-
+            // Add card to local database
+            mNeedsWritingCards.add(id);
 
             if (onCardRegisteredCallback != null)
                 onCardRegisteredCallback.execute(id);
@@ -159,6 +211,39 @@ public class CardManager
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(task);
+    }
+
+    public void autoCreateCards(String textToParse, Callback<AutogenerationConfirmer> onCreation)
+    {
+        Runnable task = () ->
+        {
+            Collection<ToDoCard> pendingCards = new HashSet<>();
+            // TODO: Parse string and create the cards
+
+            // TODO:
+
+            AutogenerationConfirmer confirmer =
+                    new AutogenerationConfirmer(pendingCards,
+                            new Callback<Collection<ToDoCard>>()
+                            {
+                                @Override
+                                public void execute(Collection<ToDoCard> data)
+                                {
+                                    for (ToDoCard card : data)
+                                    {
+                                        mCards.put(card.getId(), card);
+                                        mNeedsWritingCards.add(card.getId());
+                                    }
+                                }
+                            });
+
+            if (onCreation != null)
+                onCreation.execute(confirmer);
+        };
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(task);
+
     }
 
     /**
@@ -180,6 +265,8 @@ public class CardManager
                 throw new InvalidParameterException(
                     "CardManager instance does not recognize card with id " + id);
             }
+
+            mNeedsWritingCards.add(id);
 
             if (onCardFetchedCallback != null)
                 onCardFetchedCallback.execute(card.makeModifier());
@@ -211,52 +298,10 @@ public class CardManager
                         "CardManager instance does not recognize card with id " + id);
             }
 
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("name", card.getName());
-            map.put("description", card.getDescription());
-            map.put("note", card.getNote());
-            map.put("group", card.getGroup());
-            map.put("tags", card.getTags());
-            map.put("priority", card.getPriority());
-            map.put("start", card.getStart());
-            map.put("end", card.getEnd());
-            map.put("archivalStatus", card.getArchivalStatus());
-            map.put("notificationId", card.getNotificationId());
+            Map<String, Object> map = card.toMap();
 
             if (onCardInfoFetchedCallback != null)
                 onCardInfoFetchedCallback.execute(map);
-        };
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(task);
-    }
-
-    /**
-     * Request a deletion of a card from the manager and the database.
-     * Most often, a user will just archive a card instead.
-     * Use this method with serious discretion.
-     * @param id Id of the requested card.
-     * @param onCardDeletionResultCallback {@code Callback} to be invoked with the deletion result
-     *                                     (deleted, failed to delete).
-     */
-    public void requestDeleteCard(String id, Callback<Boolean> onCardDeletionResultCallback)
-    {
-        Runnable task = () ->
-        {
-            if (mArchivedCards.containsKey(id) || mActiveCards.containsKey(id))
-            {
-                // TODO: Ask LocalAccessor to delete the thing
-
-                // TODO: If delete successfully do this:
-                if (mArchivedCards.containsKey(id))
-                {
-
-                }
-
-            }
-
-            if (onCardDeletionResultCallback != null)
-                onCardDeletionResultCallback.execute(true);
         };
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -272,8 +317,20 @@ public class CardManager
     {
         Runnable task = () ->
         {
-            List<String> list = new ArrayList<>();
-            // TODO: Get and sort list or something
+            // Get and sort list or something
+            List<String> list = mCards.entrySet().stream()
+                    .filter(p -> (p.getValue().getStatus() != ToDoCard.CheckStatus.DELETED
+                              && p.getValue().getStatus() != ToDoCard.CheckStatus.ARCHIVED))
+                    .sorted(new Comparator<Map.Entry<String, ToDoCard>>()
+                    {
+                        @Override
+                        public int compare(Map.Entry<String, ToDoCard> o1, Map.Entry<String, ToDoCard> o2)
+                        {
+                            return o2.getValue().getEnd().compareTo(o1.getValue().getEnd());
+                        }
+                    })
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
 
             if (onFetchedCallback != null)
                 onFetchedCallback.execute(list);
@@ -292,8 +349,19 @@ public class CardManager
     {
         Runnable task = () ->
         {
-            List<String> list = new ArrayList<>();
-            // TODO: Get and sort list or something
+            // Get and sort list or something
+            List<String> list = mCards.entrySet().stream()
+                    .filter(p -> p.getValue().getStatus() == ToDoCard.CheckStatus.ARCHIVED)
+                    .sorted(new Comparator<Map.Entry<String, ToDoCard>>()
+                    {
+                        @Override
+                        public int compare(Map.Entry<String, ToDoCard> o1, Map.Entry<String, ToDoCard> o2)
+                        {
+                            return o2.getValue().getEnd().compareTo(o1.getValue().getEnd());
+                        }
+                    })
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
 
             if (onFetchedCallback != null)
                 onFetchedCallback.execute(list);
@@ -362,7 +430,7 @@ public class CardManager
             List<String> idList = list.stream()
                     .filter(filterPredicate)
                     .sorted(comparator)
-                    .map(p -> p.getId())
+                    .map(ToDoCard::getId)
                     .collect(Collectors.toList());
 
             if (onFetchedCallback != null)

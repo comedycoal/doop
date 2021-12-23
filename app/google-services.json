@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "13449743187",
+    "project_id": "doop-final-se",
+    "storage_bucket": "doop-final-se.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13449743187:android:d16831e07feaf1ca9defa6",
+        "android_client_info": {
+          "package_name": "com.tranhulovu.doop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13449743187-d7jn3jblja660l7b2nji9puridnapo89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_MWuXDvxyYMMYeoV5eKtWzj65UGOKm6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13449743187-d7jn3jblja660l7b2nji9puridnapo89.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

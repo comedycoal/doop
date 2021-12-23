@@ -1,15 +1,19 @@
 package com.tranhulovu.doop.todocardsystem;
 
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 
 import com.tranhulovu.doop.todocardsystem.events.Event;
-import com.tranhulovu.doop.todocardsystem.events.PersistentEvent;
 import com.tranhulovu.doop.todocardsystem.events.Subscriber;
 import com.tranhulovu.doop.todocardsystem.filter.StringFieldGetter;
 
 import java.security.InvalidParameterException;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -29,33 +33,11 @@ public class ToDoCard implements StringFieldGetter
     {
         NOT_STARTED,
         DONE,
+        NOT_DONE,
         URGENT,
-        OVERDUED
-    }
-
-    /**
-     * Enumeration for archival status of a {@code ToDoCard}
-     */
-    public enum ArchivalStatus
-    {
+        OVERDUED,
         ARCHIVED,
-        NOT_ARCHIVED
-    }
-
-    /**
-     * Facade for objects representing a Time of a Date.
-     * WARNING: PLACEHOLDER
-     */
-    public static class DateTime
-    {
-        public static DateTime NOT_SPECIFIED;
-
-        @NonNull
-        @Override
-        public String toString()
-        {
-            return super.toString();
-        }
+        DELETED
     }
 
     /**
@@ -67,41 +49,87 @@ public class ToDoCard implements StringFieldGetter
     public static class Modifier
     {
         ToDoCard mAssociatedCard;
+
         private String mName;
         private String mDescription;
         private String mNote;
         private String mGroup;
         private List<String> mTags;
         private int mPriority;
+
+        private ZonedDateTime mStart;
+        private ZonedDateTime mEnd;
+
         private boolean mDone;
-        private DateTime mStart;
-        private DateTime mEnd;
-        private ArchivalStatus mArchivalStatus;
-        private String mNotificationId;
+        private boolean mArchived;
+        private boolean mDeleted;
+
+        private Notification mNotification;
+
+        private boolean mAnyChanged;
+        private boolean mNotificationChanged;
+        private boolean mDoneChanged;
+        private boolean mArchivalChanged;
+        private boolean mDeletionChanged;
 
         private Modifier() { }
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         //---// Methods
+        private void resetFlags()
+        {
+            mAnyChanged = false;
+            mNotificationChanged = false;
+            mDoneChanged = false;
+            mArchivalChanged = false;
+            mDeletionChanged = false;
+        }
 
         /**
          *  Commit all changes made using setters into the associated {@code ToDoCard}
          */
         public void build()
         {
+            ToDoCard old = new ToDoCard(mAssociatedCard);
+
             mAssociatedCard.mName = mName;
             mAssociatedCard.mDescription = mDescription;
             mAssociatedCard.mNote = mNote;
             mAssociatedCard.mGroup = mGroup;
             mAssociatedCard.mTags = mTags;
             mAssociatedCard.mPriority = mPriority;
+
             mAssociatedCard.mStart = mStart;
             mAssociatedCard.mEnd = mEnd;
-            mAssociatedCard.mArchivalStatus = mArchivalStatus;
-            mAssociatedCard.mNotificationId = mNotificationId;
 
-            // TODO: Do stuff to react to changing, like trigger events and stuff
-            mAssociatedCard.impliesCheckStatus();
+            mAssociatedCard.mDone = mDone;
+            mAssociatedCard.mDeleted = mDeleted;
+            mAssociatedCard.mArchived = mArchived;
+            mAssociatedCard.mBackup = old;
+
+            mAssociatedCard.mNotification = mNotification;
+
+            // Check modification flags here
+            if (mAnyChanged)
+                mAssociatedCard.mModifiedEvent.invoke(mAssociatedCard.toMap());
+
+            if (mNotificationChanged)
+                mAssociatedCard.mNotificationChangedEvent.invoke(mAssociatedCard.mNotification);
+
+            if (mDoneChanged)
+                mAssociatedCard.mDoneChangeEvent.invoke(mAssociatedCard.mDone);
+            if (mArchivalChanged)
+                mAssociatedCard.mArchivalChangeEvent.invoke(mAssociatedCard.mArchived);
+            if (mDeletionChanged)
+                mAssociatedCard.mDeletionChangeEvent.invoke(mAssociatedCard.mDeleted);
+
+            resetFlags();
+        }
+
+        public void revertChanges()
+        {
+            mAssociatedCard.revertBackup();
+            mAssociatedCard.useModifier(this);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,10 +142,19 @@ public class ToDoCard implements StringFieldGetter
          * @param end Ending timestamp of a card
          * @return The current {@code ToDoCard.Modifier}
          */
-        public Modifier setTimeRange(DateTime start, DateTime end)
+        public Modifier setTimeRange(ZonedDateTime start, ZonedDateTime end)
         {
             this.mStart = start;
             this.mEnd = end;
+
+            Notification.Builder b = new Notification.Builder(mNotification);
+
+            mNotification = mNotification.getDeadlineType() == Notification.DeadlineType.START
+                    ? b.setDeadline(start).build() : b.setDeadline(end).build();
+
+            mAnyChanged = true;
+            mNotificationChanged = true;
+
             return this;
         }
 
@@ -125,13 +162,39 @@ public class ToDoCard implements StringFieldGetter
          * Mark the associated as Done
          * @return The current {@code ToDoCard.Modifier}
          */
-        public Modifier markDone() { mDone = true; return this; }
+        public Modifier markDone()
+        {
+            if (!mDone)
+            {
+                mDone = true;
+
+                mNotification = new Notification.Builder(mNotification)
+                        .setType(Notification.Type.SILENT).build();
+
+                mAnyChanged = true;
+                mDoneChanged = true;
+                mNotificationChanged = true;
+            }
+
+            return this;
+        }
 
         /**
          * Remove the Done status, if marked.
          * @return The current {@code ToDoCard.Modifier}
          */
-        public Modifier markNotDone() { mDone = false; return this; }
+        public Modifier markNotDone()
+        {
+            if (mDone)
+            {
+                mDone = false;
+
+                mAnyChanged = true;
+                mDoneChanged = true;
+            }
+
+            return this;
+        }
 
         /**
          * Mark the card as archived.
@@ -139,109 +202,283 @@ public class ToDoCard implements StringFieldGetter
          */
         public Modifier archive()
         {
-            this.mArchivalStatus = ArchivalStatus.ARCHIVED;
-            // TODO: What happens when a card is archived?
-            // TODO: Probably nothing, except that the UI needs to reload or something,
-            // TODO: which I totally don't have to care about.
+            if (!mArchived)
+            {
+                mArchived = true;
+
+                mNotification = new Notification.Builder(mNotification)
+                    .setType(Notification.Type.SILENT).build();
+
+                mAnyChanged = true;
+                mArchivalChanged = true;
+                mNotificationChanged = true;
+            }
             return this;
         }
 
         /**
          * Remove the card's archival status, if marked.
-         * Probably used to implement UI's "Undo action", if that happens.
          * @return The current {@code ToDoCard.Modifier}
          */
         public Modifier unarchive()
         {
-            this.mArchivalStatus = ArchivalStatus.NOT_ARCHIVED;
+            if (mArchived)
+            {
+                mArchived = false;
+
+                mAnyChanged = true;
+                mArchivalChanged = true;
+            }
+            return this;
+        }
+
+        /**
+         * Mark the card as deleted.
+         * @return The current {@code ToDoCard.Modifier}
+         */
+        public Modifier delete()
+        {
+            if (!mDeleted)
+            {
+                mDeleted = true;
+
+                mNotification = new Notification.Builder(mNotification)
+                        .setType(Notification.Type.SILENT).build();
+
+                mAnyChanged = true;
+                mDeletionChanged = true;
+            }
+            return this;
+        }
+
+        /**
+         * Remove the card's deletion status.
+         * @return The current {@code ToDoCard.Modifier}
+         */
+        public Modifier undoDelete()
+        {
+            if (mDeleted)
+            {
+                mDeleted = false;
+
+                mAnyChanged = true;
+                mDeletionChanged = true;
+            }
             return this;
         }
 
 
-        // This one is subject to change, also pretty complicated
-        public Modifier setNotification(String id)
+        public Modifier setNotification(@NonNull Notification notification)
+                throws AssertionError
         {
-            //TODO
-            this.mNotificationId = mNotificationId;
+            assert notification.getToDoCardId().equals(this.mAssociatedCard.getId());
+            this.mNotification = notification;
+
+            mAnyChanged = true;
+            mNotificationChanged = true;
+
             return this;
         }
 
 
         // Explanatory setters //
-        public Modifier setName(String name) { this.mName = name; return this; }
+        public Modifier setName(@NonNull String name)
+        {
+            this.mName = name;
+
+            mAnyChanged = true;
+
+            return this; }
 
         public Modifier setDescription(String description)
         {
             this.mDescription = description;
+
+            mAnyChanged = true;
+
             return this;
         }
 
-        public Modifier setNote(String note) { this.mNote = note; return this; }
+        public Modifier setNote(String note)
+        {
+            this.mNote = note;
 
-        public Modifier setGroup(String group) { this.mGroup = group; return this; }
+            mAnyChanged = true;
 
-        public Modifier setTags(List<String> tags) { this.mTags = tags; return this; }
+            return this;
+        }
 
-        public Modifier addTag(String tag) { this.mTags.add(tag); return this; }
+        public Modifier setGroup(String group)
+        {
+            this.mGroup = group;
+
+            mAnyChanged = true;
+
+            return this;
+        }
+
+        public Modifier setTags(List<String> tags)
+        {
+            this.mTags = tags;
+
+            mAnyChanged = true;
+
+            return this;
+        }
+
+        public Modifier addTag(String tag)
+        {
+            this.mTags.add(tag);
+
+            mAnyChanged = true;
+
+            return this;
+        }
 
         public Modifier removeTag(String tag)
         {
-            this.mTags.removeIf(x -> x.equals(tag));
+            boolean res = this.mTags.removeIf(x -> x.equals(tag));
+
+            if (res)
+                mAnyChanged = true;
+
             return this;
         }
 
-        public Modifier setPriority(int priority) { this.mPriority = priority; return this; }
+        public Modifier setPriority(int priority)
+        {
+            this.mPriority = priority;
+
+            mAnyChanged = true;
+
+            return this;
+        }
 
 
         // These are event subscribing methods.
         /**
-         * Subscribe to the "OnCheck" event (invoked when a card is marked as DONE).
-         * The subscription is done immediately, without having to call {@code build()}.
-         * @param subscriber the subscriber.
-         * @return the current {@code ToDoCard.Modifier}
-         */
-        public Modifier subscribeOnCheck(Subscriber<Void> subscriber)
-        {
-            mAssociatedCard.getOnCheckEvent().addSubscriber(subscriber);
-            return this;
-        }
-
-        /**
-         * Subscribe to the "OnCheckStatusChanged" event
+         * Subscribe to the "DoneChange" event
          * (invoked when a card is marked as DONE, or unmarked).
          * The subscription is done immediately, without having to call {@code build()}.
          * @param subscriber the subscriber.
          * @return the current {@code ToDoCard.Modifier}
          */
-        public Modifier subscribeOnCheckStatusChanged(Subscriber<CheckStatus> subscriber)
+        public Modifier subscribeDoneChangeEvent(Subscriber<Boolean> subscriber)
         {
-            mAssociatedCard.getOnCheckStatusChanged().addSubscriber(subscriber);
+            mAssociatedCard.getDoneChangeEvent().addSubscriber(subscriber);
             return this;
         }
 
         /**
-         * Subscribe to the "sOnArchivalStatusChanged" event
+         * Subscribe to the "ArchivalChange" event
          * (invoked when a card is marked as ARCHIVED, or unmarked).
          * The subscription is done immediately, without having to call {@code build()}.
          * @param subscriber the subscriber.
          * @return the current {@code ToDoCard.Modifier}
          */
-        public Modifier subscribeOnArchivalStatusChanged( Subscriber<ArchivalStatus> subscriber)
+        public Modifier subscribeArchivalChangeEvent(Subscriber<Boolean> subscriber)
         {
-            mAssociatedCard.getOnArchivalStatusChanged().addSubscriber(subscriber);
+            mAssociatedCard.getArchivalChangeEvent().addSubscriber(subscriber);
             return this;
         }
 
         /**
-         * Subscribe to the "OnModified" event (invoked when the card's properties change,
+         * Subscribe to the "DeletionChange" event
+         * (invoked when a card is marked as DELETED, or unmarked).
+         * The subscription is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
+        public Modifier subscribeDeletionChangeEvent(Subscriber<Boolean> subscriber)
+        {
+            mAssociatedCard.getDeletionChangeEvent().addSubscriber(subscriber);
+            return this;
+        }
+
+        /**
+         * Subscribe to the "Modified" event (invoked when the card's properties change,
          * notification changes that are not ID change also count).
          * The subscription is done immediately, without having to call {@code build()}.
          * @param subscriber the subscriber.
          * @return the current {@code ToDoCard.Modifier}
          */
-        public Modifier subscribeOnModified(Subscriber<Void> subscriber)
+        public Modifier subscribeModifiedEvent(Subscriber<Map<String, Object>> subscriber)
         {
-            mAssociatedCard.getOnModifiedEvent().addSubscriber(subscriber);
+            mAssociatedCard.getModifiedEvent().addSubscriber(subscriber);
+            return this;
+        }
+
+        /**
+         * Subscribe to the "NotificationChanged" event (invoked when the card's notification info changed,
+         * NOT when the notification is registered in Android system).
+         * The subscription is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
+        public Modifier subscribeNotificationChangeEvent(Subscriber<Notification> subscriber)
+        {
+            mAssociatedCard.getNotificationChangeEvent().addSubscriber(subscriber);
+            return this;
+        }
+
+        // These are event unsubscribing methods.
+        /**
+         * Unsubscribe to the "DoneChange" event.
+         * The operation is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
+        public Modifier unsubscribeDoneChangeEvent(Subscriber<Boolean> subscriber)
+        {
+            mAssociatedCard.getDoneChangeEvent().removeSubscriber(subscriber);
+            return this;
+        }
+
+        /**
+         * Unsubscribe to the "ArchivalChange" event.
+         * The operation is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
+        public Modifier unsubscribeArchivalChangeEvent(Subscriber<Boolean> subscriber)
+        {
+            mAssociatedCard.getArchivalChangeEvent().removeSubscriber(subscriber);
+            return this;
+        }
+
+        /**
+         * Unsubscribe to the "DeletionChange" event
+         * The subscription is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
+        public Modifier unsubscribeDeletionChangeEvent(Subscriber<Boolean> subscriber)
+        {
+            mAssociatedCard.getDeletionChangeEvent().removeSubscriber(subscriber);
+            return this;
+        }
+
+        /**
+         * Unsubscribe to the "NotificationChange" event.
+         * The operation is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
+        public Modifier unsubscribeNotificationChangeEvent(Subscriber<Notification> subscriber)
+        {
+            mAssociatedCard.getNotificationChangeEvent().removeSubscriber(subscriber);
+            return this;
+        }
+
+        /**
+         * Unsubscribe to the "Modified" event.
+         * The operation is done immediately, without having to call {@code build()}.
+         * @param subscriber the subscriber.
+         * @return the current {@code ToDoCard.Modifier}
+         */
+        public Modifier unSubscribeModifiedEvent(Subscriber<Map<String, Object>> subscriber)
+        {
+            mAssociatedCard.getModifiedEvent().removeSubscriber(subscriber);
             return this;
         }
     }
@@ -250,6 +487,10 @@ public class ToDoCard implements StringFieldGetter
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
+    public static DateTimeFormatter DefaultFormatter
+            = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+
+    public static long DefaultUrgentHours = 12;
 
     private String mId;         // Id for referential purposes
 
@@ -262,24 +503,26 @@ public class ToDoCard implements StringFieldGetter
     private int mPriority;
 
     // DateTime
-    private DateTime mStart;
-    private DateTime mEnd;
+    private ZonedDateTime mStart;
+    private ZonedDateTime mEnd;
 
     // Statuses
     private boolean mDone;
-    private ArchivalStatus mArchivalStatus;
+    private boolean mArchived;
+    private boolean mDeleted;
+    private ToDoCard mBackup;
 
     // Notification
-    private String mNotificationId;
-    private Map<String, Object> mOfflineNotifInfo;
+    private Notification mNotification;
 
     // Events
-    private Event<Void> mOnCheck;
-    private Event<CheckStatus> mOnCheckStatusChanged;
-    private Event<ArchivalStatus> mOnArchivalStatusChanged;
-    private Event<Void> mOnModified;
+    private Event<Boolean> mDoneChangeEvent;
+    private Event<Boolean> mArchivalChangeEvent;
+    private Event<Boolean> mDeletionChangeEvent;
+    private Event<Notification> mNotificationChangedEvent;
+    private Event<Map<String, Object>> mModifiedEvent;
 
-
+    private Event<ToDoCard> mManagerToDoCardChangeEvent;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Constructors
@@ -291,22 +534,56 @@ public class ToDoCard implements StringFieldGetter
     ToDoCard(String id)
     {
         mId = id;
+
         mName = "New Card";
         mDescription = "Description.";
         mNote = "";
         mGroup = "Default";
         mTags = new ArrayList<>();
         mPriority = 1;
-        mDone = false;
-        mStart = DateTime.NOT_SPECIFIED;
-        mEnd = DateTime.NOT_SPECIFIED;
-        mArchivalStatus = ArchivalStatus.NOT_ARCHIVED;
-        mNotificationId = null;
-        mOfflineNotifInfo = null;
 
-        mOnCheck = new PersistentEvent<>();
-        mOnArchivalStatusChanged = new PersistentEvent<>();
-        mOnCheckStatusChanged = new PersistentEvent<>();
+        mStart = ZonedDateTime.now();
+        mEnd = ZonedDateTime.now().plusDays(7);
+
+        mDone = false;
+        mArchived = false;
+        mDeleted = false;
+        mBackup = null;
+
+        mNotification = new Notification.Builder()
+            .setAssociatedCard(getId())
+            .setDeadline(mEnd)
+            .setName(mName)
+            .setType(Notification.Type.SILENT)
+            .build();
+
+        mDoneChangeEvent = new Event<>();
+        mArchivalChangeEvent = new Event<>();
+        mDeletionChangeEvent = new Event<>();
+        mNotificationChangedEvent = new Event<>();
+        mModifiedEvent = new Event<>();
+    }
+
+    ToDoCard(ToDoCard other)
+    {
+        mId = other.mId;
+
+        mName = other.mName;
+        mDescription = other.mDescription;
+        mNote = other.mNote;
+        mGroup = other.mGroup;
+        mTags = new ArrayList<>(other.mTags);
+        mPriority = other.mPriority;
+
+        mStart = other.mStart;
+        mEnd = other.mEnd;
+
+        mDone = other.mDone;
+        mArchived = other.mArchived;
+        mDeleted = other.mDeleted;
+        mBackup = null;
+
+        mNotification = other.mNotification;
     }
 
 
@@ -318,7 +595,7 @@ public class ToDoCard implements StringFieldGetter
      * Retrieve a {@code String} value of this {@code ToDoCard}'s properties.
      * @param field property to retrieve. Can be {@code "name"}, {@code "description"},
      * {@code "note"}, {@code "group"}, {@code "priority"}, {@code "start"}, {@code "end"},
-     * {@code "start"}, {@code "archivalStatus"}, {@code "notificationId"}, {@code "status"},
+     * {@code "start"}, {@code "archivalStatus"}, {@code "notificationType"}, {@code "status"},
      * or {@code "tag_<number of the tag>"}
      * @return the corresponding string value.
      *
@@ -337,11 +614,11 @@ public class ToDoCard implements StringFieldGetter
             case "note": return mNote;
             case "group": return mGroup;
             case "priority": return String.valueOf(mPriority);
-            case "start": return mStart.toString();
-            case "end": return mEnd.toString();
-            case "archivalStatus": return mArchivalStatus.name();
-            case "notificationId": return mNotificationId;
-            case "status": return getCheckStatus().name();
+            case "start": return mStart.format(DefaultFormatter);
+            case "end": return mEnd.format(DefaultFormatter);
+            case "notificationType":
+                return (mNotification != null ? mNotification.getType().name() : "NONE");
+            case "status": return getStatus().name();
             default:
             {
                 String[] f = field.split("_");
@@ -371,9 +648,24 @@ public class ToDoCard implements StringFieldGetter
         return toDoCard -> toDoCard.getValueOf(field);
     }
 
-    public void setEventTriggers()
+    /**
+     * Retrieve a {@code ToDoCard}'s properties as a Mapping of {@code String} to {@code Object}.
+     * Each entry needs casting to its appropriate type.
+     */
+    public Map<String, Object> toMap()
     {
-        // TODO
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", this.getName());
+        map.put("description", this.getDescription());
+        map.put("note", this.getNote());
+        map.put("group", this.getGroup());
+        map.put("tags", this.getTags());
+        map.put("priority", this.getPriority());
+        map.put("start", this.getStart());
+        map.put("end", this.getEnd());
+        map.put("status", this.getStatus());
+        map.put("notification", this.getNotification().toMap());
+        return map;
     }
 
     /**
@@ -384,29 +676,72 @@ public class ToDoCard implements StringFieldGetter
     Modifier makeModifier()
     {
         Modifier b = new Modifier();
-        b.mAssociatedCard = this;
-        b.mName = mName;
-        b.mDescription = mDescription;
-        b.mNote = mNote;
-        b.mGroup = mGroup;
-        b.mTags = mTags;
-        b.mDone = mDone;
-        b.mPriority = mPriority;
-        b.mStart = mStart;
-        b.mEnd = mEnd;
-        b.mArchivalStatus = mArchivalStatus;
-        b.mNotificationId = mNotificationId;
+        useModifier(b);
         return b;
     }
 
-    /**
-     * Derive Check status of the card based on its due and start time,
-     * its Done and Archived status.
-     * Usually called when card's info is changed or a time check happens.
-     */
-    private void impliesCheckStatus()
+    public void revertBackup()
     {
-        // TODO
+        ToDoCard backup = mBackup;
+        if (backup != null)
+        {
+            // Replace the card with backup
+            mName = backup.mName;
+            mDescription = backup.mDescription;
+            mNote = backup.mNote;
+            mGroup = backup.mGroup;
+            mTags = backup.mTags;
+            mPriority = backup.mPriority;
+
+            mStart = backup.mStart;
+            mEnd = backup.mEnd;
+
+            boolean oldDone = mDone;
+            boolean oldDeleted = mDeleted;
+            boolean oldArchived = mArchived;
+            Notification oldNotif = mNotification;
+
+            mDone = backup.mDone;
+            mDeleted = backup.mDeleted;
+            mArchived = backup.mArchived;
+            mBackup = null;
+
+            mNotification = backup.mNotification;
+
+            if (oldDone != mDone)
+                mDoneChangeEvent.invoke(mDone);
+            if (oldDeleted != mDeleted)
+                mDoneChangeEvent.invoke(mDeleted);
+            if (oldArchived != mArchived)
+                mDoneChangeEvent.invoke(mArchived);
+
+            if (!oldNotif.equals(mNotification))
+                mNotificationChangedEvent.invoke(mNotification);
+
+            mModifiedEvent.invoke(toMap());
+
+        }
+    }
+
+    public void useModifier(Modifier modifier)
+    {
+        modifier.mAssociatedCard = this;
+
+        modifier.mName = mName;
+        modifier.mDescription = mDescription;
+        modifier.mNote = mNote;
+        modifier.mGroup = mGroup;
+        modifier.mTags = mTags;
+        modifier.mPriority = mPriority;
+
+        modifier.mStart = mStart;
+        modifier.mEnd = mEnd;
+
+        modifier.mDone = mDone;
+        modifier.mArchived = mArchived;
+        modifier.mDeleted = mDeleted;
+
+        modifier.mNotification = mNotification;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -432,29 +767,66 @@ public class ToDoCard implements StringFieldGetter
 
     public int getPriority() { return mPriority; }
 
-    public DateTime getStart() { return mStart; }
+    public ZonedDateTime getStart() { return mStart; }
 
-    public DateTime getEnd() { return mEnd; }
+    public ZonedDateTime getEnd() { return mEnd; }
 
-    public ArchivalStatus getArchivalStatus() { return mArchivalStatus; }
+    public Notification getNotification() { return mNotification; }
 
-    public String getNotificationId() { return mNotificationId; }
-
-    /**
-     * Retrieve the cached notification info in the card, without querying the manager.
-     * This is mostly used to quickly return the notification id.
-     * @return a {@code NotificationInfo} object.
-     */
-    public Map<String, Object> getOfflineNotifInfo() { return mOfflineNotifInfo; }
-
-    public CheckStatus getCheckStatus()
+    public CheckStatus getStatus()
     {
-        //TODO
-        return CheckStatus.NOT_STARTED;
+        if (mDeleted)
+            return CheckStatus.DELETED;
+
+        if (mArchived)
+            return CheckStatus.ARCHIVED;
+
+        if (mDone)
+            return CheckStatus.DONE;
+
+        ZonedDateTime now = ZonedDateTime.now();
+
+        if (now.isBefore(mStart))
+            return CheckStatus.NOT_STARTED;
+
+        ZonedDateTime urgentTime = mEnd.minusHours(DefaultUrgentHours);
+
+        if (now.isAfter(urgentTime) && now.isBefore(mEnd))
+            return CheckStatus.URGENT;
+        else if (now.isAfter(mEnd))
+            return CheckStatus.OVERDUED;
+
+        return CheckStatus.NOT_DONE;
     }
 
-    public Event<Void> getOnCheckEvent() {return mOnCheck; }
-    public Event<CheckStatus> getOnCheckStatusChanged() {return mOnCheckStatusChanged; }
-    public Event<ArchivalStatus> getOnArchivalStatusChanged() {return mOnArchivalStatusChanged; }
-    public Event<Void> getOnModifiedEvent() {return mOnModified; }
+
+    public Event<Boolean> getDoneChangeEvent()
+    {
+        return mDoneChangeEvent;
+    }
+
+    public Event<Boolean> getArchivalChangeEvent()
+    {
+        return mArchivalChangeEvent;
+    }
+
+    public Event<Boolean> getDeletionChangeEvent()
+    {
+        return mDeletionChangeEvent;
+    }
+
+    public Event<Notification> getNotificationChangeEvent()
+    {
+        return mNotificationChangedEvent;
+    }
+
+    public Event<Map<String, Object>> getModifiedEvent()
+    {
+        return mModifiedEvent;
+    }
+
+    Event<ToDoCard> getManagerToDoCardChangeEvent()
+    {
+        return mManagerToDoCardChangeEvent;
+    }
 }

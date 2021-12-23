@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/settingsFragmentUI"
-    android:background="@color/main_window">
+    android:background="@color/main_window"
+    tools:context=".applicationui.fragment.SettingsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

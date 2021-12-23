@@ -25,48 +25,48 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationView = findViewById(R.id.bottom_nav);
-        mViewpager2 = findViewById(R.id.view_pager);
-
-        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(this);
-        mViewpager2.setAdapter(viewPagerAdapter);
-
-        mNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id=item.getItemId();
-                switch (id){
-                    case R.id.action_tasks:
-                        mViewpager2.setCurrentItem(0);
-                        break;
-                    case R.id.action_statistics:
-                        mViewpager2.setCurrentItem(1);
-                        break;
-                    case R.id.action_settings:
-                        mViewpager2.setCurrentItem(2);
-                        break;
-                }
-                return true;
-            }
-        });
-
-        mViewpager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                switch (position){
-                    case 0:
-                        mNavigationView.getMenu().findItem(R.id.action_tasks).setChecked(true);
-                        break;
-                    case 1:
-                        mNavigationView.getMenu().findItem(R.id.action_statistics).setChecked(true);
-                        break;
-                    case 2:
-                        mNavigationView.getMenu().findItem(R.id.action_settings).setChecked(true);
-                        break;
-                }
-            }
-        });
+//        mNavigationView = findViewById(R.id.bottom_nav);
+//        mViewpager2 = findViewById(R.id.view_pager);
+//
+//        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(this);
+//        mViewpager2.setAdapter(viewPagerAdapter);
+//
+//        mNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                int id=item.getItemId();
+//                switch (id){
+//                    case R.id.action_tasks:
+//                        mViewpager2.setCurrentItem(0);
+//                        break;
+//                    case R.id.action_statistics:
+//                        mViewpager2.setCurrentItem(1);
+//                        break;
+//                    case R.id.action_settings:
+//                        mViewpager2.setCurrentItem(2);
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
+//
+//        mViewpager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                super.onPageSelected(position);
+//                switch (position){
+//                    case 0:
+//                        mNavigationView.getMenu().findItem(R.id.action_tasks).setChecked(true);
+//                        break;
+//                    case 1:
+//                        mNavigationView.getMenu().findItem(R.id.action_statistics).setChecked(true);
+//                        break;
+//                    case 2:
+//                        mNavigationView.getMenu().findItem(R.id.action_settings).setChecked(true);
+//                        break;
+//                }
+//            }
+//        });
     }
 
     private static Authenticator mAuthenticator;
@@ -101,16 +101,15 @@ public class MainActivity extends AppCompatActivity {
         return mCardManager;
     }
 
-    private static NotificationManager mNotificationManager;
-    public static NotificationManager getNotificationManagerInstance() {
-        if (mNotificationManager == null) {
-            mNotificationManager = new NotificationManager();
-        }
-        return mNotificationManager;
-    }
+//    private static NotificationManager mNotificationManager;
+//    public static NotificationManager getNotificationManagerInstance() {
+//        if (mNotificationManager == null) {
+//            mNotificationManager = new NotificationManager();
+//        }
+//        return mNotificationManager;
+//    }
 
     public void initialize() {
-
     }
 
 //    public void onNavigateTo(ManagedFragment dest) {

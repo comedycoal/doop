@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/signUpFragmentUI"
-    android:background="@color/main_window">
+    android:background="@color/main_window"
+    tools:context=".applicationui.fragment.SignupFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -150,7 +151,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/authentication_signInButton"
+            android:id="@+id/authentication_signUpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_tasks"
