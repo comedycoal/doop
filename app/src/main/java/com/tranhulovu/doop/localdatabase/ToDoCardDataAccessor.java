@@ -1,14 +1,23 @@
 package com.tranhulovu.doop.localdatabase;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.tranhulovu.doop.todocardsystem.ToDoCard;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 public class ToDoCardDataAccessor {
@@ -95,17 +104,63 @@ public class ToDoCardDataAccessor {
         sqLiteDatabase.close();
     }
 
-    public ToDoCard read(String cardId) {
-        SQLiteDatabase sqLiteDatabase = this.mDatabaseHandler.getReadableDatabase();
+    @SuppressLint("Range")
+    public Map<String, Object> read(String cardId) {
+        SQLiteDatabase sqLiteDatabase = mDatabaseHandler.getReadableDatabase();
+        Map<String, Object> data = new HashMap<String, Object>();
 
-        String findCardQuery = "SELECT * FROM " + this.mDatabaseHandler.TABLE_TODO_CARD_NAME
-                + " WHERE " + this.mDatabaseHandler.TODO_CARD_ID + " = ?"
+        String findCardQuery = "SELECT * FROM " + DatabaseHandler.TABLE_TODO_CARD_NAME
+                + " INNER JOIN " + DatabaseHandler.TABLE_TAG_NAME + " ON "
+                + DatabaseHandler.TODO_CARD_ID + " = " + DatabaseHandler.TAG_TODO_CARD_ID
+                + " INNER JOIN " + DatabaseHandler.TABLE_NOTIFICATION_NAME + " ON "
+                + DatabaseHandler.TODO_CARD_ID + " = " + DatabaseHandler.ASSOCIATED_CARD_ID
+                + " WHERE " + DatabaseHandler.TODO_CARD_ID + " = ?"
                 ;
 
         Cursor cursor = sqLiteDatabase.rawQuery(findCardQuery, new String[] {cardId});
         if (cursor.moveToFirst()) {
-            // implement
+            // Get card ID
+            data.put("id",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.TODO_CARD_ID)));
+            // Get card name
+            data.put("name",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.TODO_CARD_NAME)));
+            // Get start time
+            data.put("start",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.TIME_START)));
+            // Get end time
+            data.put("end",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.TIME_END)));
+            // Get card status
+            data.put("status",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.CARD_STATUS)));
+            // Get card description
+            data.put("description",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.CARD_DESCRIPTION)));
+            // Get card note
+            data.put("note",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.CARD_NOTE)));
+            // Get card group
+            data.put("group",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.CARD_GROUP)));
+            // Get card priority
+            data.put("priority",
+                    cursor.getInt(cursor.getColumnIndex(DatabaseHandler.CARD_PRIORITY)));
+            // Get card notification type
+            data.put("notification",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.ASSOCIATED_CARD_ID)));
+            // Get list of tag
+            List<String> tagList = new ArrayList<String>();
+            for (cursor.moveToFirst(); !cursor.isLast(); cursor.moveToNext()) {
+                tagList.add(cursor.getString(cursor.getColumnIndex(
+                        DatabaseHandler.TAG_NAME)));
+            }
+            data.put("Tags",
+                    tagList);
         }
-        return null;
+
+        cursor.close();
+        sqLiteDatabase.close();
+        return data;
     }
 }

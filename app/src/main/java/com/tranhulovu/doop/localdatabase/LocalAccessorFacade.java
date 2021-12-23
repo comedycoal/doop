@@ -29,18 +29,16 @@ public class LocalAccessorFacade {
         }
     }
 
-    public ToDoCard readCard(String id) {
+    public Map<String, Object> readCard(String id) {
         mCardAccessor = new ToDoCardDataAccessor(null);
-        ToDoCard card = mCardAccessor.read(id);
-        return card;
+        return mCardAccessor.read(id);
     }
 
-    public Map<String, ToDoCard> readBulkCards(List<String> ids) {
+    public Map<String, Map<String, Object>> readBulkCards(List<String> ids) {
         mCardAccessor = new ToDoCardDataAccessor(null);
-        Map<String, ToDoCard> map = new HashMap<String, ToDoCard>();
+        Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
         for (int i = 0; i < ids.size(); i++) {
-            ToDoCard card = mCardAccessor.read(ids.get(i));
-            map.put(ids.get(i), card);
+            map.put(ids.get(i), mCardAccessor.read(ids.get(i)));
         }
         return map;
     }
