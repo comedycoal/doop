@@ -5,15 +5,19 @@ import com.tranhulovu.doop.onlinedatabase.Statistics;
 import com.tranhulovu.doop.onlinedatabase.UserProfile;
 
 public class UserManager {
-    private UserProfile mUserProfile;
-    private OnlineDatabaseAccessor mOnlineDatabaseAccessor;
-    private Authenticator mAuth;
+    private final OnlineDatabaseAccessor mOnlineDatabaseAccessor;
+    private final Authenticator mAuth;
+
+
+    public UserManager(String email, String password) {
+        mAuth = new Authenticator(email, password);
+        mOnlineDatabaseAccessor = new OnlineDatabaseAccessor(email, password);
+    }
 
     public UserProfile getUserProfile() {
         if (mAuth.getSignInState() == Authenticator.SignInState.ONLINE_SIGN_IN
                     || mAuth.getSignInState() == Authenticator.SignInState.LOCAL_SIGN_IN) {
-            mUserProfile = mOnlineDatabaseAccessor.getUserProfile();
-            return mUserProfile;
+            return mOnlineDatabaseAccessor.getUserProfile();
         }
         return null;
     }
