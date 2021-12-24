@@ -64,14 +64,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //creating todo table query
 
     private static final String CREATE_TODO_CARD_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + TABLE_TODO_CARD_NAME +
-            "(" + TODO_CARD_ID + " TEXT NOT NULL PRIMARY KEY AUTOINCREMENT," +
-            TODO_CARD_NAME + " TEXT NOT NULL," + TIME_START +
-            " TEXT NOT NULL," + TIME_END + " TEXT NOT NULL," +
-            CARD_STATUS + " INTEGER NOT NULL," + CARD_DESCRIPTION +
-            " TEXT NOT NULL," + CARD_NOTE + " TEXT NOT NULL," +
-            CARD_GROUP + " TEXT NOT NULL," +
-            CARD_PRIORITY + " TEXT NOT NULL," +
-            CARD_NOTIFICATION + " TEXT NOT NULL)"
+            "(" + TODO_CARD_ID + " TEXT NOT NULL PRIMARY KEY AUTOINCREMENT,"
+            + TODO_CARD_NAME + " TEXT NOT NULL,"
+            + TIME_START + " TEXT NOT NULL,"
+            + TIME_END + " TEXT NOT NULL,"
+            + CARD_STATUS + " TEXT NOT NULL,"
+            + CARD_DESCRIPTION + " TEXT NOT NULL,"
+            + CARD_NOTE + " TEXT NOT NULL,"
+            + CARD_GROUP + " TEXT NOT NULL,"
+            + CARD_PRIORITY + " INTEGER NOT NULL,"
+            + CARD_NOTIFICATION + " TEXT NOT NULL)"
             ;
 
     //creating notification table query
