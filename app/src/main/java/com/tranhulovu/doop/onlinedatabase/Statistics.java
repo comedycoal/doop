@@ -5,44 +5,72 @@ import java.util.Objects;
 
 public class Statistics {
     private final String mUserID;
-    private final long mDoneCardCount;
-    private final long mMissedCardCount;
-    private final long mArchivedCardCount;
-    private final long mTotalCardCount;
+    private final Map<String, Object> mLastWeekCard;
+    private final Map<String, Object> mLastMonthCard;
+    private final Map<String, Object> mTotalCard;
 
-    public Statistics(String userID, long doneCardCount, long missedCardCount, long archivedCardCount, long totalCardCount) {
-        mUserID = userID;
-        mDoneCardCount = doneCardCount;
-        mMissedCardCount = missedCardCount;
-        mArchivedCardCount = archivedCardCount;
-        mTotalCardCount = totalCardCount;
-    }
 
-    public  Statistics(String userID, Map<String, Object> map) {
+    public Statistics(String userID, Map<String, Object> lastWeekCard,
+                      Map<String, Object> lastMonthCard,
+                      Map<String, Object> totalCard) {
         mUserID = userID;
-        mDoneCardCount = (long) Objects.requireNonNull(map.get("doneCardCount"));
-        mMissedCardCount = (long) Objects.requireNonNull(map.get("missedCardCount"));
-        mArchivedCardCount = (long) Objects.requireNonNull(map.get("archivedCardCount"));
-        mTotalCardCount = (long) Objects.requireNonNull(map.get("totalCardCount"));
+        mLastWeekCard = lastWeekCard;
+        mLastMonthCard = lastMonthCard;
+        mTotalCard = totalCard;
+
     }
 
     public String getUserID() {
         return mUserID;
     }
 
-    public long getDoneCardCount() {
-        return mDoneCardCount;
+    public long getDoneCardCount(String time) {
+        switch (time) {
+            case "lastWeek":
+                return (long) Objects.requireNonNull(mLastWeekCard.get("doneCardCount"));
+            case "lastMonth":
+                return (long) Objects.requireNonNull(mLastMonthCard.get("doneCardCount"));
+            default:
+                return (long) Objects.requireNonNull(mTotalCard.get("doneCardCount"));
+        }
     }
 
-    public long getMissedCardCount() {
-        return mMissedCardCount;
+    public long getMissedCardCount(String time) {
+        switch (time) {
+            case "lastWeek":
+                return (long) Objects.requireNonNull(mLastWeekCard.get("missedCardCount"));
+            case "lastMonth":
+                return (long) Objects.requireNonNull(mLastMonthCard.get("missedCardCount"));
+            case "total":
+                return (long) Objects.requireNonNull(mTotalCard.get("missedCardCount"));
+            default:
+                return -1;
+        }
     }
 
-    public long getArchivedCardCount() {
-        return mArchivedCardCount;
+    public long getArchivedCardCount(String time) {
+        switch (time) {
+            case "lastWeek":
+                return (long) Objects.requireNonNull(mLastWeekCard.get("archivedCardCount"));
+            case "lastMonth":
+                return (long) Objects.requireNonNull(mLastMonthCard.get("archivedCardCount"));
+            case "total":
+                return (long) Objects.requireNonNull(mTotalCard.get("archivedCardCount"));
+            default:
+                return -1;
+        }
     }
 
-    public long getTotalCardCount() {
-        return mTotalCardCount;
+    public long getTotalCardCount(String time) {
+        switch (time) {
+            case "lastWeek":
+                return (long) Objects.requireNonNull(mLastWeekCard.get("totalCardCount"));
+            case "lastMonth":
+                return (long) Objects.requireNonNull(mLastMonthCard.get("totalCardCount"));
+            case "total":
+                return (long) Objects.requireNonNull(mTotalCard.get("totalCardCount"));
+            default:
+                return -1;
+        }
     }
 }
