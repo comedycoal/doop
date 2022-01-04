@@ -71,11 +71,24 @@ public class LocalAccessorFacade {
     }
 
     public void writeSettings(Map<String, Object> settingMap) {
-
+        mSettingAccessor = new SettingAccessor(null);
+        for (String item : settingMap.keySet()) {
+            mSettingAccessor.write(item, settingMap.get(item));
+        }
     }
 
     public Map<String, Object> readSettings() {
-        return null;
+        mSettingAccessor = new SettingAccessor(null);
+        Map<String, Object> settingDatas = new HashMap<String, Object>();
+        settingDatas.put(DatabaseHandler.AUTO_ARCHIEVE_CARD_SETTING,
+                mSettingAccessor.read(DatabaseHandler.AUTO_ARCHIEVE_CARD_SETTING));
+        settingDatas.put(DatabaseHandler.NOTIFICATION_SETTING,
+                mSettingAccessor.read(DatabaseHandler.NOTIFICATION_SETTING));
+        settingDatas.put(DatabaseHandler.DATE_SETTING,
+                mSettingAccessor.read(DatabaseHandler.DATE_SETTING));
+        settingDatas.put(DatabaseHandler.TIME_FORMAT_SETTING,
+                mSettingAccessor.read(DatabaseHandler.TIME_FORMAT_SETTING));
+        return settingDatas;
     }
 
 
