@@ -1,16 +1,11 @@
 package com.tranhulovu.doop.localdatabase;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.tranhulovu.doop.todocardsystem.Notification;
 import com.tranhulovu.doop.todocardsystem.ToDoCard;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class LocalAccessorFacade {
     private ToDoCardDataAccessor mCardAccessor;
@@ -80,8 +75,8 @@ public class LocalAccessorFacade {
     public Map<String, Object> readSettings() {
         mSettingAccessor = new SettingAccessor(null);
         Map<String, Object> settingDatas = new HashMap<String, Object>();
-        settingDatas.put(DatabaseHandler.AUTO_ARCHIEVE_CARD_SETTING,
-                mSettingAccessor.read(DatabaseHandler.AUTO_ARCHIEVE_CARD_SETTING));
+        settingDatas.put(DatabaseHandler.AUTO_ARCHIVE_CARD_SETTING,
+                mSettingAccessor.read(DatabaseHandler.AUTO_ARCHIVE_CARD_SETTING));
         settingDatas.put(DatabaseHandler.NOTIFICATION_SETTING,
                 mSettingAccessor.read(DatabaseHandler.NOTIFICATION_SETTING));
         settingDatas.put(DatabaseHandler.DATE_SETTING,

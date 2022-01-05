@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 
 public class SettingAccessor {
 //    private Uri mSettingPath;
@@ -21,7 +20,7 @@ public class SettingAccessor {
         SQLiteDatabase sqLiteDatabase = mDatabaseHandler.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHandler.AUTO_ARCHIEVE_CARD_SETTING, "ON");
+        contentValues.put(DatabaseHandler.AUTO_ARCHIVE_CARD_SETTING, "ON");
         contentValues.put(DatabaseHandler.DATE_SETTING, "26 Dec, 2021 ");
         contentValues.put(DatabaseHandler.NOTIFICATION_SETTING, "ON");
         contentValues.put(DatabaseHandler.TIME_FORMAT_SETTING, "24 Hour");

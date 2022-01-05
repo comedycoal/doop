@@ -41,11 +41,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String NOTIFICATION_NAME = "name";
 //    public static final String NOTIFICATION_FREQUENCY = "frequency";
 
-    // Setting table with NotificationSetting column, AutoArchieveCard column, TimeFormat column
+    // Setting table with NotificationSetting column, AutoArchiveCard column, TimeFormat column
     // and DateSetting column
     public static final String TABLE_SETTING_NAME = "setting_table";
     public static final String NOTIFICATION_SETTING = "notification_setting";
-    public static final String AUTO_ARCHIEVE_CARD_SETTING = "auto_archieve_card_setting";
+    public static final String AUTO_ARCHIVE_CARD_SETTING = "auto_archive_card_setting";
     public static final String TIME_FORMAT_SETTING = "time_format";
     public static final String DATE_SETTING = "date_setting";
 
@@ -92,10 +92,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String CREATE_SETTING_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS "
             + TABLE_SETTING_NAME + "(" + NOTIFICATION_SETTING + " TEXT NOT NULL,"
-            + AUTO_ARCHIEVE_CARD_SETTING + " TEXT NOT NULL,"
+            + AUTO_ARCHIVE_CARD_SETTING + " TEXT NOT NULL,"
             + TIME_FORMAT_SETTING + " TEXT NOT NULL,"
             + DATE_SETTING + " TEXT NOT NULL,"
-            + "PRIMARY KEY(" + NOTIFICATION_SETTING + "," + AUTO_ARCHIEVE_CARD_SETTING
+            + "PRIMARY KEY(" + NOTIFICATION_SETTING + "," + AUTO_ARCHIVE_CARD_SETTING
             + "," + TIME_FORMAT_SETTING + "," + DATE_SETTING + "))";
 
     public DatabaseHandler(@Nullable Context context) {
