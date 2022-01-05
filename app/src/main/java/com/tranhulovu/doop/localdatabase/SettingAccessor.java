@@ -61,6 +61,5 @@ public class SettingAccessor {
         cursor.close();
         sqLiteDatabase.close();
         return settingData;
-
     }
 }

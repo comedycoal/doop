@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     private UserManager mUserManager = new UserManager(email, password);
 
-    private SettingManager mSettingManager = new SettingManager();
+    private SettingManager mSettingManager = new SettingManager(getApplicationContext());
 
 //    private CardManager mCardManager = new CardManager();
 
