@@ -219,7 +219,7 @@ public class CardManager
         {
             Collection<ToDoCard> pendingCards = new HashSet<>();
             // TODO: Parse string and create the cards
-
+            ParserUtilities.splitLines(textToParse);
             // TODO:
 
             AutogenerationConfirmer confirmer =
