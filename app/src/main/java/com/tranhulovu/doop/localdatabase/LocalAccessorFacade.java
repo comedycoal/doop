@@ -1,16 +1,11 @@
 package com.tranhulovu.doop.localdatabase;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.tranhulovu.doop.todocardsystem.Notification;
 import com.tranhulovu.doop.todocardsystem.ToDoCard;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class LocalAccessorFacade {
     private ToDoCardDataAccessor mCardAccessor;
@@ -29,18 +24,16 @@ public class LocalAccessorFacade {
         }
     }
 
-    public ToDoCard readCard(String id) {
+    public Map<String, Object> readCard(String id) {
         mCardAccessor = new ToDoCardDataAccessor(null);
-        ToDoCard card = mCardAccessor.read(id);
-        return card;
+        return mCardAccessor.read(id);
     }
 
-    public Map<String, ToDoCard> readBulkCards(List<String> ids) {
+    public Map<String, Map<String, Object>> readBulkCards(List<String> ids) {
         mCardAccessor = new ToDoCardDataAccessor(null);
-        Map<String, ToDoCard> map = new HashMap<String, ToDoCard>();
+        Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
         for (int i = 0; i < ids.size(); i++) {
-            ToDoCard card = mCardAccessor.read(ids.get(i));
-            map.put(ids.get(i), card);
+            map.put(ids.get(i), mCardAccessor.read(ids.get(i)));
         }
         return map;
     }
@@ -73,11 +66,24 @@ public class LocalAccessorFacade {
     }
 
     public void writeSettings(Map<String, Object> settingMap) {
-
+        mSettingAccessor = new SettingAccessor(null);
+        for (String item : settingMap.keySet()) {
+            mSettingAccessor.write(item, settingMap.get(item));
+        }
     }
 
     public Map<String, Object> readSettings() {
-        return null;
+        mSettingAccessor = new SettingAccessor(null);
+        Map<String, Object> settingDatas = new HashMap<String, Object>();
+        settingDatas.put(DatabaseHandler.AUTO_ARCHIVE_CARD_SETTING,
+                mSettingAccessor.read(DatabaseHandler.AUTO_ARCHIVE_CARD_SETTING));
+        settingDatas.put(DatabaseHandler.NOTIFICATION_SETTING,
+                mSettingAccessor.read(DatabaseHandler.NOTIFICATION_SETTING));
+        settingDatas.put(DatabaseHandler.DATE_SETTING,
+                mSettingAccessor.read(DatabaseHandler.DATE_SETTING));
+        settingDatas.put(DatabaseHandler.TIME_FORMAT_SETTING,
+                mSettingAccessor.read(DatabaseHandler.TIME_FORMAT_SETTING));
+        return settingDatas;
     }
 
 

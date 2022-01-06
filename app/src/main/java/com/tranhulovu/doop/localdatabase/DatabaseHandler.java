@@ -41,11 +41,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String NOTIFICATION_NAME = "name";
 //    public static final String NOTIFICATION_FREQUENCY = "frequency";
 
-    // Setting table with NotificationSetting column, AutoArchieveCard column, TimeFormat column
+    // Setting table with NotificationSetting column, AutoArchiveCard column, TimeFormat column
     // and DateSetting column
     public static final String TABLE_SETTING_NAME = "setting_table";
     public static final String NOTIFICATION_SETTING = "notification_setting";
-    public static final String AUTO_ARCHIEVE_CARD_SETTING = "auto_archieve_card_setting";
+    public static final String AUTO_ARCHIVE_CARD_SETTING = "auto_archive_card_setting";
     public static final String TIME_FORMAT_SETTING = "time_format";
     public static final String DATE_SETTING = "date_setting";
 
@@ -64,14 +64,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //creating todo table query
 
     private static final String CREATE_TODO_CARD_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + TABLE_TODO_CARD_NAME +
-            "(" + TODO_CARD_ID + " TEXT NOT NULL PRIMARY KEY AUTOINCREMENT," +
-            TODO_CARD_NAME + " TEXT NOT NULL," + TIME_START +
-            " TEXT NOT NULL," + TIME_END + " TEXT NOT NULL," +
-            CARD_STATUS + " INTEGER NOT NULL," + CARD_DESCRIPTION +
-            " TEXT NOT NULL," + CARD_NOTE + " TEXT NOT NULL," +
-            CARD_GROUP + " TEXT NOT NULL," +
-            CARD_PRIORITY + " TEXT NOT NULL," +
-            CARD_NOTIFICATION + " TEXT NOT NULL)"
+            "(" + TODO_CARD_ID + " TEXT NOT NULL PRIMARY KEY AUTOINCREMENT,"
+            + TODO_CARD_NAME + " TEXT NOT NULL,"
+            + TIME_START + " TEXT NOT NULL,"
+            + TIME_END + " TEXT NOT NULL,"
+            + CARD_STATUS + " TEXT NOT NULL,"
+            + CARD_DESCRIPTION + " TEXT NOT NULL,"
+            + CARD_NOTE + " TEXT NOT NULL,"
+            + CARD_GROUP + " TEXT NOT NULL,"
+            + CARD_PRIORITY + " INTEGER NOT NULL,"
+            + CARD_NOTIFICATION + " TEXT NOT NULL)"
             ;
 
     //creating notification table query
@@ -90,10 +92,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String CREATE_SETTING_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS "
             + TABLE_SETTING_NAME + "(" + NOTIFICATION_SETTING + " TEXT NOT NULL,"
-            + AUTO_ARCHIEVE_CARD_SETTING + " TEXT NOT NULL,"
+            + AUTO_ARCHIVE_CARD_SETTING + " TEXT NOT NULL,"
             + TIME_FORMAT_SETTING + " TEXT NOT NULL,"
             + DATE_SETTING + " TEXT NOT NULL,"
-            + "PRIMARY KEY(" + NOTIFICATION_SETTING + "," + AUTO_ARCHIEVE_CARD_SETTING
+            + "PRIMARY KEY(" + NOTIFICATION_SETTING + "," + AUTO_ARCHIVE_CARD_SETTING
             + "," + TIME_FORMAT_SETTING + "," + DATE_SETTING + "))";
 
     public DatabaseHandler(@Nullable Context context) {

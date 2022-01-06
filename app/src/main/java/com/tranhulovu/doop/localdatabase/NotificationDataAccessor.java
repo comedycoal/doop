@@ -1,5 +1,6 @@
 package com.tranhulovu.doop.localdatabase;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.Uri;
 
 import com.tranhulovu.doop.todocardsystem.Notification;
 
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
@@ -86,8 +88,38 @@ public class NotificationDataAccessor {
         sqLiteDatabase.close();
     }
 
+    @SuppressLint("Range")
     public Notification read(String notifId) {
+        SQLiteDatabase sqLiteDatabase = mDatabaseHandler.getReadableDatabase();
+        DateTimeFormatter DefaultFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
-        return null;
+        String findCardQuery = "SELECT * FROM " + mDatabaseHandler.TABLE_NOTIFICATION_NAME
+                + " WHERE " + mDatabaseHandler.ASSOCIATED_CARD_ID + " = ?"
+                ;
+
+        Notification.Builder notif = new Notification.Builder();
+        Cursor cursor = sqLiteDatabase.rawQuery(findCardQuery, new String[] {notifId});
+        if (cursor.moveToFirst()) {
+            // set AssociatedCard for Notification
+            notif.setAssociatedCard(cursor.getString(
+                    cursor.getColumnIndex(DatabaseHandler.ASSOCIATED_CARD_ID)));
+            // set Deadline for Notification
+            String Deadline = cursor.getString(
+                    cursor.getColumnIndex(DatabaseHandler.NOTIFICATION_DEALINE));
+            ZonedDateTime time = ZonedDateTime.parse(Deadline, DefaultFormatter);
+            notif.setDeadline(time);
+            // set Name for Notification
+            notif.setName(cursor.getString(
+                    cursor.getColumnIndex(DatabaseHandler.NOTIFICATION_NAME)));
+            // set Type for Notification
+            notif.setType(Notification.Type.valueOf(cursor.getString(
+                    cursor.getColumnIndex(DatabaseHandler.NOTIFICATION_TYPE))));
+            // set
+            notif.setMinutesPrior(cursor.getLong(
+                    cursor.getColumnIndex(DatabaseHandler.NOTIFICATION_MINUTESPRIOR)));
+        }
+        cursor.close();
+        sqLiteDatabase.close();
+        return notif.build();
     }
 }

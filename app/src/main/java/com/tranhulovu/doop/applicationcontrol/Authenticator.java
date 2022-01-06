@@ -12,12 +12,15 @@ public class Authenticator {
     private SignInState mSignInState;
     OnlineDatabaseAccessor mOnlineDatabseAccessor;
 
+    public Authenticator(String email, String password) {
+        mOnlineDatabseAccessor = new OnlineDatabaseAccessor(email, password);
+    }
+
     public void setSignInState(SignInState state) {
         mSignInState = state;
     }
 
-    public void requestOnlineSignIn(String email, String password) {
-        mOnlineDatabseAccessor = new OnlineDatabaseAccessor(email, password);
+    public void requestOnlineSignIn() {
         if (!mOnlineDatabseAccessor.getOnlineUserID().equals("")) {
             setSignInState(SignInState.ONLINE_SIGN_IN);
         } else {

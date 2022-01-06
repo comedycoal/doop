@@ -6,16 +6,19 @@ import com.tranhulovu.doop.todocardsystem.filter.FilterOption;
 import com.tranhulovu.doop.todocardsystem.filter.SortOption;
 
 import java.security.InvalidParameterException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -26,51 +29,6 @@ public class CardManager
     {
         READY,
         NOT_READY
-    }
-
-    public static class AutogenerationConfirmer
-    {
-        private Map<String, ToDoCard> mPendingCards;
-        private Callback<Collection<ToDoCard>> mConfirmCallback;
-
-        public AutogenerationConfirmer(Collection<ToDoCard> cards,
-                                       Callback<Collection<ToDoCard>> confirmCallback)
-        {
-            mPendingCards = new HashMap<>();
-            for (ToDoCard card : cards)
-            {
-                mPendingCards.put(card.getId(), card);
-            }
-            mConfirmCallback = confirmCallback;
-        }
-
-        public void confirm()
-        {
-            if (mConfirmCallback != null)
-                mConfirmCallback.execute(null);
-        }
-
-        public void discard()
-        {
-            mConfirmCallback = null;
-        }
-
-        public Set<String> getAllIds()
-        {
-            return mPendingCards.keySet();
-        }
-
-        public Map<String, Object> getPendingCard(String id)
-        {
-            return mPendingCards.containsKey(id)
-                    ? mPendingCards.get(id).toMap() : null;
-        }
-
-        public ToDoCard.Modifier getModifier(String id)
-        {
-            return mPendingCards.containsKey(id) ?
-                    mPendingCards.get(id).makeModifier() : null;
-        }
     }
 
 
@@ -163,7 +121,7 @@ public class CardManager
     private String generateId()
     {
         // TODO: Maybe generate id base on time created instead
-        return String.valueOf(mCards.size());
+        return String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli());
     }
 
     private Collection<ToDoCard> getAllCards()
@@ -217,13 +175,62 @@ public class CardManager
     {
         Runnable task = () ->
         {
-            Collection<ToDoCard> pendingCards = new HashSet<>();
-            // TODO: Parse string and create the cards
+            Set<ToDoCard> pendingCards = new HashSet<>();
 
-            // TODO:
+            // DONE: Parse string and create the cards
+            List<String> lines = ParserUtilities.splitLines(textToParse);
+            List<TaskFitter.Task> tasks = new ArrayList<>();
+
+            String firstLine = lines.remove(0);
+            TaskFitter.Task dummy = ParserUtilities.getTask
+                    (ParserUtilities.splitIntoTokens(firstLine), null);
+
+            TaskFitter fitter = new TaskFitter(dummy.start, dummy.end);
+
+            TaskFitter.Task prev = null;
+            boolean erroreous = false;
+            int firstErrorIndex = -1;
+            int index = 1;
+            for (String line : lines)
+            {
+                TaskFitter.Task t = ParserUtilities.getTask(
+                        ParserUtilities.splitIntoTokens(firstLine), prev);
+                boolean res = fitter.fit(t);
+                if (res)
+                {
+                    tasks.add(t);
+                }
+                else
+                {
+                    if (firstErrorIndex == -1)
+                        firstErrorIndex = index;
+                    erroreous = true;
+                }
+                prev = t;
+                index++;
+            }
+
+            for (TaskFitter.Task t : tasks)
+            {
+                String id = generateId();
+                ToDoCard newC = new ToDoCard(id);
+
+                ToDoCard.Modifier m = newC.makeModifier();
+                m.setName(t.name);
+                m.setTimeRange(ZonedDateTime.ofInstant(Instant.ofEpochSecond(t.start), ZoneId.systemDefault()),
+                                ZonedDateTime.ofInstant(Instant.ofEpochSecond(t.end), ZoneId.systemDefault()));
+                m.build();
+
+                pendingCards.add(newC);
+            }
+
+            String error = null;
+            if (erroreous)
+                error = "Cannot fit task described at line " + firstErrorIndex + ".";
 
             AutogenerationConfirmer confirmer =
                     new AutogenerationConfirmer(pendingCards,
+                            error,
                             new Callback<Collection<ToDoCard>>()
                             {
                                 @Override

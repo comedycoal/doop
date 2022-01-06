@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.tranhulovu.doop.applicationui.fragment.CardviewFragment;
 import com.tranhulovu.doop.applicationui.fragment.MainFragment;
 import com.tranhulovu.doop.applicationui.fragment.ManagerFragment;
 import com.tranhulovu.doop.applicationui.fragment.SettingsFragment;
@@ -13,8 +14,9 @@ import com.tranhulovu.doop.applicationui.fragment.StatisticsFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
+
+    public ViewPagerAdapter(@NonNull Fragment fragment) {
+        super(fragment);
     }
 
     @NonNull
@@ -23,13 +25,13 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         //ManagerFragment managerFragment;
         switch (position){
             case 0:
-                return new MainFragment();
+                return new CardviewFragment();
             case 1:
                 return new StatisticsFragment();
             case 2:
                 return new SettingsFragment();
             default:
-                return new MainFragment();
+                return new CardviewFragment();
 
         }
     }

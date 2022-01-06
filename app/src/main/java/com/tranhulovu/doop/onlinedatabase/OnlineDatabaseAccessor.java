@@ -13,9 +13,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class OnlineDatabaseAccessor {
@@ -26,6 +29,12 @@ public class OnlineDatabaseAccessor {
     private UserProfile mCachedUserProfile;
     private Statistics mCachedStatistics;
 
+    /**
+    * This init an Online Database Accessor to manipulate data stored in Firebase with
+    * @param email: user's email.
+     * @param password: user's password.
+     * Also, this class init will cache user info and statistics from Firebase for future use.
+     */
     public OnlineDatabaseAccessor(String email, String password) {
         mFirebaseAuth = FirebaseAuth.getInstance();
         authorizeOnlineSignIn(email, password);
@@ -46,21 +55,22 @@ public class OnlineDatabaseAccessor {
                         if (task.isSuccessful()) {
                             DocumentSnapshot documentSnapshot = task.getResult();
                             if (Objects.requireNonNull(documentSnapshot).exists()) {
-                                mCachedStatistics = new Statistics(mUserID, Objects.requireNonNull(documentSnapshot.getData()));
+                                Map<String, Object> data = Objects.requireNonNull(documentSnapshot.getData());
+                                @SuppressWarnings("unchecked") Map<String, Object> lastWeek = (Map<String, Object>) data.get("lastWeek");
+                                @SuppressWarnings("unchecked") Map<String, Object> lastMonth = (Map<String, Object>) data.get("lastMonth");
+                                @SuppressWarnings("unchecked") Map<String, Object> total = (Map<String, Object>) data.get("total");
+                                mCachedStatistics = new Statistics(mUserID, lastWeek, lastMonth, total);
                             }
                         }
                     }
                 });
     }
 
-    public void syncUserProfile() {
-        // Sync what???
-    }
-
-    public void syncUserStatistics() {
-        // Same as above
-    }
-
+    /**
+     * This validate user login information.
+     * @param email: same as above.
+     * @param password: same as above.
+     */
     public void authorizeOnlineSignIn(String email, String password) {
         mFirebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -73,6 +83,12 @@ public class OnlineDatabaseAccessor {
                             Log.w("signInWithEmail:failure", task.getException());
                             // TODO: Show failed login dialog
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error logging in with exception", e);
                     }
                 });
     }
@@ -93,6 +109,10 @@ public class OnlineDatabaseAccessor {
         return mCachedStatistics;
     }
 
+    /**
+     * This will modify user profile with an updated one.
+     * @param newProfile: new profile info.
+     */
     public void modifyUserProfile(UserProfile newProfile) {
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                                                             .setDisplayName(newProfile.getFullName())
@@ -127,7 +147,26 @@ public class OnlineDatabaseAccessor {
         }
     }
 
+    /**
+     * This will change user's statistics.
+     * @param newStats: new satistics.
+     * This will replace the existing one if it already exists.
+     */
     public void registerChangedStatistics(Statistics newStats) {
+        if (mCachedStatistics != null) {
+            Map<String, Object> deleteFields = new HashMap<>();
+            deleteFields.put("lastWeek", FieldValue.delete());
+            deleteFields.put("lastMonth", FieldValue.delete());
+            deleteFields.put("total", FieldValue.delete());
+            mFirebaseFirestore.collection("statistics")
+                    .document(mUserID).update(deleteFields)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Do nothing
+                        }
+                    });
+        }
         mFirebaseFirestore.collection("statistics")
                 .document(mUserID).set(newStats)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

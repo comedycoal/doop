@@ -26,10 +26,10 @@ public class NotificationRequestResponder extends BroadcastReceiver
 
     private PendingIntent makePendingIntent(Context context, Notification notification)
     {
-        int id = notification.getIntId();
+        int id = (int) notification.getAlarmDeadline().toEpochSecond();
         Intent intent = new Intent(context, NotificationRequestResponder.class);
 
-        intent.putExtra("title", notification.getIntId());
+        intent.putExtra("title", notification.getName());
         intent.putExtra("type", notification.getType().name());
 
         PendingIntent pi = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);

@@ -1,21 +1,14 @@
 package com.tranhulovu.doop;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.tranhulovu.doop.applicationcontrol.Authenticator;
 import com.tranhulovu.doop.applicationcontrol.SettingManager;
 import com.tranhulovu.doop.applicationcontrol.UserManager;
-import com.tranhulovu.doop.applicationui.ViewPagerAdapter;
-import com.tranhulovu.doop.todocardsystem.CardManager;
-import com.tranhulovu.doop.todocardsystem.NotificationManager;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mNavigationView;
@@ -69,45 +62,18 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    private static Authenticator mAuthenticator;
-    public static Authenticator getAuthenticatorInstance() {
-        if (mAuthenticator == null) {
-            mAuthenticator = new Authenticator();
-        }
-        return  mAuthenticator;
-    }
+    private String email;
+    private String password;
 
-    private static UserManager mUserManager;
-    public static UserManager getUserManagerInstance() {
-        if (mUserManager == null) {
-            mUserManager = new UserManager();
-        }
-        return  mUserManager;
-    }
+    private Authenticator mAuthenticator = new Authenticator(email, password);
 
-    private static SettingManager mSettingManager;
-    public static SettingManager getSettingManagerInstance() {
-        if (mSettingManager == null) {
-            mSettingManager = new SettingManager();
-        }
-        return mSettingManager;
-    }
+    private UserManager mUserManager = new UserManager(email, password);
 
-    private static CardManager mCardManager;
-    public static CardManager getCardManagerInstance() {
-        if (mCardManager == null) {
-            //mCardManager = new CardManager(); // CONSTRUCTOR CHANGED, sorry
-        }
-        return mCardManager;
-    }
+    private SettingManager mSettingManager = new SettingManager(getApplicationContext());
 
-//    private static NotificationManager mNotificationManager;
-//    public static NotificationManager getNotificationManagerInstance() {
-//        if (mNotificationManager == null) {
-//            mNotificationManager = new NotificationManager();
-//        }
-//        return mNotificationManager;
-//    }
+//    private CardManager mCardManager = new CardManager();
+
+//    private NotificationManager mNotificationManager;
 
     public void initialize() {
     }

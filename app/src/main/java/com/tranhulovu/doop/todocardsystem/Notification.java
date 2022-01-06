@@ -138,11 +138,6 @@ public class Notification
         return mToDoCardId;
     }
 
-    public int getIntId()
-    {
-        return Integer.parseInt(mToDoCardId);
-    }
-
     public String getName()
     {
         return mName;
