@@ -42,13 +42,13 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/black"
                 android:layout_alignParentTop="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="left"
                 android:text="10:23"
-                android:textSize="40dp" />
+                android:textColor="@color/black"
+                android:textSize="40dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"

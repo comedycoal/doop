@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.6"
+    android:background="@color/black">
+
+
+    <ImageView
+        android:alpha="1"
+        android:id="@+id/menu_filterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_filter"
+        android:background="@drawable/whitecircle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.341" />
+
+    <TextView
+        android:id="@+id/menu_filterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:alpha="1"
+        android:background="@drawable/rectangle_16_layout"
+        android:paddingStart="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingEnd="10dp"
+        android:text="Filter..."
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/menu_filterButton"
+        app:layout_constraintTop_toTopOf="@+id/menu_filterButton"
+        tools:ignore="MissingConstraints,RtlSymmetry" />
+
+    <ImageView
+        android:alpha="1"
+        android:id="@+id/menu_viewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_filter"
+        android:background="@drawable/whitecircle"
+        app:layout_constraintStart_toStartOf="@+id/menu_filterButton"
+        app:layout_constraintTop_toBottomOf="@+id/menu_filterButton" />
+
+    <TextView
+        android:id="@+id/menu_viewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:alpha="1"
+        android:background="@drawable/rectangle_16_layout"
+        android:paddingStart="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingEnd="10dp"
+        android:text="Change To Week View"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/menu_viewButton"
+        app:layout_constraintTop_toTopOf="@+id/menu_viewButton"
+        tools:ignore="MissingConstraints,RtlSymmetry" />
+
+    <ImageView
+        android:id="@+id/menu_addCardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:alpha="1"
+        android:background="@drawable/whitecircle"
+        android:src="@drawable/ic_filter"
+        app:layout_constraintStart_toStartOf="@+id/menu_viewButton"
+        app:layout_constraintTop_toBottomOf="@+id/menu_viewButton" />
+
+    <TextView
+        android:id="@+id/menu_addCardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:alpha="1"
+        android:background="@drawable/rectangle_16_layout"
+        android:paddingStart="10dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="2dp"
+        android:text="Add Card"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/menu_addCardButton"
+        app:layout_constraintTop_toTopOf="@+id/menu_addCardButton"
+        tools:ignore="MissingConstraints,RtlSymmetry" />
+
+    <ImageView
+        android:id="@+id/menu_addSmartCardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:alpha="1"
+        android:background="@drawable/whitecircle"
+        android:src="@drawable/ic_filter"
+        app:layout_constraintStart_toStartOf="@+id/menu_addCardButton"
+        app:layout_constraintTop_toBottomOf="@+id/menu_addCardButton" />
+
+    <TextView
+        android:id="@+id/menu_addSmartCardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:alpha="1"
+        android:background="@drawable/rectangle_16_layout"
+        android:paddingStart="10dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="2dp"
+        android:text="Smart Add Card..."
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/menu_addSmartCardButton"
+        app:layout_constraintTop_toTopOf="@+id/menu_addSmartCardButton"
+        tools:ignore="MissingConstraints,RtlSymmetry" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
