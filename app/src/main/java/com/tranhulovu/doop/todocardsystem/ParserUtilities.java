@@ -285,8 +285,7 @@ public class ParserUtilities
     }
 
     public static TaskFitter.Task getTask(List<Pair<String, String>> tokens,
-                                          TaskFitter.Task priorTask,
-                                          ZoneId zoneId)
+                                          TaskFitter.Task priorTask)
             throws InvalidParameterException
     {
         TaskFitter.Task t = new TaskFitter.Task();
