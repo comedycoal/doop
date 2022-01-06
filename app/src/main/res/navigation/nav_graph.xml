@@ -11,17 +11,12 @@
         android:label="authenticatorfragment"
         tools:layout="@layout/authenticatorfragment" >
         <action
-            android:id="@+id/action_authenticatorFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
             android:id="@+id/action_authenticatorFragment_to_signupFragment"
             app:destination="@id/signupFragment" />
+        <action
+            android:id="@+id/action_authenticatorFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.tranhulovu.doop.applicationui.fragment.SettingsFragment"
-        android:label="settingsfragment"
-        tools:layout="@layout/settingsfragment" />
     <fragment
         android:id="@+id/signupFragment"
         android:name="com.tranhulovu.doop.applicationui.fragment.SignupFragment"
@@ -31,4 +26,9 @@
             android:id="@+id/action_signupFragment_to_authenticatorFragment"
             app:destination="@id/authenticatorFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.tranhulovu.doop.applicationui.fragment.MainFragment"
+        android:label="mainfragment"
+        tools:layout="@layout/mainfragment" />
 </navigation>

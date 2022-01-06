@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/FABFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="150pt"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:text="Filter"
+        android:textColor="@color/green_dark"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_filter_alt"
+        app:tint="@color/green_dark" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/FABChangeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="120pt"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:text="Week view"
+        android:textColor="@color/green_dark"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_date_range"
+        app:tint="@color/green_dark" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/FABSmartAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="90pt"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:text="smart add"
+        android:textColor="@color/green_dark"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_lightbulb"
+        app:tint="@color/green_dark"
+        tools:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/FABAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="60pt"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:text="add"
+        android:textColor="@color/green_dark"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_add"
+        app:tint="@color/green_dark" />
+</FrameLayout>
