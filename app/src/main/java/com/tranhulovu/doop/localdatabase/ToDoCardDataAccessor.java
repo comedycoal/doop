@@ -51,7 +51,8 @@ public class ToDoCardDataAccessor {
         contentCardValues.put(DatabaseHandler.TODO_CARD_NAME, card.getName());
         contentCardValues.put(DatabaseHandler.TIME_START, card.getValueOf("start"));
         contentCardValues.put(DatabaseHandler.TIME_END, card.getValueOf("end"));
-        contentCardValues.put(DatabaseHandler.CARD_STATUS, card.getValueOf("status"));
+        contentCardValues.put(DatabaseHandler.CARD_DONE, card.isDone());
+        contentCardValues.put(DatabaseHandler.CARD_ARCHIVED, card.isArchived());
         contentCardValues.put(DatabaseHandler.CARD_DESCRIPTION, card.getDescription());
         contentCardValues.put(DatabaseHandler.CARD_NOTIFICATION, card.getValueOf("notificationType"));
         contentCardValues.put(DatabaseHandler.CARD_GROUP, card.getGroup());
@@ -132,9 +133,12 @@ public class ToDoCardDataAccessor {
             // Get end time
             data.put("end",
                     cursor.getString(cursor.getColumnIndex(DatabaseHandler.TIME_END)));
-            // Get card status
-            data.put("status",
-                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.CARD_STATUS)));
+            // Get card done
+            data.put("done",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.CARD_DONE)));
+            //Get card archived
+            data.put("archived",
+                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.CARD_ARCHIVED)));
             // Get card description
             data.put("description",
                     cursor.getString(cursor.getColumnIndex(DatabaseHandler.CARD_DESCRIPTION)));
@@ -163,5 +167,22 @@ public class ToDoCardDataAccessor {
         cursor.close();
         sqLiteDatabase.close();
         return data;
+    }
+
+    @SuppressLint("Range")
+    public List<String> getAllCardId() {
+        List<String> cardIds = new ArrayList<String>();
+        SQLiteDatabase sqLiteDatabase = mDatabaseHandler.getReadableDatabase();
+        String findCardQuery = "SELECT * FROM " + DatabaseHandler.TABLE_TODO_CARD_NAME;
+
+        Cursor cursor = sqLiteDatabase.rawQuery(findCardQuery, null);
+        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            cardIds.add(cursor.getString(
+                    cursor.getColumnIndex(DatabaseHandler.TODO_CARD_ID)));
+        }
+
+        cursor.close();
+        sqLiteDatabase.close();
+        return cardIds;
     }
 }

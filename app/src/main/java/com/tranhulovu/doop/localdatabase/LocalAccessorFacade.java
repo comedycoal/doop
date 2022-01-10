@@ -39,6 +39,17 @@ public class LocalAccessorFacade
         return map;
     }
 
+    public List<String> getAddCardIDs() {
+        mCardAccessor = new ToDoCardDataAccessor(null);
+        List<String> cardIds = mCardAccessor.getAllCardId();
+        return cardIds;
+    }
+
+    public void deleteCard(ToDoCard card) {
+        mCardAccessor = new ToDoCardDataAccessor(null);
+        mCardAccessor.erase(card);
+    }
+
     public void writeNotification(Notification notif) {
         mNotifAccessor = new NotificationDataAccessor(null);
         mNotifAccessor.write(notif);
@@ -85,5 +96,10 @@ public class LocalAccessorFacade
         settingDatas.put(DatabaseHandler.TIME_FORMAT_SETTING,
                 mSettingAccessor.read(DatabaseHandler.TIME_FORMAT_SETTING));
         return settingDatas;
+    }
+
+    public void deleteNotification(Notification notif) {
+        mNotifAccessor = new NotificationDataAccessor(null);
+        mNotifAccessor.erase(notif);
     }
 }

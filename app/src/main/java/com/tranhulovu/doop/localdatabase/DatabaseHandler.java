@@ -23,7 +23,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TODO_CARD_NAME = "card_name";
     public static final String TIME_START = "time_start";
     public static final String TIME_END = "time_end";
-    public static final String CARD_STATUS = "card_status";
+    public static final String CARD_DONE = "card_done";
+    public static final String CARD_ARCHIVED = "card_archived";
     public static final String CARD_DESCRIPTION = "card_description";
     public static final String CARD_NOTE = "card_note";
     public static final String CARD_NOTIFICATION = "card_notification";
@@ -68,7 +69,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + TODO_CARD_NAME + " TEXT NOT NULL,"
             + TIME_START + " TEXT NOT NULL,"
             + TIME_END + " TEXT NOT NULL,"
-            + CARD_STATUS + " TEXT NOT NULL,"
+            + CARD_DONE + " TEXT NOT NULL,"
+            + CARD_ARCHIVED + " TEXT NOT NULL,"
             + CARD_DESCRIPTION + " TEXT NOT NULL,"
             + CARD_NOTE + " TEXT NOT NULL,"
             + CARD_GROUP + " TEXT NOT NULL,"
