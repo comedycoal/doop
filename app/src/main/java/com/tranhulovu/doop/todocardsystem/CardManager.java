@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -60,11 +61,32 @@ public class CardManager
 
     private void onCreate()
     {
-        // TODO: Get list of card ids
+        // Get list of card ids
+        List<String> ids = mLocalAccessor.getAddCardIds();
 
-        // TODO: Spawn a thread to fetch all cards data, maybe?
-        //       This is such a demo app so fetch all cards sounds about right.
+        // Spawn a thread to fetch all cards data, maybe?
+        // This is such a demo app so fetch all cards sounds about right.
+        Runnable task = new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Map<String, Map<String, Object>> all = mLocalAccessor.readBulkCards(ids);
+                for (Map.Entry<String, Map<String, Object>> entry : all.entrySet())
+                {
+                    String id = entry.getKey();
+                    ToDoCard card = ToDoCard.fromMapWithoutNotif(entry.getValue());
+                    Notification notif = mLocalAccessor.readNotification(id);
 
+                    mNotifManager.watch(card);
+
+                    mCards.put(id, card);
+                }
+            }
+        };
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(task);
     }
 
     /**
@@ -81,6 +103,16 @@ public class CardManager
     //---// Methods
 
     /**
+     * Returns whether the cards are active and queries can be used without errors.
+     * @return the status.
+     */
+    public Status getStatus()
+    {
+        return mCardLiveStatus;
+    }
+
+
+    /**
      * Performs a write to disk for all cards modified
      * prior to when this method is called.
      */
@@ -88,9 +120,14 @@ public class CardManager
     {
         for (String id : mNeedsWritingCards)
         {
-            // TODO: Write cards using LocalAccessor
+            ToDoCard card = mCards.get(id);
+            // Write cards using LocalAccessor
 
-            mNotifManager.saveNotification(mCards.get(id).getNotification());
+            if (card != null)
+            {
+                mLocalAccessor.writeCard(card);
+                mNotifManager.saveNotification(card.getNotification());
+            }
         }
 
         mNeedsWritingCards = new HashSet<>();
@@ -111,7 +148,14 @@ public class CardManager
 
         for (String id : list)
         {
-            // TODO: Delete cards using LocalAccessor
+            // Delete cards using LocalAccessor
+            ToDoCard card = mCards.get(id);
+
+            if (card != null)
+            {
+                mLocalAccessor.deleteCard(card);
+                mNotifManager.saveNotification(card.getNotification());
+            }
 
             mNotifManager.deleteNotification(mCards.get(id).getNotification());
         }
@@ -120,7 +164,7 @@ public class CardManager
 
     private String generateId()
     {
-        // TODO: Maybe generate id base on time created instead
+        //Generate id base on time created
         return String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli());
     }
 
@@ -137,7 +181,9 @@ public class CardManager
             card = mCards.get(id);
             if (card == null)
             {
-                // TODO: Call LocalFacade to load card
+                // Call LocalFacade to load card
+                card = ToDoCard.fromMapWithoutNotif(mLocalAccessor.readCard(id));
+                mCards.put(id, card);
             }
         }
 

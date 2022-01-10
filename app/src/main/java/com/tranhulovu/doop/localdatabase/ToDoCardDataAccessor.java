@@ -31,7 +31,8 @@ public class ToDoCardDataAccessor {
         mDatabaseHandler = new DatabaseHandler(context);
     }
 
-    public void initialize() {
+    public void initialize()
+    {
 
     }
 
@@ -50,7 +51,7 @@ public class ToDoCardDataAccessor {
         contentCardValues.put(DatabaseHandler.TODO_CARD_NAME, card.getName());
         contentCardValues.put(DatabaseHandler.TIME_START, card.getValueOf("start"));
         contentCardValues.put(DatabaseHandler.TIME_END, card.getValueOf("end"));
-        contentCardValues.put(DatabaseHandler.CARD_STATUS, card.getValueOf("archivalStatus"));
+        contentCardValues.put(DatabaseHandler.CARD_STATUS, card.getValueOf("status"));
         contentCardValues.put(DatabaseHandler.CARD_DESCRIPTION, card.getDescription());
         contentCardValues.put(DatabaseHandler.CARD_NOTIFICATION, card.getValueOf("notificationType"));
         contentCardValues.put(DatabaseHandler.CARD_GROUP, card.getGroup());

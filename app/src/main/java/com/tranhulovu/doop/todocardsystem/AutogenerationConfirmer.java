@@ -53,4 +53,9 @@ public class AutogenerationConfirmer
         return mPendingCards.containsKey(id) ?
                 mPendingCards.get(id).makeModifier() : null;
     }
+
+    public String getErrorMessage()
+    {
+        return mErrorMessage;
+    }
 }

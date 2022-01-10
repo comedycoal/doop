@@ -488,7 +488,7 @@ public class ToDoCard implements StringFieldGetter
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
     public static DateTimeFormatter DefaultFormatter
-            = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+            = DateTimeFormatter.ISO_ZONED_DATE_TIME;
 
     public static long DefaultUrgentHours = 12;
 
@@ -622,7 +622,7 @@ public class ToDoCard implements StringFieldGetter
             default:
             {
                 String[] f = field.split("_");
-                if (f.length == 2 && f[0].equals("note"))
+                if (f.length == 2 && f[0].equals("tag"))
                 {
                     int idx = Integer.parseInt(f[1]);
                     return mTags.get(idx);
@@ -666,6 +666,39 @@ public class ToDoCard implements StringFieldGetter
         map.put("status", this.getStatus());
         map.put("notification", this.getNotification().toMap());
         return map;
+    }
+
+    /**
+     * Create a ToDoCard from data gotten from a {@code Map},
+     * Notification is not included, and should be set again.
+     * @param map object of type {@code Map<String, Object>}
+     * @return a ToDoCard object
+     * @throws InvalidParameterException if {@code map} is invalid
+     */
+    public static ToDoCard fromMapWithoutNotif(Map<String, Object> map)
+            throws InvalidParameterException
+    {
+        try
+        {
+            String id = (String)map.get("id");
+            ToDoCard a = new ToDoCard(id);
+            a.mName = (String)map.get("name");
+            a.mDescription = (String)map.get("description");
+            a.mNote = (String)map.get("note");
+            a.mGroup = (String)map.get("group");
+            a.mTags = (List<String>)map.get("tags");
+            a.mPriority = (int)map.get("priority");
+            a.mDone = (boolean)map.get("done");
+            a.mArchived = (boolean)map.get("archived");
+            a.mStart = ZonedDateTime.parse((String)map.get("start"), DefaultFormatter);
+            a.mEnd = ZonedDateTime.parse((String)map.get("end"), DefaultFormatter);
+
+            return a;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidParameterException("Cannot infer all data to recreate ToDoCard from map");
+        }
     }
 
     /**
@@ -772,6 +805,21 @@ public class ToDoCard implements StringFieldGetter
     public ZonedDateTime getEnd() { return mEnd; }
 
     public Notification getNotification() { return mNotification; }
+
+    public boolean isDone()
+    {
+        return mDone;
+    }
+
+    public boolean isArchived()
+    {
+        return mArchived;
+    }
+
+    public boolean isDeleted()
+    {
+        return mDeleted;
+    }
 
     public CheckStatus getStatus()
     {

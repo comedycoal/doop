@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LocalAccessorFacade {
+public class LocalAccessorFacade
+{
     private ToDoCardDataAccessor mCardAccessor;
     private NotificationDataAccessor mNotifAccessor;
     private SettingAccessor mSettingAccessor;
@@ -85,6 +86,4 @@ public class LocalAccessorFacade {
                 mSettingAccessor.read(DatabaseHandler.TIME_FORMAT_SETTING));
         return settingDatas;
     }
-
-
 }

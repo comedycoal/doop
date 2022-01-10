@@ -12,14 +12,15 @@ import androidx.annotation.NonNull;
 import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
 import com.tranhulovu.doop.todocardsystem.events.Subscriber;
 
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NotificationManager
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
-    private Map<String, Notification> mNotifications;
-
     private NotificationRequestResponder mResponder;
 
     private CardManager mCardManager;
@@ -31,7 +32,8 @@ public class NotificationManager
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Constructors
     public NotificationManager(CardManager cardManager,
-                        LocalAccessorFacade facade)
+                        LocalAccessorFacade facade,
+                        Context applicationContext)
     {
         mCardManager = cardManager;
         mLocalAccessor = facade;
@@ -52,45 +54,30 @@ public class NotificationManager
                 // TODO: WARNING: CHANGE CONTEXT FROM NULL
                 if (data.getType() == Notification.Type.SILENT)
                 {
-                    mResponder.cancelNotification(null, data);
+                    mResponder.cancelNotification(applicationContext, data);
                 }
                 else
-                    mResponder.setNotification(null, data);
+                    mResponder.setNotification(applicationContext, data);
             }
         };
     }
 
     private void onCreate()
     {
-        // TODO: Get list of notification ids
-
-        // TODO: Spawn a thread to fetch all notification data, maybe?
-        //       This is such a demo app so fetch all notification sounds about right.
-
-
-        // TODO: Do an exhaustive search in AlarmManager for unregistered notifications.
 
     }
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Methods
-    public Notification getNotification(String cardId)
-    {
-        return mNotifications.get(cardId);
-    }
-
     public void saveNotification(Notification notification)
     {
-        mNotifications.put(notification.getToDoCardId(), notification);
-
-        // TODO: Save notification to disk
+        //Save notification to disk
+        mLocalAccessor.writeNotification(notification);
     }
 
     public void deleteNotification(@NonNull Notification notification)
     {
-        mNotifications.remove(notification.getToDoCardId());
-
         // TODO: Delete notification to disk
     }
 
