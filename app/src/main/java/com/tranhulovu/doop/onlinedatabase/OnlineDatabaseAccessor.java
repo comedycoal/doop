@@ -45,25 +45,7 @@ public class OnlineDatabaseAccessor {
             Date userJoinDate = new Date(Objects.requireNonNull(mFirebaseUser.getMetadata()).getCreationTimestamp());
             mCachedUserProfile = new UserProfile(mUserID, fullName, profileImageUri, userJoinDate);
         }
-
         mFirebaseFirestore = FirebaseFirestore.getInstance();
-        mFirebaseFirestore.collection("statistics")
-                .document("user1").get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if (Objects.requireNonNull(documentSnapshot).exists()) {
-                                Map<String, Object> data = Objects.requireNonNull(documentSnapshot.getData());
-                                @SuppressWarnings("unchecked") Map<String, Object> lastWeek = (Map<String, Object>) data.get("lastWeek");
-                                @SuppressWarnings("unchecked") Map<String, Object> lastMonth = (Map<String, Object>) data.get("lastMonth");
-                                @SuppressWarnings("unchecked") Map<String, Object> total = (Map<String, Object>) data.get("total");
-                                mCachedStatistics = new Statistics(mUserID, lastWeek, lastMonth, total);
-                            }
-                        }
-                    }
-                });
     }
 
     /**
@@ -106,6 +88,7 @@ public class OnlineDatabaseAccessor {
     }
 
     public  Statistics getUserStatistics() {
+        getOnlineStatistics();
         return mCachedStatistics;
     }
 
@@ -145,6 +128,26 @@ public class OnlineDatabaseAccessor {
             userProfile = new UserProfile(id, mCachedUserProfile.getFullName(), (Uri) value, null);
             modifyUserProfile(userProfile);
         }
+    }
+
+    private void getOnlineStatistics() {
+        mFirebaseFirestore.collection("statistics")
+                .document(mUserID).get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                    if (Objects.requireNonNull(documentSnapshot).exists()) {
+                                        Map<String, Object> data = Objects.requireNonNull(documentSnapshot.getData());
+                                        @SuppressWarnings("unchecked") Map<String, Object> lastWeek = (Map<String, Object>) data.get("lastWeek");
+                                        @SuppressWarnings("unchecked") Map<String, Object> lastMonth = (Map<String, Object>) data.get("lastMonth");
+                                        @SuppressWarnings("unchecked") Map<String, Object> total = (Map<String, Object>) data.get("total");
+                                        mCachedStatistics = new Statistics(mUserID, lastWeek, lastMonth, total);
+                                    }
+                                }
+                            }
+                        });
     }
 
     /**
