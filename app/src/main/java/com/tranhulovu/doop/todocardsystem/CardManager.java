@@ -62,7 +62,7 @@ public class CardManager
     private void onCreate()
     {
         // Get list of card ids
-        List<String> ids = mLocalAccessor.getAddCardIds();
+        List<String> ids = mLocalAccessor.getAddCardIDs();
 
         // Spawn a thread to fetch all cards data, maybe?
         // This is such a demo app so fetch all cards sounds about right.
@@ -154,7 +154,7 @@ public class CardManager
             if (card != null)
             {
                 mLocalAccessor.deleteCard(card);
-                mNotifManager.saveNotification(card.getNotification());
+                mNotifManager.deleteNotification(card.getNotification());
             }
 
             mNotifManager.deleteNotification(mCards.get(id).getNotification());
