@@ -62,20 +62,21 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    private String email;
-    private String password;
+    private String email = "123@test.com";
+    private String password = "123456";
 
     private Authenticator mAuthenticator = new Authenticator(email, password);
 
     private UserManager mUserManager = new UserManager(email, password);
 
-    private SettingManager mSettingManager = new SettingManager(getApplicationContext());
+    //private SettingManager mSettingManager = new SettingManager(getApplicationContext());
 
 //    private CardManager mCardManager = new CardManager();
 
 //    private NotificationManager mNotificationManager;
 
     public void initialize() {
+
     }
 
 //    public void onNavigateTo(ManagedFragment dest) {

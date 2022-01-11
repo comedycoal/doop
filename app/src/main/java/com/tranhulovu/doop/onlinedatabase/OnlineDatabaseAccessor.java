@@ -48,7 +48,7 @@ public class OnlineDatabaseAccessor {
 
         mFirebaseFirestore = FirebaseFirestore.getInstance();
         mFirebaseFirestore.collection("statistics")
-                .document(mUserID).get()
+                .document("user1").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
