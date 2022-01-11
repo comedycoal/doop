@@ -32,6 +32,14 @@ public class CardManager
         NOT_READY
     }
 
+    public static class DebugModeActivatedException extends Exception
+    {
+        public DebugModeActivatedException(String message)
+        {
+            super(message);
+        }
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
@@ -44,6 +52,8 @@ public class CardManager
     private LocalAccessorFacade mLocalAccessor;
 
     private Status mCardLiveStatus = Status.NOT_READY;
+
+    private boolean debugMode = false;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +108,51 @@ public class CardManager
         actualizeDeletion();
     }
 
+    private ToDoCard makeDebugCard(int number)
+    {
+        String id = generateId();
+        ToDoCard newC = new ToDoCard(id);
+
+        ToDoCard.Modifier m = newC.makeModifier();
+        m.setName("Card " + number);
+        m.setDescription("Card " + number + "'s description");
+        m.setTimeRange(ZonedDateTime.now().plusHours(number).withMinute(0).withSecond(0),
+                    ZonedDateTime.now().plusDays(number+1).withMinute(0).withSecond(0));
+        m.setGroup("Testing");
+        m.addTag("test" + number);
+        m.setNote("Card's note");
+        m.setPriority(1);
+
+        m.build();
+        return newC;
+    }
+
+    /**
+     * Make a CardManager in debug mode (to work without wrting anything to disk).
+     * For now, DO NOT create notification for it. (though it shouldn't break anything).
+     * Pass {@code null} for {@code notifManagerRef} and {@code facade} if not available
+     * @param notifManagerRef A {@code NotificationManager}, probably get from {@code MainActivity}
+     * @param facade A {@code LocalDatabaseAccessor}, probably get from {@code MainActivity}
+     * @param howmany how many cards are already in the manager when created.
+     * @return a debug-mode {@code CardManager} object
+     */
+    public static CardManager getManagerForTesting(NotificationManager notifManagerRef,
+                                                   LocalAccessorFacade facade,
+                                                   int howmany)
+    {
+        CardManager manager = new CardManager(notifManagerRef, facade);
+        manager.debugMode = true;
+
+        // Create a bunch of cards
+        for (int i = 0; i < howmany; ++i)
+        {
+            ToDoCard card = manager.makeDebugCard(i);
+            manager.mCards.put(card.getId(), card);
+        }
+
+        return manager;
+    }
+
 
     //////////////////////////////////////////////////
     //---// Methods
@@ -118,6 +173,7 @@ public class CardManager
      */
     public void actualizeModification()
     {
+        if (debugMode) return;
         for (String id : mNeedsWritingCards)
         {
             ToDoCard card = mCards.get(id);
@@ -139,6 +195,7 @@ public class CardManager
      */
     public void actualizeDeletion()
     {
+        if (debugMode) return;
         // Filter deleted cards
         List<String> list
                 = mCards.entrySet().stream()
@@ -174,6 +231,7 @@ public class CardManager
     }
 
     ToDoCard checkAndFetch(String id)
+            throws DebugModeActivatedException
     {
         ToDoCard card = null;
         if (mCards.containsKey(id))
@@ -181,6 +239,10 @@ public class CardManager
             card = mCards.get(id);
             if (card == null)
             {
+                if (debugMode)
+                    throw new DebugModeActivatedException("Debug mode is on," +
+                            "cannot query to database for card with id " + id);
+
                 // Call LocalFacade to load card
                 card = ToDoCard.fromMapWithoutNotif(mLocalAccessor.readCard(id));
                 mCards.put(id, card);
@@ -312,7 +374,11 @@ public class CardManager
         CardManager m = this;
         Runnable task = () ->
         {
-            ToDoCard card = checkAndFetch(id);
+            ToDoCard card = null;
+            try
+            {
+                card = checkAndFetch(id);
+            } catch (DebugModeActivatedException e) {}
             if (card == null)
             {
                 throw new InvalidParameterException(
@@ -343,7 +409,11 @@ public class CardManager
     {
         Runnable task = () ->
         {
-            ToDoCard card = checkAndFetch(id);
+            ToDoCard card = null;
+            try
+            {
+                card = checkAndFetch(id);
+            } catch (DebugModeActivatedException e) {}
 
             if (card == null)
             {
