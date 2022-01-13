@@ -3,4 +3,9 @@
     <string name="action_tasks">Tasks</string>
     <string name="action_statistics">Statistics</string>
     <string name="action_settings">Settings</string>
+    <string name="hintAutoCard">@On ..., I’ll
+        Do task 1 @in ... minutes/days/...
+        Do task 2 @in ... minutes/days/...
+        @then Do task 3 @in ... minutes/days/...
+        ...</string>
 </resources>

@@ -11,6 +11,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="19dp"
         android:gravity="center"
+        android:textSize="30dp"
+        android:textStyle="bold"
         android:text="SMART ADD CARD" />
 
     <com.google.android.material.textfield.TextInputEditText
@@ -19,13 +21,14 @@
         android:layout_alignTop="@+id/textView2"
         android:layout_marginTop="48dp"
         android:gravity="top"
-        android:hint="hint" />
+        android:hint="@string/hintAutoCard"/>
 
     <Button
+        android:id="@+id/buttonDoneAutoAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="250dp"
-        android:text="hello" />
+        android:text="Done" />
 
 </RelativeLayout>

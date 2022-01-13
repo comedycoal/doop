@@ -10,6 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:textStyle="bold"
         android:text="Add card" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -17,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:hint="label">
+        android:hint="Card name...">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -30,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:hint="label">
+        android:hint="Description">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -38,62 +41,82 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:text="Date Start"/>
+            android:text="Date Start"
+            android:textSize="15dp" />
+
         <TextView
             android:id="@+id/Date_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:text="Dec 23 2001"/>
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="157dp"
+            android:text="dd/mm/yyyy"
+            android:textSize="15dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:textSize="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="120dp"
             android:text="Time"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="60dp"
             android:id="@+id/Time_start"
-            android:text="10:30"/>
+            android:textSize="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:text="hh:mm"/>
 
-    </LinearLayout>
-    <LinearLayout
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:text="Date end"/>
+            android:text="Date End"
+            android:textSize="15dp" />
+
         <TextView
             android:id="@+id/Date_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:text="Dec 23 2001"/>
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="155dp"
+            android:text="dd/mm/yyyy"
+            android:textSize="15dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:textSize="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="120dp"
             android:text="Time"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="60dp"
             android:id="@+id/Time_end"
-            android:text="10:30"/>
+            android:textSize="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:text="hh:mm"/>
 
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -126,45 +149,67 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notification" />
+            android:text="Notification"
+            android:layout_centerVertical="true"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:text="ON"
+            android:textSize="20dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/green_dark"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/setUpNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:drawableLeft="@drawable/ic_baseline_notifications_24"
+            android:drawableTint="@color/green_dark"
+            android:textColor="@color/green_dark"
+            android:text="Noti" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="ON"/>
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_baseline_notifications_24"
-            android:text="Group"/>
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="189dp"
+            android:text="1 hour" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:text="1 hour"/>
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="147dp"
+            android:text="till"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:text="till"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:text="Start time"/>
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="56dp"
+            android:text="Start time" />
+    </RelativeLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonDoneAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Done" />
 </LinearLayout>

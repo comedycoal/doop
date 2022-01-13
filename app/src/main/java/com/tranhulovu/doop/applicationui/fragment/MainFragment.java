@@ -9,9 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +30,7 @@ import com.tranhulovu.doop.R;
 import com.tranhulovu.doop.applicationui.ViewPagerAdapter;
 
 import java.util.Calendar;
+import java.util.Set;
 
 public class MainFragment extends ManagerFragment implements View.OnClickListener {
     private BottomNavigationView mTopNavigation;
@@ -63,7 +67,6 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
 
         mViewpager2.setAdapter(viewPagerAdapter);
-
         mTopNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -99,12 +102,17 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
         mFABSmartAdd.setOnClickListener(this);
         mFABAdd.setOnClickListener(this);
         mFABFilter.setOnClickListener(this);
+        mFABChangeView.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.FABChangeView:
+                if (CardviewFragment.getInstance()!=null)
+                    CardviewFragment.getInstance().changeView();
+                break;
             case R.id.floatingAction:
                 if (mFABclicked) {
                     mFABAdd.hide();
@@ -124,6 +132,12 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                 dialog = new Dialog(getActivity());
                 dialog.setContentView(R.layout.dialog_smart_add);
                 //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.findViewById(R.id.buttonDoneAutoAdd).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
                 dialog.show();
                 break;
             case R.id.FABAdd:
@@ -158,13 +172,32 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                         showTimePickerDialog(d);
                     }
                 });
-
+                dialog.findViewById(R.id.buttonDoneAdd).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
                 dialog.show();
                 break;
             case R.id.FABFilter:
                 dialog = new Dialog(getActivity());
                 dialog.setContentView(R.layout.dialog_filter);
                 //dialog3.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                Spinner spinnerFilter = dialog.findViewById(R.id.spinnerFilter);
+                String[] items1 = new String[]{"1", "2", "three"};
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items1);
+                spinnerFilter.setAdapter(adapter1);
+                Spinner spinnerSort = dialog.findViewById(R.id.spinnerSort);
+                String[] items2 = new String[]{"ASC", "DES"};
+                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items2);
+                spinnerSort.setAdapter(adapter2);
+                dialog.findViewById(R.id.buttonDoneFilter).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
                 dialog.show();
                 break;
         }
@@ -176,7 +209,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        String date = " " + i + "/" + i1 + "/" + i2;
+                        String date = " " + i + "/" + (i1+1) + "/" + i2;
                         d.setText(date);
                     }
                 },
@@ -201,6 +234,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                 true);
         timePickerDialog.show();
     }
+
 };
 
 

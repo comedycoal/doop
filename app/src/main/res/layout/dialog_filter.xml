@@ -7,6 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textSize="30dp"
+        android:textStyle="bold"
         android:text="Filter" />
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,34 +20,37 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="40dp"
             android:text="Filter" />
+
         <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="143dp"
+            android:id="@+id/spinnerFilter"
+            android:layout_width="107dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="40dp"
-            android:layout_height="wrap_content" />
+            android:spinnerMode="dropdown" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="40dp"
             android:text="Sort" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Spinner
+            android:id="@+id/spinnerSort"
+            android:layout_width="40dp"
             android:layout_marginRight="40dp"
-            android:text="ASC" />
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"/>
     </LinearLayout>
+
     <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"/>
+        android:layout_height="33dp"
+        android:layout_marginBottom="20dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonDoneFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:text="Done" />
 
 
