@@ -16,6 +16,7 @@
         android:text="SMART ADD CARD" />
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/smartAddinput"
         android:layout_width="match_parent"
         android:layout_height="186dp"
         android:layout_alignTop="@+id/textView2"

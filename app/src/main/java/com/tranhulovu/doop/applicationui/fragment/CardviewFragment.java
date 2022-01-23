@@ -72,7 +72,7 @@ public class CardviewFragment extends ManagerFragment {
      * @param timeend time start task
      * @param noti 0 if turn off noti and 1 if turn on noti
      * @param type type noti when {@param noti} is 1, 1 is notification, 2 is alarm
-     * @param time time noti before {@param till}
+     * @param time time noti before {@param till}, 0 is 30 min, 2 is 1 hour
      * @param till 0 is {@param timeend}, 1 is {@param timestart}
      * @throws InvalidParameterException when card with ID {@code id} does not exist
      */
@@ -82,10 +82,10 @@ public class CardviewFragment extends ManagerFragment {
                               String timestart,
                               String dateend,
                               String timeend,
-                              boolean noti,
+                              int noti,
                               int type,
-                              String time,
-                              String till)
+                              int time,
+                              int till)
     {
         Context context = MainActivity.getInstance();
         MainActivity.getInstance().getCardManager().createNewCard(new Callback<String>()
