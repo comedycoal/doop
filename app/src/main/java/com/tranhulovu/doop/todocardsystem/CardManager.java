@@ -71,32 +71,32 @@ public class CardManager
 
     private void onCreate()
     {
-//        // Get list of card ids
-//        List<String> ids = mLocalAccessor.getAddCardIDs();
-//
-//        // Spawn a thread to fetch all cards data, maybe?
-//        // This is such a demo app so fetch all cards sounds about right.
-//        Runnable task = new Runnable()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                Map<String, Map<String, Object>> all = mLocalAccessor.readBulkCards(ids);
-//                for (Map.Entry<String, Map<String, Object>> entry : all.entrySet())
-//                {
-//                    String id = entry.getKey();
-//                    ToDoCard card = ToDoCard.fromMapWithoutNotif(entry.getValue());
-//                    Notification notif = mLocalAccessor.readNotification(id);
-//
-//                    mNotifManager.watch(card);
-//
-//                    mCards.put(id, card);
-//                }
-//            }
-//        };
-//
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        executor.execute(task);
+        // Get list of card ids
+        List<String> ids = mLocalAccessor.getAddCardIDs();
+
+        // Spawn a thread to fetch all cards data, maybe?
+        // This is such a demo app so fetch all cards sounds about right.
+        Runnable task = new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Map<String, Map<String, Object>> all = mLocalAccessor.readBulkCards(ids);
+                for (Map.Entry<String, Map<String, Object>> entry : all.entrySet())
+                {
+                    String id = entry.getKey();
+                    ToDoCard card = ToDoCard.fromMapWithoutNotif(entry.getValue());
+                    Notification notif = mLocalAccessor.readNotification(id);
+
+                    mNotifManager.watch(card);
+
+                    mCards.put(id, card);
+                }
+            }
+        };
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(task);
     }
 
     /**
