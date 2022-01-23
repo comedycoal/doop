@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -19,6 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
         android:hint="Card name...">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -32,6 +39,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
         android:hint="Description">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -48,6 +61,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="Date Start"
             android:textSize="15dp" />
 
@@ -56,26 +70,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="157dp"
+            android:layout_marginEnd="180dp"
             android:text="dd/mm/yyyy"
             android:textSize="15dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="120dp"
-            android:text="Time"/>
+            android:layout_marginEnd="110dp"
+            android:text="Time"
+            android:textSize="15dp" />
+
         <TextView
+            android:id="@+id/Time_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:id="@+id/Time_start"
-            android:textSize="15dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="50dp"
-            android:text="hh:mm"/>
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="10dp"
+            android:text="hh:mm"
+            android:textSize="15dp" />
 
     </RelativeLayout>
     <RelativeLayout
@@ -86,6 +101,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="Date End"
             android:textSize="15dp" />
 
@@ -94,25 +110,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="155dp"
+            android:layout_marginEnd="180dp"
             android:text="dd/mm/yyyy"
             android:textSize="15dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="120dp"
-            android:text="Time"/>
+            android:layout_marginEnd="110dp"
+            android:text="Time"
+            android:textSize="15dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
+            android:layout_marginStart="60dp"
             android:id="@+id/Time_end"
             android:textSize="15dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="10dp"
             android:text="hh:mm"/>
 
     </RelativeLayout>
@@ -123,20 +139,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
             android:text="Group"/>
 
         <EditText
-            android:layout_width="95dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp" />
+            android:layout_marginEnd="40dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
+            android:layout_marginEnd="40dp"
             android:text="Tag"/>
         <EditText
-            android:layout_width="95dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <RelativeLayout
@@ -158,10 +175,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="20dp"
-            android:text="ON"
-            android:textSize="20dp"
             android:backgroundTint="@color/white"
+            android:text="ON"
             android:textColor="@color/green_dark"
+            android:textSize="20dp"
             android:textStyle="bold" />
     </RelativeLayout>
     <RelativeLayout
@@ -192,10 +209,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="147dp"
+            android:layout_marginEnd="140dp"
             android:text="till"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="20dp" />
 
         <TextView
             android:layout_width="wrap_content"

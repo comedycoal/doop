@@ -41,8 +41,8 @@ public class ToDoCardDataAccessor {
         // create query to check if card exists in database
         // if card doesn't exist -> insert
         // else -> update database
-        String findCardQuery = "SELECT * FROM " + this.mDatabaseHandler.TABLE_TODO_CARD_NAME
-                + " WHERE " + this.mDatabaseHandler.TODO_CARD_ID + " = ?"
+        String findCardQuery = "SELECT * FROM " + DatabaseHandler.TABLE_TODO_CARD_NAME
+                + " WHERE " + DatabaseHandler.TODO_CARD_ID + " = ?"
                 ;
 
         // prepare values to insert/update database
@@ -89,7 +89,7 @@ public class ToDoCardDataAccessor {
     public void erase(String cardId) {
         SQLiteDatabase sqLiteDatabase = this.mDatabaseHandler.getWritableDatabase();
 
-        sqLiteDatabase.delete(this.mDatabaseHandler.TABLE_TODO_CARD_NAME,
+        sqLiteDatabase.delete(DatabaseHandler.TABLE_TODO_CARD_NAME,
                 DatabaseHandler.TODO_CARD_ID + "= ?",
                 new String[] {cardId});
 
@@ -99,7 +99,7 @@ public class ToDoCardDataAccessor {
     public void erase(ToDoCard card) {
         SQLiteDatabase sqLiteDatabase = this.mDatabaseHandler.getWritableDatabase();
 
-        sqLiteDatabase.delete(this.mDatabaseHandler.TABLE_TODO_CARD_NAME,
+        sqLiteDatabase.delete(DatabaseHandler.TABLE_TODO_CARD_NAME,
                 DatabaseHandler.TODO_CARD_ID + "= ?",
                 new String[] {card.getId()});
 

@@ -34,8 +34,8 @@ public class NotificationDataAccessor {
         // create query to check if notif exists in database
         // if notif doesn't exist -> insert
         // else -> update database
-        String findNotifQuery = "SELECT * FROM " + this.mDatabaseHandler.TABLE_NOTIFICATION_NAME
-                + " WHERE " + this.mDatabaseHandler.ASSOCIATED_CARD_ID + " = ?"
+        String findNotifQuery = "SELECT * FROM " + DatabaseHandler.TABLE_NOTIFICATION_NAME
+                + " WHERE " + DatabaseHandler.ASSOCIATED_CARD_ID + " = ?"
                 ;
 
         // prepare values to insert/update database
@@ -93,8 +93,8 @@ public class NotificationDataAccessor {
         SQLiteDatabase sqLiteDatabase = mDatabaseHandler.getReadableDatabase();
         DateTimeFormatter DefaultFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
-        String findCardQuery = "SELECT * FROM " + mDatabaseHandler.TABLE_NOTIFICATION_NAME
-                + " WHERE " + mDatabaseHandler.ASSOCIATED_CARD_ID + " = ?"
+        String findCardQuery = "SELECT * FROM " + DatabaseHandler.TABLE_NOTIFICATION_NAME
+                + " WHERE " + DatabaseHandler.ASSOCIATED_CARD_ID + " = ?"
                 ;
 
         Notification.Builder notif = new Notification.Builder();

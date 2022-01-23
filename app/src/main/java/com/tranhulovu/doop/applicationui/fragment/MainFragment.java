@@ -112,7 +112,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.FABChangeView:
-                if (CardviewFragment.getInstance()!=null)
+                if (CardviewFragment.getInstance() != null)
                     CardviewFragment.getInstance().changeView();
                 break;
             case R.id.floatingAction:
@@ -138,7 +138,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                 dialog.findViewById(R.id.buttonDoneAutoAdd).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (CardviewFragment.getInstance()!=null)
+                        if (CardviewFragment.getInstance() != null)
                             CardviewFragment.getInstance().actionAutoAddCard(code);
                         dialog.dismiss();
                     }
@@ -184,20 +184,20 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                         String name = textInputLayout.getEditText().getText().toString();
                         textInputLayout = dialog.findViewById(R.id.addDescription);
                         String description = textInputLayout.getEditText().getText().toString();
-                        TextView inf=dialog.findViewById(R.id.Date_start);
-                        String datestart=inf.getText().toString();
-                        inf=dialog.findViewById(R.id.Time_start);
-                        String timestart=inf.getText().toString();
-                        inf=dialog.findViewById(R.id.Date_end);
-                        String dateend=inf.getText().toString();
-                        inf=dialog.findViewById(R.id.Time_end);
-                        String timeend=inf.getText().toString();
-                        int noti=1;
-                        int type=0;
-                        int time=1;
-                        int till=1;
-                        if (CardviewFragment.getInstance()!=null)
-                            CardviewFragment.getInstance().actionAddCard(name,description,datestart,timestart,dateend,timeend,noti,type,time,till);
+                        TextView inf = dialog.findViewById(R.id.Date_start);
+                        String datestart = inf.getText().toString();
+                        inf = dialog.findViewById(R.id.Time_start);
+                        String timestart = inf.getText().toString();
+                        inf = dialog.findViewById(R.id.Date_end);
+                        String dateend = inf.getText().toString();
+                        inf = dialog.findViewById(R.id.Time_end);
+                        String timeend = inf.getText().toString();
+                        int noti = 1;
+                        int type = 0;
+                        int time = 1;
+                        int till = 1;
+                        if (CardviewFragment.getInstance() != null)
+                            CardviewFragment.getInstance().actionAddCard(name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
                         dialog.dismiss();
                     }
                 });
@@ -219,8 +219,8 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
-                        if (CardviewFragment.getInstance()!=null)
-                            CardviewFragment.getInstance().actionFilter(spinnerFilter.getSelectedItem().toString(),spinnerSort.getSelectedItem().toString());
+                        if (CardviewFragment.getInstance() != null)
+                            CardviewFragment.getInstance().actionFilter(spinnerFilter.getSelectedItem().toString(), spinnerSort.getSelectedItem().toString());
                     }
                 });
                 dialog.show();
@@ -234,7 +234,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        String date = " " + i + "/" + (i1+1) + "/" + i2;
+                        String date = " " + i + "/" + (i1 + 1) + "/" + i2;
                         d.setText(date);
                     }
                 },
@@ -243,6 +243,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
+
     public void showTimePickerDialog(TextView d) {
         TimePickerDialog timePickerDialog = new TimePickerDialog(
                 getActivity(),

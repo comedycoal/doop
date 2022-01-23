@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity getInstance() {
         if (instance == null) {
-            throw new RuntimeException("Null MainActivity");
+            //throw new RuntimeException("Null MainActivity");
+            instance = new MainActivity();
         }
         return instance;
     }
