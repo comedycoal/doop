@@ -33,6 +33,7 @@ public class AuthenticatorFragment extends ManagerFragment implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.authentication_signInButton:
+
                 navController.navigate(R.id.action_authenticatorFragment_to_mainFragment);
                 break;
             case R.id.authentication_signUpButton:

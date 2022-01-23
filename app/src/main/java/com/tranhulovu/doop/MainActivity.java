@@ -9,13 +9,31 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tranhulovu.doop.applicationcontrol.Authenticator;
 import com.tranhulovu.doop.applicationcontrol.SettingManager;
 import com.tranhulovu.doop.applicationcontrol.UserManager;
+import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
+import com.tranhulovu.doop.todocardsystem.CardManager;
+import com.tranhulovu.doop.todocardsystem.NotificationManager;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mNavigationView;
     private ViewPager2 mViewpager2;
+
+    private static MainActivity instance;
+
+    public static MainActivity getInstance()
+    {
+        if (instance == null)
+        {
+            throw new RuntimeException("Null MainActivity");
+        }
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        instance = this;
+
         setContentView(R.layout.activity_main);
 
 //        mNavigationView = findViewById(R.id.bottom_nav);
@@ -69,13 +87,19 @@ public class MainActivity extends AppCompatActivity {
 
     private UserManager mUserManager = new UserManager(email, password);
 
-    //private SettingManager mSettingManager = new SettingManager(getApplicationContext());
+    private SettingManager mSettingManager = new SettingManager(this);
 
-//    private CardManager mCardManager = new CardManager();
+    private LocalAccessorFacade mAccessor = new LocalAccessorFacade();
+    private NotificationManager mNotifManager = new NotificationManager(mAccessor, this);
+    private CardManager mCardManager = new CardManager(mNotifManager, mAccessor);
 
-//    private NotificationManager mNotificationManager;
+    public CardManager getCardManager()
+    {
+        return mCardManager;
+    }
 
-    public void initialize() {
+    public void initialize()
+    {
 
     }
 
@@ -83,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //    }
 
-    public void finalize() {
+    public void finalize()
+    {
 
     }
 

@@ -23,7 +23,6 @@ public class NotificationManager
     //---// Fields
     private NotificationRequestResponder mResponder;
 
-    private CardManager mCardManager;
     private LocalAccessorFacade mLocalAccessor;
 
     private Subscriber<Notification> mNotificationChangeResponder;
@@ -31,11 +30,9 @@ public class NotificationManager
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Constructors
-    public NotificationManager(CardManager cardManager,
-                        LocalAccessorFacade facade,
+    public NotificationManager(LocalAccessorFacade facade,
                         Context applicationContext)
     {
-        mCardManager = cardManager;
         mLocalAccessor = facade;
 
         mResponder = new NotificationRequestResponder();
