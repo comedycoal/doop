@@ -24,8 +24,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         //ManagerFragment managerFragment;
         switch (position){
-            case 0:
-                return new CardviewFragment();
             case 1:
                 return new StatisticsFragment();
             case 2:

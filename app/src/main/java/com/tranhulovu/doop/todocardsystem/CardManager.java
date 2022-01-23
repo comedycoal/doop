@@ -16,10 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -242,10 +240,6 @@ public class CardManager
                 if (debugMode)
                     throw new DebugModeActivatedException("Debug mode is on," +
                             "cannot query to database for card with id " + id);
-
-                // Call LocalFacade to load card
-                card = ToDoCard.fromMapWithoutNotif(mLocalAccessor.readCard(id));
-                mCards.put(id, card);
             }
         }
 

@@ -1,21 +1,11 @@
 package com.tranhulovu.doop.todocardsystem;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
 import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
 import com.tranhulovu.doop.todocardsystem.events.Subscriber;
-
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class NotificationManager
 {
@@ -83,7 +73,7 @@ public class NotificationManager
         card.getNotificationChangeEvent().addSubscriber(mNotificationChangeResponder);
     }
 
-    public void removeWtach(@NonNull ToDoCard card)
+    public void removeWatch(@NonNull ToDoCard card)
     {
         card.getNotificationChangeEvent().removeSubscriber(mNotificationChangeResponder);
     }

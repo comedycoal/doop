@@ -1,20 +1,18 @@
 package com.tranhulovu.doop.onlinedatabase;
 
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.tranhulovu.doop.applicationcontrol.Authenticator;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,8 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class OnlineDatabaseAccessor {
-    private final FirebaseAuth mFirebaseAuth;
-    private final FirebaseFirestore mFirebaseFirestore;
+    private FirebaseFirestore mFirebaseFirestore;
     private FirebaseUser mFirebaseUser;
     private String mUserID;
     private UserProfile mCachedUserProfile;
@@ -31,52 +28,21 @@ public class OnlineDatabaseAccessor {
 
     /**
     * This init an Online Database Accessor to manipulate data stored in Firebase with
-    * @param email: user's email.
-     * @param password: user's password.
+    * @param authenticator: used for Firebase accesses
      * Also, this class init will cache user info and statistics from Firebase for future use.
      */
-    public OnlineDatabaseAccessor(String email, String password) {
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        authorizeOnlineSignIn(email, password);
-        if (mFirebaseUser != null) {
-            mUserID = mFirebaseUser.getUid();
-            String fullName = mFirebaseUser.getDisplayName();
-            Uri profileImageUri = mFirebaseUser.getPhotoUrl();
-            Date userJoinDate = new Date(Objects.requireNonNull(mFirebaseUser.getMetadata()).getCreationTimestamp());
-            mCachedUserProfile = new UserProfile(mUserID, fullName, profileImageUri, userJoinDate);
+    public OnlineDatabaseAccessor(Authenticator authenticator) {
+        if (authenticator.getSignInState() == Authenticator.SignInState.SIGNED_IN) {
+            mFirebaseUser = authenticator.getCurrentUser();
+            if (mFirebaseUser != null) {
+                mUserID = mFirebaseUser.getUid();
+                String fullName = mFirebaseUser.getDisplayName();
+                Uri profileImageUri = mFirebaseUser.getPhotoUrl();
+                Date userJoinDate = new Date(Objects.requireNonNull(mFirebaseUser.getMetadata()).getCreationTimestamp());
+                mCachedUserProfile = new UserProfile(mUserID, fullName, profileImageUri, userJoinDate);
+            }
+            mFirebaseFirestore = FirebaseFirestore.getInstance();
         }
-        mFirebaseFirestore = FirebaseFirestore.getInstance();
-    }
-
-    /**
-     * This validate user login information.
-     * @param email: same as above.
-     * @param password: same as above.
-     */
-    public void authorizeOnlineSignIn(String email, String password) {
-        mFirebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("signInWithEmail:failure", task.getException());
-                            // TODO: Show failed login dialog
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Error logging in with exception", e);
-                    }
-                });
-    }
-
-    public void signOut() {
-        mFirebaseAuth.signOut();
     }
 
     public String getOnlineUserID() {
@@ -162,13 +128,7 @@ public class OnlineDatabaseAccessor {
             deleteFields.put("lastMonth", FieldValue.delete());
             deleteFields.put("total", FieldValue.delete());
             mFirebaseFirestore.collection("statistics")
-                    .document(mUserID).update(deleteFields)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            // Do nothing
-                        }
-                    });
+                    .document(mUserID).update(deleteFields);
         }
         mFirebaseFirestore.collection("statistics")
                 .document(mUserID).set(newStats)

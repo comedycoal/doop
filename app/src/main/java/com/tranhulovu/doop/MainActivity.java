@@ -83,10 +83,8 @@ public class MainActivity extends AppCompatActivity {
     private String email = "123@test.com";
     private String password = "123456";
 
-    private Authenticator mAuthenticator = new Authenticator(email, password);
-
-    private UserManager mUserManager = new UserManager(email, password);
-
+    private Authenticator mAuthenticator = new Authenticator();
+    private UserManager mUserManager = new UserManager(mAuthenticator);
     private SettingManager mSettingManager = new SettingManager(this);
 
     private LocalAccessorFacade mAccessor = new LocalAccessorFacade();
