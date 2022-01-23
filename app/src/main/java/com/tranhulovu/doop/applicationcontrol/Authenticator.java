@@ -17,6 +17,8 @@ public class Authenticator {
         NOT_SIGNED_IN
     }
 
+    public static final String auhTAG = "Authenticator";
+
     private SignInState mSignInState;
     private final FirebaseAuth mFirebaseAuth;
 
@@ -33,7 +35,7 @@ public class Authenticator {
      * @param email: same as above.
      * @param password: same as above.
      */
-    public void requestOnlineSignIn(String email, String password) {
+    public void requestSignIn(String email, String password) {
         mFirebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -54,11 +56,19 @@ public class Authenticator {
                 });
     }
 
-    public FirebaseUser getCurrentUser() {
-        if (getSignInState() == SignInState.SIGNED_IN) {
-            return mFirebaseAuth.getCurrentUser();
-        }
-        return null;
+    public void requestSignUp(String email, String password) {
+        mFirebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(auhTAG, "Sign up: Success");
+                        }
+                        else {
+                            Log.d(auhTAG, "Sign up: Failed");
+                        }
+                    }
+                });
     }
 
     public void requestSignOut() {
@@ -67,5 +77,12 @@ public class Authenticator {
 
     public SignInState getSignInState() {
         return mSignInState;
+    }
+
+    public FirebaseUser getCurrentUser() {
+        if (getSignInState() == SignInState.SIGNED_IN) {
+            return mFirebaseAuth.getCurrentUser();
+        }
+        return null;
     }
 }

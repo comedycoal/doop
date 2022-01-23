@@ -10,6 +10,7 @@ import com.tranhulovu.doop.applicationcontrol.Authenticator;
 import com.tranhulovu.doop.applicationcontrol.SettingManager;
 import com.tranhulovu.doop.applicationcontrol.UserManager;
 import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
+import com.tranhulovu.doop.onlinedatabase.OnlineDatabaseAccessor;
 import com.tranhulovu.doop.todocardsystem.CardManager;
 import com.tranhulovu.doop.todocardsystem.NotificationManager;
 
@@ -80,11 +81,9 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    private String email = "123@test.com";
-    private String password = "123456";
-
     private Authenticator mAuthenticator = new Authenticator();
     private UserManager mUserManager = new UserManager(mAuthenticator);
+    private OnlineDatabaseAccessor mOnlineDatabaseAccessor = new OnlineDatabaseAccessor(mAuthenticator);
     private SettingManager mSettingManager = new SettingManager(this);
 
     private LocalAccessorFacade mAccessor = new LocalAccessorFacade();
