@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class Authenticator {
     public enum SignInState {
         SIGNED_IN,
+        SIGNED_UP,
         NOT_SIGNED_IN
     }
 
@@ -41,17 +41,14 @@ public class Authenticator {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Log.d(auhTAG, "signin:success");
                             setSignInState(SignInState.SIGNED_IN);
                             // TODO: Toast/Dialog for success
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Error signin in with exception", e);
-                        setSignInState(SignInState.NOT_SIGNED_IN);
-                        // TODO: Toast/Dialog for failure
+                        else {
+                            Log.d(auhTAG, "signin:failure");
+                            setSignInState(SignInState.NOT_SIGNED_IN);
+                        }
                     }
                 });
     }
@@ -62,10 +59,11 @@ public class Authenticator {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d(auhTAG, "Sign up: Success");
+                            Log.d(auhTAG, "signup:success");
+                            setSignInState(SignInState.SIGNED_UP);
                         }
                         else {
-                            Log.d(auhTAG, "Sign up: Failed");
+                            Log.d(auhTAG, "signup:failure");
                         }
                     }
                 });

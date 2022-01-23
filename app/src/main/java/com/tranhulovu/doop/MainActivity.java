@@ -20,10 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static MainActivity instance;
 
-    public static MainActivity getInstance()
-    {
-        if (instance == null)
-        {
+    public static MainActivity getInstance() {
+        if (instance == null) {
             throw new RuntimeException("Null MainActivity");
         }
         return instance;
@@ -36,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         instance = this;
 
         setContentView(R.layout.activity_main);
+
+        initialize();
 
 //        mNavigationView = findViewById(R.id.bottom_nav);
 //        mViewpager2 = findViewById(R.id.view_pager);
@@ -81,22 +81,24 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    private Authenticator mAuthenticator = new Authenticator();
-    private UserManager mUserManager = new UserManager(mAuthenticator);
-    private OnlineDatabaseAccessor mOnlineDatabaseAccessor = new OnlineDatabaseAccessor(mAuthenticator);
-    private SettingManager mSettingManager = new SettingManager(this);
+    private final Authenticator mAuthenticator = new Authenticator();
+    private final UserManager mUserManager = new UserManager(mAuthenticator);
+    private final OnlineDatabaseAccessor mOnlineDatabaseAccessor = new OnlineDatabaseAccessor(mAuthenticator);
+    private final SettingManager mSettingManager = new SettingManager(this);
 
-    private LocalAccessorFacade mAccessor = new LocalAccessorFacade();
-    private NotificationManager mNotifManager = new NotificationManager(mAccessor, this);
-    private CardManager mCardManager = new CardManager(mNotifManager, mAccessor);
+    private final LocalAccessorFacade mAccessor = new LocalAccessorFacade();
+    private final NotificationManager mNotifManager = new NotificationManager(mAccessor, this);
+    private final CardManager mCardManager = new CardManager(mNotifManager, mAccessor);
 
-    public CardManager getCardManager()
-    {
+    public static Authenticator getAuthenticator() {
+        return getInstance().mAuthenticator;
+    }
+
+    public CardManager getCardManager() {
         return mCardManager;
     }
 
-    public void initialize()
-    {
+    public void initialize() {
 
     }
 
@@ -104,11 +106,9 @@ public class MainActivity extends AppCompatActivity {
 //
 //    }
 
-    public void finalize()
-    {
+    public void finalize() {
 
     }
-
 
 
 }

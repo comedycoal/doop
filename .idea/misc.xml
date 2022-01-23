@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/activity_main.xml" value="0.3625" />
         <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/authenticatorfragment.xml" value="0.3625" />
         <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/cardviewfragment.xml" value="0.3625" />
         <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/createcard.xml" value="0.3625" />
         <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/dialog_add.xml" value="0.3625" />
         <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/dialog_filter.xml" value="0.3625" />
+        <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/mainfragment.xml" value="0.3625" />
         <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/settingsfragment.xml" value="0.3625" />
         <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/signupfragment.xml" value="0.3625" />
         <entry key="..\:/Projects/Android/doop/app/src/main/res/layout/statisticsfragment.xml" value="0.3625" />
