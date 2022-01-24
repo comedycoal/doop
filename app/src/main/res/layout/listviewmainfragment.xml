@@ -6,26 +6,110 @@
     android:layout_height="match_parent"
     android:background="@color/main_window">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ScrollView
         android:id="@+id/main_todoCardListView_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <GridLayout
             android:id="@+id/main_todoCardListView"
-            android:alignmentMode="alignMargins"
-            android:columnOrderPreserved="false"
-            android:padding="10dp"
-            android:rowCount="2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnCount="2"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:columnCount="2">
 
-    </androidx.recyclerview.widget.RecyclerView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/main_todoCardListView_card1"
+                android:layout_columnWeight="1"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="15dp"
+                android:visibility="visible"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/main_todoCardListView_card2"
+                android:layout_columnWeight="1"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rectangle_16_layout"
+                app:cardCornerRadius="15dp"
+                android:visibility="visible"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/main_todoCardListView_card3"
+                android:layout_columnWeight="1"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="15dp"
+                android:visibility="gone"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/main_todoCardListView_card4"
+                android:layout_columnWeight="1"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rectangle_16_layout"
+                app:cardCornerRadius="15dp"
+                android:visibility="gone"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/main_todoCardListView_card5"
+                android:layout_columnWeight="1"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="15dp"
+                android:visibility="gone"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/main_todoCardListView_card6"
+                android:layout_columnWeight="1"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rectangle_16_layout"
+                app:cardCornerRadius="15dp"
+                android:visibility="gone"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/main_todoCardListView_card7"
+                android:layout_columnWeight="1"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="15dp"
+                android:visibility="gone"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/main_todoCardListView_card8"
+                android:layout_columnWeight="1"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rectangle_16_layout"
+                app:cardCornerRadius="15dp"
+                android:visibility="gone"/>
+
+        </GridLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

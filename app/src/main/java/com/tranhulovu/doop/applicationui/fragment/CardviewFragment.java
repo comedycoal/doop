@@ -1,15 +1,20 @@
 package com.tranhulovu.doop.applicationui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.type.DateTime;
 import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.R;
@@ -27,6 +32,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class CardviewFragment extends ManagerFragment {
@@ -35,7 +41,7 @@ public class CardviewFragment extends ManagerFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.cardviewfragment, container, false);
+        View view = inflater.inflate(R.layout.listviewmainfragment, container, false);
         instance = this;
         return view;
     }
@@ -55,6 +61,7 @@ public class CardviewFragment extends ManagerFragment {
     public void loadCards() {
         MainActivity.getInstance().getCardManager()
                 .getActiveCards(new Callback<List<String>>() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void execute(List<String> data)
                     {

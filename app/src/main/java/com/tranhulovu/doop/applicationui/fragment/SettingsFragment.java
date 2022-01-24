@@ -1,5 +1,6 @@
 package com.tranhulovu.doop.applicationui.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.tranhulovu.doop.R;
 
 public class SettingsFragment extends ManagerFragment {
-    //private NavController navController;
+//    private NavController navController;
 
     @Nullable
     @Override
