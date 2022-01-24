@@ -5,14 +5,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.type.DateTime;
 import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.R;
+import com.tranhulovu.doop.applicationui.cardViewAdapter;
 import com.tranhulovu.doop.todocardsystem.AutogenerationConfirmer;
 import com.tranhulovu.doop.todocardsystem.Notification;
 import com.tranhulovu.doop.todocardsystem.ToDoCard;
@@ -25,19 +29,51 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class CardviewFragment extends ManagerFragment {
     private static CardviewFragment instance = null;
-
+    private RecyclerView mrecyclerView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.cardviewfragment, container, false);
         instance = this;
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mrecyclerView=view.findViewById(R.id.rcv_card);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
+        mrecyclerView.setLayoutManager(gridLayoutManager);
+
+        cardViewAdapter adapter = new cardViewAdapter(getListdata());
+        mrecyclerView.setAdapter(adapter);
+
+    }
+
+    private List<dataCardView> getListdata() {
+        List<dataCardView> list= new ArrayList<>();
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+        list.add(new dataCardView("1","2","3","4","5","6"));
+
+
+
+        return list;
     }
 
     public static CardviewFragment getInstance() {
