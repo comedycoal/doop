@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class Event<T>
 {
-    protected Set<Subscriber<T>> mSubscribers;
+    protected Set<Subscriber<T>> mSubscribers = new HashSet<>();
 
     public void addSubscriber(Subscriber<T> s)
     {
@@ -25,6 +25,9 @@ public class Event<T>
 
     public void invoke(T data)
     {
+        if (mSubscribers == null)
+            return;
+
         Set<Subscriber<T>> newL = new HashSet<>(mSubscribers);
 
         for (Subscriber<T> s : mSubscribers)

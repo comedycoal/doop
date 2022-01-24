@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class CardManager
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
     private DynamicStatistics mDynamicStatistics;
-    private Map<String, ToDoCard> mCards;
+    private Map<String, ToDoCard> mCards = new HashMap<>();
 
     private Collection<String> mNeedsWritingCards;
 
