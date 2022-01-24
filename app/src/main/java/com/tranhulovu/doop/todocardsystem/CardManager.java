@@ -66,6 +66,13 @@ public class CardManager
 
         debugMode = true;
 
+        // Create a bunch of cards
+        for (int i = 0; i < 4; ++i)
+        {
+            ToDoCard card = makeDebugCard(i);
+            mCards.put(card.getId(), card);
+        }
+
         onCreate();
     }
 
