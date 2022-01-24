@@ -43,26 +43,23 @@ public class AuthenticatorFragment extends ManagerFragment implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.authentication_signInButton)
-        {
+        if (view.getId() == R.id.authentication_signInButton) {
             String email = mSignInUsernameView.getText().toString();
-            String password = mSignInPasswordView.getText().toString();;
+            String password = mSignInPasswordView.getText().toString();
+            ;
             if (email.equals("") || !email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
                 Toast.makeText(MainActivity.getInstance(), "Invalid username", Toast.LENGTH_SHORT).show();
                 mSignInUsernameView.setText("");
-            }
-            else if (password.equals("") || !password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[\\\\.@#$%^&+=])(?=\\S+$).{6,}$")) {
-                Toast.makeText(MainActivity.getInstance(), "Password must contain at least 6 characters, one character and one number", Toast.LENGTH_SHORT).show();
+            } else if (password.equals("") || !password.matches("^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{6,}$")) {
+                Toast.makeText(MainActivity.getInstance(), "Password must contain at least 6 characters, one alphabet character and one number", Toast.LENGTH_SHORT).show();
                 mSignInPasswordView.setText("");
-            }
-            else {
+            } else {
                 mAuthenticator.requestSignIn(email, password);
                 if (mAuthenticator.getSignInState() == Authenticator.SignInState.SIGNED_IN) {
-                    navController.navigate(R.id.action_authenticatorFragment_to_mainFragment);
+                    navController.popBackStack();
                 }
             }
-        } else if (view.getId() == R.id.authentication_signUpButton)
-        {
+        } else if (view.getId() == R.id.authentication_signUpButton) {
             navController.navigate(R.id.action_authenticatorFragment_to_signupFragment);
         }
     }

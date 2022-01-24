@@ -58,8 +58,8 @@ public class SignupFragment extends ManagerFragment implements View.OnClickListe
                 Toast.makeText(MainActivity.getInstance(), "Invalid email address", Toast.LENGTH_SHORT).show();
                 mSignUpEmailView.setText("");
             }
-            else if (password.equals("") || !password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[\\\\.@#$%^&+=])(?=\\S+$).{6,}$")) {
-                Toast.makeText(MainActivity.getInstance(), "Password must contain at least 6 characters, one character and one number", Toast.LENGTH_SHORT).show();
+            else if (password.equals("") || !password.matches("^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{6,}$")) {
+                Toast.makeText(MainActivity.getInstance(), "Password must contain at least 6 characters, one alphabet character and one number", Toast.LENGTH_SHORT).show();
                 mSignUpPasswordView.setText("");
                 mSignUpPasswordConfirmView.setText("");
             }
@@ -71,7 +71,7 @@ public class SignupFragment extends ManagerFragment implements View.OnClickListe
                 mAuthenticator = MainActivity.getAuthenticator();
                 mAuthenticator.requestSignUp(email, password);
                 if (mAuthenticator.getSignInState() == Authenticator.SignInState.SIGNED_UP) {
-                    navController.navigate(R.id.action_signupFragment_to_authenticatorFragment);
+                    navController.popBackStack();
                 }
             }
         }

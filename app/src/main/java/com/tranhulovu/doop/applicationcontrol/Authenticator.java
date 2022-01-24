@@ -24,6 +24,12 @@ public class Authenticator {
 
     public Authenticator() {
         mFirebaseAuth = FirebaseAuth.getInstance();
+        if (mFirebaseAuth.getCurrentUser() != null) {
+            setSignInState(SignInState.SIGNED_IN);
+        }
+        else {
+            setSignInState(SignInState.NOT_SIGNED_IN);
+        }
     }
 
     public void setSignInState(SignInState state) {

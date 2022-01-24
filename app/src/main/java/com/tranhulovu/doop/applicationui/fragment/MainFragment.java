@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -28,7 +29,9 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textfield.TextInputLayout;
+import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.R;
+import com.tranhulovu.doop.applicationcontrol.Authenticator;
 import com.tranhulovu.doop.applicationui.ViewPagerAdapter;
 
 import java.util.Calendar;
@@ -46,6 +49,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
     private ExtendedFloatingActionButton mFABFilter;
     private Dialog dialog;
     private boolean mFABclicked = false;
+    private Authenticator mAuthenticator;
 
     @Nullable
     @Override
@@ -57,54 +61,62 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTopNavigation = view.findViewById(R.id.bottom_nav);
-        mBottomAppBar = view.findViewById(R.id.bottomAppBar);
-        mViewpager2 = view.findViewById(R.id.viewpaper);
-        mFloatingActionButton = view.findViewById(R.id.floatingAction);
-        mFABAdd = view.findViewById(R.id.FABAdd);
-        mFABSmartAdd = view.findViewById(R.id.FABSmartAdd);
-        mFABChangeView = view.findViewById(R.id.FABChangeView);
-        mFABFilter = view.findViewById(R.id.FABFilter);
+        navController = Navigation.findNavController(view);
+        mAuthenticator = MainActivity.getAuthenticator();
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+        if (mAuthenticator.getSignInState() == Authenticator.SignInState.NOT_SIGNED_IN) {
+            navController.navigate(R.id.action_mainFragment_to_authenticatorFragment);
+        }
+        else {
+            mTopNavigation = view.findViewById(R.id.bottom_nav);
+            mBottomAppBar = view.findViewById(R.id.bottomAppBar);
+            mViewpager2 = view.findViewById(R.id.viewpaper);
+            mFloatingActionButton = view.findViewById(R.id.floatingAction);
+            mFABAdd = view.findViewById(R.id.FABAdd);
+            mFABSmartAdd = view.findViewById(R.id.FABSmartAdd);
+            mFABChangeView = view.findViewById(R.id.FABChangeView);
+            mFABFilter = view.findViewById(R.id.FABFilter);
 
-        mViewpager2.setAdapter(viewPagerAdapter);
-        mTopNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.action_tasks) {
-                    mViewpager2.setCurrentItem(0);
-                } else if (id == R.id.action_statistics) {
-                    mViewpager2.setCurrentItem(1);
-                } else if (id == R.id.action_settings) {
-                    mViewpager2.setCurrentItem(2);
+            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+
+            mViewpager2.setAdapter(viewPagerAdapter);
+            mTopNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    int id = item.getItemId();
+                    if (id == R.id.action_tasks) {
+                        mViewpager2.setCurrentItem(0);
+                    } else if (id == R.id.action_statistics) {
+                        mViewpager2.setCurrentItem(1);
+                    } else if (id == R.id.action_settings) {
+                        mViewpager2.setCurrentItem(2);
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
-        mViewpager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                switch (position) {
-                    case 0:
-                        mTopNavigation.getMenu().findItem(R.id.action_tasks).setChecked(true);
-                        break;
-                    case 1:
-                        mTopNavigation.getMenu().findItem(R.id.action_statistics).setChecked(true);
-                        break;
-                    case 2:
-                        mTopNavigation.getMenu().findItem(R.id.action_settings).setChecked(true);
-                        break;
+            });
+            mViewpager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    super.onPageSelected(position);
+                    switch (position) {
+                        case 0:
+                            mTopNavigation.getMenu().findItem(R.id.action_tasks).setChecked(true);
+                            break;
+                        case 1:
+                            mTopNavigation.getMenu().findItem(R.id.action_statistics).setChecked(true);
+                            break;
+                        case 2:
+                            mTopNavigation.getMenu().findItem(R.id.action_settings).setChecked(true);
+                            break;
+                    }
                 }
-            }
-        });
-        mFloatingActionButton.setOnClickListener(this);
-        mFABSmartAdd.setOnClickListener(this);
-        mFABAdd.setOnClickListener(this);
-        mFABFilter.setOnClickListener(this);
-        mFABChangeView.setOnClickListener(this);
+            });
+            mFloatingActionButton.setOnClickListener(this);
+            mFABSmartAdd.setOnClickListener(this);
+            mFABAdd.setOnClickListener(this);
+            mFABFilter.setOnClickListener(this);
+            mFABChangeView.setOnClickListener(this);
+        }
     }
 
 
