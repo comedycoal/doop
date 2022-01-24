@@ -3,19 +3,24 @@ package com.tranhulovu.doop.applicationui.fragment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
@@ -153,6 +158,72 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
         else if (view.getId() == R.id.FABAdd) {
             dialog = new Dialog(getActivity());
             dialog.setContentView(R.layout.dialog_add);
+            Button bt;
+            TextView tt;
+            bt=dialog.findViewById(R.id.buttonOnOffNoti);
+            bt.setText("ON");
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Button b=dialog.findViewById(R.id.buttonOnOffNoti);
+                    if (b.getText().toString()=="ON"){
+                        b.setText("OFF");
+                        b.setTextColor(Color.parseColor("#DA6363"));
+                        dialog.findViewById(R.id.setUpNotification).setVisibility(View.INVISIBLE);
+                    }
+                    else{
+                        b.setText("ON");
+                        b.setTextColor(Color.parseColor("#38817A"));
+                        dialog.findViewById(R.id.setUpNotification).setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+            bt=dialog.findViewById(R.id.notiOrAlarm);
+            bt.setText("Noti");
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Button b=dialog.findViewById(R.id.notiOrAlarm);
+                    if (b.getText().toString()=="Noti"){
+                        Drawable img = ContextCompat.getDrawable(getActivity(), R.drawable.ic_baseline_alarm_24);
+                        b.setText("Alarm");
+                        b.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                    }
+                    else{
+                        Drawable img = ContextCompat.getDrawable(getActivity(), R.drawable.ic_baseline_notifications_24);
+                        b.setText("Noti");
+                        b.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                    }
+                }
+            });
+            tt=dialog.findViewById(R.id.timeNoti);
+            tt.setText("1 hour");
+            tt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView t=dialog.findViewById(R.id.timeNoti);
+                    if (t.getText().toString()=="1 hour"){
+                        t.setText("30 min");
+                    }
+                    else{
+                        t.setText("1 hour");
+                    }
+                }
+            });
+            tt=dialog.findViewById(R.id.timelineNoti);
+            tt.setText("Start time");
+            tt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView t=dialog.findViewById(R.id.timelineNoti);
+                    if (t.getText().toString()=="Start time"){
+                        t.setText("End time");
+                    }
+                    else{
+                        t.setText("Start time");
+                    }
+                }
+            });
             dialog.findViewById(R.id.Date_start).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -196,10 +267,26 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                     String dateend = inf.getText().toString();
                     inf = dialog.findViewById(R.id.Time_end);
                     String timeend = inf.getText().toString();
-                    int noti = 1;
-                    int type = 0;
+                    Button b;
+                    TextView t;
+                    int noti=0;
+                    b= dialog.findViewById(R.id.buttonOnOffNoti);
+                    if(b.getText().toString()=="ON")
+                        noti=1;
+                    int type = 2;
+                    b= dialog.findViewById(R.id.notiOrAlarm);
+                    if(b.getText().toString()=="Noti")
+                        type=1;
                     int time = 1;
-                    int till = 1;
+                    t= dialog.findViewById(R.id.timeNoti);
+                    if(t.getText().toString()=="30 min")
+                        time=0;
+                    int till = 0;
+                    t= dialog.findViewById(R.id.timelineNoti);
+                    if(t.getText().toString()=="Start time")
+                        till=1;
+//                    String s=name+description+datestart+datestart+timestart;
+//                    Toast.makeText(MainActivity.getInstance(), s, Toast.LENGTH_SHORT).show();
                     if (CardviewFragment.getInstance() != null)
                         CardviewFragment.getInstance().actionAddCard(name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
                     dialog.dismiss();
