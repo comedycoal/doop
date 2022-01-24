@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="20dp"
     android:id="@+id/settingsFragmentUI"
+    android:paddingBottom="85dp"
     android:background="@color/main_window"
     tools:context=".applicationui.fragment.SettingsFragment">
 
@@ -318,24 +318,87 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="MissingConstraints" />
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/settings_about_info"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/about"
-                    android:textSize="16sp"
-                    android:textAlignment="center"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/settings_about_icon"
-                    tools:ignore="MissingConstraints"
-                    android:ellipsize="end"
-                    android:maxLines="6"
-                    android:singleLine="false"
-                    android:visibility="gone"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/about"
+                        android:textAlignment="center"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="italic"
+                        android:textAlignment="center"
+                        android:textSize="10sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="italic"
+                        android:text="19120159 - Trần huy Vũ"
+                        android:textAlignment="center"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="italic"
+                        android:text="19120239 - Đoàn Kim Huy"
+                        android:textAlignment="center"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="italic"
+                        android:text="19120283 - Quách Bình Long"
+                        android:textAlignment="center"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="italic"
+                        android:text="19120405 - Nguyễn Đình Trí"
+                        android:textAlignment="center"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="italic"
+                        android:text="19120449 - Nguyễn Phan Đức Anh"
+                        android:textAlignment="center"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>

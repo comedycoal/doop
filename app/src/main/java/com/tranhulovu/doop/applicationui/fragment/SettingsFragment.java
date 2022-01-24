@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -82,7 +83,7 @@ public class SettingsFragment extends ManagerFragment {
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView about_info = view.findViewById(R.id.settings_about_info);
+                LinearLayout about_info = view.findViewById(R.id.settings_about_info);
                 about_info.setVisibility((about_info.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
             }
         });

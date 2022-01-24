@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="85dp"
     android:background="@color/main_window">
 
     <ScrollView
@@ -22,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:columnCount="2">
+            android:columnCount="2"
+            android:paddingBottom="10dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/main_todoCardListView_card1"

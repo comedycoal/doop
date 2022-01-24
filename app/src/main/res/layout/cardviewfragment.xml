@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#56BFB5"
+    android:background="@color/main_window"
+    android:paddingBottom="80dp"
     tools:context=".applicationui.fragment.CardviewFragment">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_card"
         android:layout_width="match_parent"
