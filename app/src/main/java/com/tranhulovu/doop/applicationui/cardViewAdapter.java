@@ -46,6 +46,13 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
         return 0;
     }
 
+    public void setData(List<dataCardView> newData)
+    {
+        mListCard = newData;
+        notifyDataSetChanged();
+    }
+
+
     public class cardViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView descrip;

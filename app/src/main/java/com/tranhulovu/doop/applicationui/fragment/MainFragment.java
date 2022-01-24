@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -143,8 +144,8 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
         else if (view.getId() == R.id.FABSmartAdd) {
             dialog = new Dialog(getActivity());
             dialog.setContentView(R.layout.dialog_smart_add);
-            TextInputLayout textInputLayout = dialog.findViewById(R.id.smartAddinput);
-            String code = textInputLayout.getEditText().getText().toString();
+            EditText textInput = dialog.findViewById(R.id.smartAddinput);
+            String code = textInput.getText().toString();
             dialog.findViewById(R.id.buttonDoneAutoAdd).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

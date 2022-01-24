@@ -36,10 +36,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CardviewFragment extends ManagerFragment {
     private static CardviewFragment instance = null;
     private RecyclerView mrecyclerView;
+
+    private Callback<List<Map<String, Object>>> mFetchCallback;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,28 +59,31 @@ public class CardviewFragment extends ManagerFragment {
         mrecyclerView=view.findViewById(R.id.rcv_card);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
         mrecyclerView.setLayoutManager(gridLayoutManager);
-        cardViewAdapter adapter = new cardViewAdapter(getListdata());
+
+        // Temporarily set to empty, wait for CardManager to return the card list
+        cardViewAdapter adapter = new cardViewAdapter(new ArrayList<>());
+
+        mFetchCallback = new Callback<List<Map<String, Object>>>()
+        {
+            @Override
+            public void execute(List<Map<String, Object>> data)
+            {
+                List<dataCardView> l = data.stream().map(e -> new dataCardView(
+                        (String)e.get("name"),
+                        (String)e.get("description"),
+                        ((ZonedDateTime)e.get("start")).format(DateTimeFormatter.ofPattern("MMM dd yyyy")),
+                        ((ZonedDateTime)e.get("end")).format(DateTimeFormatter.ofPattern("MMM dd yyyy")),
+                        ((ToDoCard.CheckStatus)e.get("status")).name(),
+                        ((Notification)e.get("notification")).getStringMessage()))
+                        .collect(Collectors.toList());
+
+                adapter.setData(l);
+            }
+        };
+
         mrecyclerView.setAdapter(adapter);
 
-    }
-
-    private List<dataCardView> getListdata() {
-        List<dataCardView> list= new ArrayList<>();
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-        list.add(new dataCardView("1","2","3","4","5","6"));
-
-
-
-        return list;
+        loadCards();
     }
 
     public static CardviewFragment getInstance() {
@@ -86,21 +94,14 @@ public class CardviewFragment extends ManagerFragment {
     /**
      * Change view card from listview to weekview and weekview to listview
      */
-    public void changeView() {
+    public void changeView()
+    {
 
     }
 
-    public void loadCards() {
-        MainActivity.getInstance().getCardManager()
-                .getActiveCards(new Callback<List<String>>() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void execute(List<String> data)
-                    {
-                        // Show cards with this
-
-                    }
-                });
+    public void loadCards()
+    {
+        MainActivity.getInstance().getCardManager().getActiveCards(mFetchCallback, MainActivity.getInstance());
     }
 
 
@@ -165,11 +166,11 @@ public class CardviewFragment extends ManagerFragment {
                         {
                             // Make toast, but do not exit the dialog
 
-                            return;
+                            stime = ZonedDateTime.now();
+                            etime = ZonedDateTime.now();
                         }
 
-                        data.setTimeRange(ZonedDateTime.parse(datestart, ToDoCard.DefaultFormatter),
-                                ZonedDateTime.parse(dateend, ToDoCard.DefaultFormatter));
+                        data.setTimeRange(stime, etime);
 
 
                         Notification.Builder b = new Notification.Builder();
@@ -190,6 +191,7 @@ public class CardviewFragment extends ManagerFragment {
                         loadCards();
                     }
                 });
+
             }
         });
     }
@@ -219,7 +221,8 @@ public class CardviewFragment extends ManagerFragment {
      * @param field
      * @param sort  0 is ASC, 1 is DES
      */
-    public void actionFilter(String field, String sort) {
+    public void actionFilter(String field, String sort)
+    {
 
     }
 }
