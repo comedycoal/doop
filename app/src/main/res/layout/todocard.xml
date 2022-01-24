@@ -125,5 +125,14 @@
         app:layout_constraintTop_toBottomOf="@+id/todocard_tag_layout"
         android:text="Alarm type"/>
 
+    <TextView
+        android:id="@+id/todocard_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="Delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todocard_alarm" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -118,16 +118,16 @@
                             android:text="Start Date" />
 
                         <TextView
-                            android:layout_toRightOf="@id/createcard_startDate_text"
                             android:id="@+id/createcard_startDate_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/createcard_startDate_text"
                             android:paddingStart="30dp"
-                            android:paddingEnd="10dp"
-                            android:textColor="@color/main_window"
                             android:paddingTop="3dp"
+                            android:paddingEnd="10dp"
                             android:paddingBottom="3dp"
-                            android:text="12 12 2012" />
+                            android:text="12 12 2012"
+                            android:textColor="@color/main_window" />
 
                     </RelativeLayout>
 

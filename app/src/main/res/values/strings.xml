@@ -1,11 +1,22 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">doop</string>
     <string name="action_tasks">Tasks</string>
     <string name="action_statistics">Statistics</string>
     <string name="action_settings">Settings</string>
-    <string name="hintAutoCard">@On ..., I’ll
-        Do task 1 @in ... minutes/days/...
-        Do task 2 @in ... minutes/days/...
-        @then Do task 3 @in ... minutes/days/...
-        ...</string>
+    <string name="hintAutoCard">
+        \@On …, I’ll <br/>
+        Do task 1 \@in … minutes/days/… <br/>
+        Do task 2 \@in … minutes/days/… <br/>
+        \@then Do task 3 \@in … minutes/days/… <br/>
+        …
+    </string>
+    <string name="about">
+        <big><i>Group06 - <b>Tranhulovu</b></i></big> <br/>
+        <br/>
+        <i>19120159 - Trần huy Vũ</i> <br/>
+        <i>19120239 - Đoàn Kim Huy</i> <br/>
+        <i>19120283 - Quách Bình Long</i> <br/>
+        <i>19120405 - Nguyễn Đình Trí</i> <br/>
+        <i>19120449 - Nguyễn Phan Đức Anh</i>
+    </string>
 </resources>

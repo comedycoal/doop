@@ -26,19 +26,25 @@
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/drawable/ic_time_setting.xml" value="0.37864583333333335" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/drawable/menu_main_window_layout.xml" value="0.37864583333333335" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/drawable/whitecircle.xml" value="0.37864583333333335" />
-        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/authenticatorfragment.xml" value="0.33" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/cardviewfragment.xml" value="0.18802083333333333" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/createcard.xml" value="0.3625" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/dialog_add.xml" value="0.18802083333333333" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/dialog_filter.xml" value="0.18802083333333333" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/dialog_smart_add.xml" value="0.18802083333333333" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/fab_layout.xml" value="0.18802083333333333" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/flyoutmenu.xml" value="0.3625" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/listviewmainfragment.xml" value="0.25" />
-        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/mainfragment.xml" value="0.33" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/mainfragment.xml" value="0.2" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/preview_smart_add.xml" value="0.3625" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/previewsmartcreatecard.xml" value="0.3625" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/settingsfragment.xml" value="0.25" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/signupfragment.xml" value="0.33" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/smartcreatecard.xml" value="0.3625" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/statisticsfragment.xml" value="0.33" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/todocard.xml" value="0.3625" />
-        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/weekviewmainfragment.xml" value="0.3625" />
+        <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/layout/weekviewmainfragment.xml" value="0.25" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/menu/menu_bottom_nav.xml" value="0.15" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/mipmap-anydpi-v26/ic_about.xml" value="0.37864583333333335" />
         <entry key="..\:/TN19/Year 3/Software Engineering/doop/app/src/main/res/mipmap-anydpi-v26/ic_auto_archive_card_on.xml" value="0.37864583333333335" />
