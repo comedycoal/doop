@@ -1,12 +1,12 @@
 package com.tranhulovu.doop.applicationui.fragment;
 
 public class dataCardView {
-    private String name;
-    private String description;
-    private String start;
-    private String end;
-    private String status;
-    private String notification;
+    public String name;
+    public String description;
+    public String start;
+    public String end;
+    public String status;
+    public String notification;
 
     public dataCardView(    String name,
             String description,

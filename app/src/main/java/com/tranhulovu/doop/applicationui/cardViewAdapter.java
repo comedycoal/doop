@@ -3,6 +3,7 @@ package com.tranhulovu.doop.applicationui;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +32,10 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
         if (mDatacardview==null){
             return;
         }
-        // set id
+        holder.name.setText(mDatacardview.name);
+        holder.start.setText(mDatacardview.start);
+        holder.end.setText(mDatacardview.end);
+        holder.descrip.setText(mDatacardview.description);
     }
 
     @Override
@@ -43,11 +47,19 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
     }
 
     public class cardViewHolder extends RecyclerView.ViewHolder{
+        private TextView name;
+        private TextView descrip;
+        private TextView end;
+        private TextView start;
+
 
         public cardViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            //Set id
+            name=itemView.findViewById(R.id.todocard_label_name);
+            descrip=itemView.findViewById(R.id.todocard_description1);
+            start=itemView.findViewById(R.id.todocard_start);
+            end=itemView.findViewById(R.id.todocard_due);
         }
     }
 }

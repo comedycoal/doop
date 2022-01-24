@@ -1,18 +1,20 @@
 package com.tranhulovu.doop.applicationui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.type.DateTime;
 import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.R;
@@ -32,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class CardviewFragment extends ManagerFragment {
@@ -51,7 +54,6 @@ public class CardviewFragment extends ManagerFragment {
         mrecyclerView=view.findViewById(R.id.rcv_card);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
         mrecyclerView.setLayoutManager(gridLayoutManager);
-
         cardViewAdapter adapter = new cardViewAdapter(getListdata());
         mrecyclerView.setAdapter(adapter);
 
@@ -91,6 +93,7 @@ public class CardviewFragment extends ManagerFragment {
     public void loadCards() {
         MainActivity.getInstance().getCardManager()
                 .getActiveCards(new Callback<List<String>>() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void execute(List<String> data)
                     {

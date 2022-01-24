@@ -41,18 +41,21 @@ public class StatisticsFragment extends ManagerFragment {
         PieData pieData = new PieData(pieDataSet);
         pieChart_total.setData(pieData);
         pieChart_total.getDescription().setEnabled(false);
+        pieChart_total.setCenterTextSize(24f);
         pieChart_total.setCenterText("50\nCards");
         pieChart_total.animate();
 
         pieChart_thismonth.setData(pieData);
         pieChart_thismonth.getDescription().setEnabled(false);
+        pieChart_thismonth.setCenterTextSize(24f);
         pieChart_thismonth.setCenterText("50\nCards");
         pieChart_thismonth.animate();
 
-        pieChart_thismonth.setData(pieData);
-        pieChart_thismonth.getDescription().setEnabled(false);
-        pieChart_thismonth.setCenterText("50\nCards");
-        pieChart_thismonth.animate();
+        pieChart_lastmonth.setData(pieData);
+        pieChart_lastmonth.getDescription().setEnabled(false);
+        pieChart_lastmonth.setCenterTextSize(24f);
+        pieChart_lastmonth.setCenterText("50\nCards");
+        pieChart_lastmonth.animate();
 
         return view;
     }

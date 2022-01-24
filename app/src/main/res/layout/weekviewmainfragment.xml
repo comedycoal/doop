@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
     android:background="@color/main_window">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_todoCardListView_Monday_layout"
+            android:id="@+id/main_todoCardWeekView_Monday_layout"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
@@ -25,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/main_todoCardListView_Monday_label"
+                android:id="@+id/main_todoCardWeekView_Monday_label"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -36,16 +35,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Monday_label_name"
+                    android:id="@+id/main_todoCardWeekView_Monday_label_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:text="Monday"
                     android:textColor="@color/black"
                     android:textSize="24dp" />
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Monday_label_date"
+                    android:id="@+id/main_todoCardWeekView_Monday_label_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dec 06, 2021" />
@@ -59,11 +57,11 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/main_todoCardListView_Monday_label"
+                app:layout_constraintStart_toEndOf="@+id/main_todoCardWeekView_Monday_label"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/main_todoCardListView_Monday_listTask"
+                    android:id="@+id/main_todoCardWeekView_Monday_listTask"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -80,7 +78,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_todoCardListView_Tuesday_layout"
+            android:id="@+id/main_todoCardWeekView_Tuesday_layout"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
@@ -89,10 +87,10 @@
             android:background="@drawable/rectangle_16_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_todoCardListView_Monday_layout">
+            app:layout_constraintTop_toBottomOf="@+id/main_todoCardWeekView_Monday_layout">
 
             <LinearLayout
-                android:id="@+id/main_todoCardListView_Tuesday_label"
+                android:id="@+id/main_todoCardWeekView_Tuesday_label"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -103,16 +101,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Tuesday_label_name"
+                    android:id="@+id/main_todoCardWeekView_Tuesday_label_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:text="Tuesday"
                     android:textColor="@color/black"
                     android:textSize="24dp" />
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Tuesday_label_date"
+                    android:id="@+id/main_todoCardWeekView_Tuesday_label_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dec 07, 2021" />
@@ -126,11 +123,11 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/main_todoCardListView_Tuesday_label"
+                app:layout_constraintStart_toEndOf="@+id/main_todoCardWeekView_Tuesday_label"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/main_todoCardListView_Tuesday_listTask"
+                    android:id="@+id/main_todoCardWeekView_Tuesday_listTask"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -147,7 +144,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_todoCardListView_Wednesday_layout"
+            android:id="@+id/main_todoCardWeekView_Wednesday_layout"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
@@ -156,10 +153,10 @@
             android:background="@drawable/rectangle_16_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_todoCardListView_Tuesday_layout">
+            app:layout_constraintTop_toBottomOf="@+id/main_todoCardWeekView_Tuesday_layout">
 
             <LinearLayout
-                android:id="@+id/main_todoCardListView_Wednesday_label"
+                android:id="@+id/main_todoCardWeekView_Wednesday_label"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -170,16 +167,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Wednesday_label_name"
+                    android:id="@+id/main_todoCardWeekView_Wednesday_label_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:text="Wednesday"
                     android:textColor="@color/black"
                     android:textSize="24dp" />
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Wednesday_label_date"
+                    android:id="@+id/main_todoCardWeekView_Wednesday_label_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dec 08, 2021" />
@@ -193,11 +189,11 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/main_todoCardListView_Wednesday_label"
+                app:layout_constraintStart_toEndOf="@+id/main_todoCardWeekView_Wednesday_label"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/main_todoCardListView_Wednesday_listTask"
+                    android:id="@+id/main_todoCardWeekView_Wednesday_listTask"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -214,7 +210,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_todoCardListView_Thursday_layout"
+            android:id="@+id/main_todoCardWeekView_Thursday_layout"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
@@ -223,10 +219,10 @@
             android:background="@drawable/rectangle_16_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_todoCardListView_Wednesday_layout">
+            app:layout_constraintTop_toBottomOf="@+id/main_todoCardWeekView_Wednesday_layout">
 
             <LinearLayout
-                android:id="@+id/main_todoCardListView_Thursday_label"
+                android:id="@+id/main_todoCardWeekView_Thursday_label"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -237,16 +233,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Thursday_label_name"
+                    android:id="@+id/main_todoCardWeekView_Thursday_label_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:text="Thursday"
                     android:textColor="@color/black"
                     android:textSize="24dp" />
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Thursday_label_date"
+                    android:id="@+id/main_todoCardWeekView_Thursday_label_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dec 09, 2021" />
@@ -260,13 +255,12 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/main_todoCardListView_Thursday_label"
+                app:layout_constraintStart_toEndOf="@+id/main_todoCardWeekView_Thursday_label"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/main_todoCardListView_Thursday_listTask"
+                    android:id="@+id/main_todoCardWeekView_Thursday_listTask"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
@@ -281,7 +275,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_todoCardListView_Friday_layout"
+            android:id="@+id/main_todoCardWeekView_Friday_layout"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
@@ -290,10 +284,10 @@
             android:background="@drawable/rectangle_16_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_todoCardListView_Thursday_layout">
+            app:layout_constraintTop_toBottomOf="@+id/main_todoCardWeekView_Thursday_layout">
 
             <LinearLayout
-                android:id="@+id/main_todoCardListView_Friday_label"
+                android:id="@+id/main_todoCardWeekView_Friday_label"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -304,16 +298,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Friday_label_name"
+                    android:id="@+id/main_todoCardWeekView_Friday_label_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:text="Friday"
                     android:textColor="@color/black"
                     android:textSize="24dp" />
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Friday_label_date"
+                    android:id="@+id/main_todoCardWeekView_Friday_label_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dec 10, 2021" />
@@ -327,11 +320,11 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/main_todoCardListView_Friday_label"
+                app:layout_constraintStart_toEndOf="@+id/main_todoCardWeekView_Friday_label"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/main_todoCardListView_Fridayday_listTask"
+                    android:id="@+id/main_todoCardWeekView_Fridayday_listTask"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -348,7 +341,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_todoCardListView_Saturday_layout"
+            android:id="@+id/main_todoCardWeekView_Saturday_layout"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
@@ -357,10 +350,10 @@
             android:background="@drawable/rectangle_16_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_todoCardListView_Friday_layout">
+            app:layout_constraintTop_toBottomOf="@+id/main_todoCardWeekView_Friday_layout">
 
             <LinearLayout
-                android:id="@+id/main_todoCardListView_Saturday_label"
+                android:id="@+id/main_todoCardWeekView_Saturday_label"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -371,16 +364,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Saturday_label_name"
+                    android:id="@+id/main_todoCardWeekView_Saturday_label_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:text="Saturday"
                     android:textColor="@color/black"
                     android:textSize="24dp" />
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Saturday_label_date"
+                    android:id="@+id/main_todoCardWeekView_Saturday_label_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dec 11, 2021" />
@@ -394,11 +386,11 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/main_todoCardListView_Saturday_label"
+                app:layout_constraintStart_toEndOf="@+id/main_todoCardWeekView_Saturday_label"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/main_todoCardListView_Saturday_listTask"
+                    android:id="@+id/main_todoCardWeekView_Saturday_listTask"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -415,7 +407,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_todoCardListView_Sunday_layout"
+            android:id="@+id/main_todoCardWeekView_Sunday_layout"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
@@ -424,10 +416,10 @@
             android:background="@drawable/rectangle_16_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_todoCardListView_Saturday_layout">
+            app:layout_constraintTop_toBottomOf="@+id/main_todoCardWeekView_Saturday_layout">
 
             <LinearLayout
-                android:id="@+id/main_todoCardListView_Sunday_label"
+                android:id="@+id/main_todoCardWeekView_Sunday_label"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -438,16 +430,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Sunday_label_name"
+                    android:id="@+id/main_todoCardWeekView_Sunday_label_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:text="Sunday"
                     android:textColor="@color/black"
                     android:textSize="24dp" />
 
                 <TextView
-                    android:id="@+id/main_todoCardListView_Sunday_label_date"
+                    android:id="@+id/main_todoCardWeekView_Sunday_label_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dec 12, 2021" />
@@ -461,11 +452,11 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/main_todoCardListView_Sunday_label"
+                app:layout_constraintStart_toEndOf="@+id/main_todoCardWeekView_Sunday_label"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/main_todoCardListView_Sunday_listTask"
+                    android:id="@+id/main_todoCardWeekView_Sunday_listTask"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -481,6 +472,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
