@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,9 +47,19 @@ public class AuthenticatorFragment extends ManagerFragment implements View.OnCli
         {
             String email = mSignInUsernameView.getText().toString();
             String password = mSignInPasswordView.getText().toString();;
-            mAuthenticator.requestSignIn(email, password);
-            if (mAuthenticator.getSignInState() == Authenticator.SignInState.SIGNED_IN) {
-                navController.navigate(R.id.action_authenticatorFragment_to_mainFragment);
+            if (email.equals("") || !email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+                Toast.makeText(MainActivity.getInstance(), "Invalid username", Toast.LENGTH_SHORT).show();
+                mSignInUsernameView.setText("");
+            }
+            else if (password.equals("") || !password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[\\\\.@#$%^&+=])(?=\\S+$).{6,}$")) {
+                Toast.makeText(MainActivity.getInstance(), "Password must contain at least 6 characters, one character and one number", Toast.LENGTH_SHORT).show();
+                mSignInPasswordView.setText("");
+            }
+            else {
+                mAuthenticator.requestSignIn(email, password);
+                if (mAuthenticator.getSignInState() == Authenticator.SignInState.SIGNED_IN) {
+                    navController.navigate(R.id.action_authenticatorFragment_to_mainFragment);
+                }
             }
         } else if (view.getId() == R.id.authentication_signUpButton)
         {
