@@ -102,7 +102,15 @@ public class Notification
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Constructors
     private Notification(String toDoCardId, String name, Type type, DeadlineType deadlineType,
-                         ZonedDateTime deadline, long minutesPrior) { }
+                         ZonedDateTime deadline, long minutesPrior)
+    {
+        mToDoCardId = toDoCardId;
+        mName = name;
+        mType = type;
+        mDeadlineType = deadlineType;
+        mAlarmDeadline = deadline;
+        mMinutesPrior = minutesPrior;
+    }
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

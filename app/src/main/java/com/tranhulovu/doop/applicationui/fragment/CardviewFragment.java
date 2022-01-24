@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.type.DateTime;
 import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.R;
 import com.tranhulovu.doop.todocardsystem.AutogenerationConfirmer;
@@ -18,7 +19,12 @@ import com.tranhulovu.doop.todocardsystem.ToDoCard;
 import com.tranhulovu.doop.todocardsystem.events.Callback;
 
 import java.security.InvalidParameterException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,8 +56,10 @@ public class CardviewFragment extends ManagerFragment {
         MainActivity.getInstance().getCardManager()
                 .getActiveCards(new Callback<List<String>>() {
                     @Override
-                    public void execute(List<String> data) {
+                    public void execute(List<String> data)
+                    {
                         // Show cards with this
+
                     }
                 });
     }
@@ -81,22 +89,63 @@ public class CardviewFragment extends ManagerFragment {
                               int noti,
                               int type,
                               int time,
-                              int till) {
+                              int till)
+    {
         Context context = MainActivity.getInstance();
-        MainActivity.getInstance().getCardManager().createNewCard(new Callback<String>() {
+        MainActivity.getInstance().getCardManager().createNewCard(new Callback<String>()
+        {
             @Override
-            public void execute(String data) {
-                MainActivity.getInstance().getCardManager().getCardModifier(data, new Callback<ToDoCard.Modifier>() {
+            public void execute(String data)
+            {
+                String id = data;
+                MainActivity.getInstance().getCardManager().getCardModifier(data, new Callback<ToDoCard.Modifier>()
+                {
                     @Override
-                    public void execute(ToDoCard.Modifier data) {
-                        Toast.makeText(context, datestart, Toast.LENGTH_SHORT).show();
-                        Toast.makeText(context, dateend, Toast.LENGTH_SHORT).show();
+                    public void execute(ToDoCard.Modifier data)
+                    {
                         data.setName(name);
                         data.setDescription(descrip);
+
+                        DateTimeFormatter wholeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+                        ZonedDateTime stime;
+                        ZonedDateTime etime;
+
+                        try
+                        {
+                            String startWholeString = datestart + " " + timestart;
+                            LocalDateTime local = LocalDateTime.parse(startWholeString, wholeFormatter);
+                            stime = local.atZone(ZoneOffset.systemDefault());
+
+                            String endWholeString = dateend + " " + timeend;
+                            local = LocalDateTime.parse(startWholeString, wholeFormatter);
+                            etime = local.atZone(ZoneOffset.systemDefault());
+
+                        }
+                        catch (Exception e)
+                        {
+                            // Make toast, but do not exit the dialog
+
+                            return;
+                        }
+
                         data.setTimeRange(ZonedDateTime.parse(datestart, ToDoCard.DefaultFormatter),
                                 ZonedDateTime.parse(dateend, ToDoCard.DefaultFormatter));
+
+
                         Notification.Builder b = new Notification.Builder();
 
+                        b.setName(name);
+                        b.setAssociatedCard(id);
+                        b.setType(noti == 0 ? Notification.Type.SILENT :
+                                (noti == 1 ? Notification.Type.NOTIFICATION
+                                    : Notification.Type.ALARM));
+                        b.setDeadlineType(till == 1 ? Notification.DeadlineType.START : Notification.DeadlineType.END);
+                        b.setDeadline(till == 1 ? stime : etime);
+                        b.setMinutesPrior(time == 0 ? 30 : 60);
+                        Notification notif = b.build();
+
+                        data.setNotification(notif);
                         data.build();
 
                         loadCards();
