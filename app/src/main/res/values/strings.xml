@@ -11,12 +11,13 @@
         …
     </string>
     <string name="about">
-        <big><i>Group06 - <b>Tranhulovu</b></i></big> <br/>
-        <br/>
-        <i>19120159 - Trần huy Vũ</i> <br/>
-        <i>19120239 - Đoàn Kim Huy</i> <br/>
-        <i>19120283 - Quách Bình Long</i> <br/>
-        <i>19120405 - Nguyễn Đình Trí</i> <br/>
-        <i>19120449 - Nguyễn Phan Đức Anh</i>
+        <big><i>Group06 - <b>Tranhulovu</b></i></big>
+<!--        <br/>-->
+<!--        <br/>-->
+<!--        <i>19120159 - Trần huy Vũ</i> <br/>-->
+<!--        <i>19120239 - Đoàn Kim Huy</i> <br/>-->
+<!--        <i>19120283 - Quách Bình Long</i> <br/>-->
+<!--        <i>19120405 - Nguyễn Đình Trí</i> <br/>-->
+<!--        <i>19120449 - Nguyễn Phan Đức Anh</i>-->
     </string>
 </resources>
