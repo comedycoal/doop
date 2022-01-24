@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.R;
 import com.tranhulovu.doop.applicationcontrol.Authenticator;
@@ -17,6 +19,9 @@ import com.tranhulovu.doop.applicationcontrol.Authenticator;
 public class AuthenticatorFragment extends ManagerFragment implements View.OnClickListener {
     private NavController navController;
     private Authenticator mAuthenticator;
+
+    private TextInputEditText mSignInUsernameView;
+    private TextInputEditText mSignInPasswordView;
 
     @Nullable
     @Override
@@ -31,25 +36,23 @@ public class AuthenticatorFragment extends ManagerFragment implements View.OnCli
         navController = Navigation.findNavController(view);
         view.findViewById(R.id.authentication_signInButton).setOnClickListener(this);
         view.findViewById(R.id.authentication_signUpButton).setOnClickListener(this);
+        mSignInUsernameView = (TextInputEditText) view.findViewById(R.id.authentication_username);
+        mSignInPasswordView = (TextInputEditText) view.findViewById(R.id.authentication_password);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.authentication_signInButton) {
-            View usernameView = view.findViewById(R.id.authentication_username);
-            String email = usernameView.toString();
-            String password = view.findViewById(R.id.authentication_password).toString();
+        if (view.getId() == R.id.authentication_signInButton)
+        {
+            String email = mSignInUsernameView.getText().toString();
+            String password = mSignInPasswordView.getText().toString();;
             mAuthenticator.requestSignIn(email, password);
             if (mAuthenticator.getSignInState() == Authenticator.SignInState.SIGNED_IN) {
                 navController.navigate(R.id.action_authenticatorFragment_to_mainFragment);
             }
-        } else if (view.getId() == R.id.authentication_signUpButton) {
-            String email = view.findViewById(R.id.authentication_email).toString();
-            String password = view.findViewById(R.id.authentication_password).toString();
-            mAuthenticator.requestSignUp(email, password);
-            if (mAuthenticator.getSignInState() == Authenticator.SignInState.SIGNED_UP) {
-                navController.navigate(R.id.action_authenticatorFragment_to_signupFragment);
-            }
+        } else if (view.getId() == R.id.authentication_signUpButton)
+        {
+            navController.navigate(R.id.action_authenticatorFragment_to_signupFragment);
         }
     }
 }

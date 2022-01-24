@@ -61,7 +61,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/authentication_username"
+                android:id="@+id/authentication_signup_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -88,7 +88,7 @@
             app:layout_constraintTop_toBottomOf="@+id/authentication_username_layout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/authentication_email"
+                android:id="@+id/authentication_signup_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -115,7 +115,7 @@
             app:layout_constraintTop_toBottomOf="@+id/authentication_email_layout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/authentication_password"
+                android:id="@+id/authentication_signup_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -143,7 +143,7 @@
             app:layout_constraintTop_toBottomOf="@+id/authentication_password_layout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/authentication_confirmPassword"
+                android:id="@+id/authentication_signup_confirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
