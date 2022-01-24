@@ -64,11 +64,16 @@ public class CardManager
 
         mNeedsWritingCards = new HashSet<>();
 
+        debugMode = true;
+
         onCreate();
     }
 
     private void onCreate()
     {
+        if (debugMode)
+            return;
+
         // Get list of card ids
         List<String> ids = mLocalAccessor.getAddCardIDs();
 

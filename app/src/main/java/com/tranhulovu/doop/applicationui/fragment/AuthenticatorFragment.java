@@ -36,7 +36,8 @@ public class AuthenticatorFragment extends ManagerFragment implements View.OnCli
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.authentication_signInButton) {
-            String email = view.findViewById(R.id.authentication_username).toString();
+            View usernameView = view.findViewById(R.id.authentication_username);
+            String email = usernameView.toString();
             String password = view.findViewById(R.id.authentication_password).toString();
             mAuthenticator.requestSignIn(email, password);
             if (mAuthenticator.getSignInState() == Authenticator.SignInState.SIGNED_IN) {
