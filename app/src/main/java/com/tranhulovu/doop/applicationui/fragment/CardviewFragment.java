@@ -138,7 +138,7 @@ public class CardviewFragment extends ManagerFragment {
                         b.setName(name);
                         b.setAssociatedCard(id);
                         b.setType(noti == 0 ? Notification.Type.SILENT :
-                                (noti == 1 ? Notification.Type.NOTIFICATION
+                                (type == 1 ? Notification.Type.NOTIFICATION
                                     : Notification.Type.ALARM));
                         b.setDeadlineType(till == 1 ? Notification.DeadlineType.START : Notification.DeadlineType.END);
                         b.setDeadline(till == 1 ? stime : etime);
