@@ -34,5 +34,20 @@
         <action
             android:id="@+id/action_mainFragment_to_authenticatorFragment"
             app:destination="@id/authenticatorFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_statisticsFragment"
+            app:destination="@id/statisticsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.tranhulovu.doop.applicationui.fragment.SettingsFragment"
+        android:label="settingsfragment"
+        tools:layout="@layout/settingsfragment" />
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.tranhulovu.doop.applicationui.fragment.StatisticsFragment"
+        android:label="StatisticsFragment" />
 </navigation>

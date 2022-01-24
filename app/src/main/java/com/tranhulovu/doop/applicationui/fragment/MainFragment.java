@@ -4,18 +4,15 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +32,6 @@ import com.tranhulovu.doop.applicationcontrol.Authenticator;
 import com.tranhulovu.doop.applicationui.ViewPagerAdapter;
 
 import java.util.Calendar;
-import java.util.Set;
 
 public class MainFragment extends ManagerFragment implements View.OnClickListener {
     private BottomNavigationView mTopNavigation;
@@ -122,121 +118,115 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.FABChangeView:
-                if (CardviewFragment.getInstance() != null)
-                    CardviewFragment.getInstance().changeView();
-                break;
-            case R.id.floatingAction:
-                if (mFABclicked) {
-                    mFABAdd.hide();
-                    mFABSmartAdd.hide();
-                    mFABChangeView.hide();
-                    mFABFilter.hide();
-                } else {
-                    mFABAdd.show();
-                    mFABSmartAdd.show();
-                    mFABChangeView.show();
-                    mFABFilter.show();
+        if (view.getId() == R.id.FABChangeView) {
+            if (CardviewFragment.getInstance() != null)
+                CardviewFragment.getInstance().changeView();
+        } else if (view.getId() == R.id.floatingAction) {
+            if (mFABclicked) {
+                mFABAdd.hide();
+                mFABSmartAdd.hide();
+                mFABChangeView.hide();
+                mFABFilter.hide();
+            } else {
+                mFABAdd.show();
+                mFABSmartAdd.show();
+                mFABChangeView.show();
+                mFABFilter.show();
+            }
+            mFABclicked = !mFABclicked;
+        }
+        else if (view.getId() == R.id.FABSmartAdd) {
+            dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.dialog_smart_add);
+            TextInputLayout textInputLayout = dialog.findViewById(R.id.smartAddinput);
+            String code = textInputLayout.getEditText().getText().toString();
+            dialog.findViewById(R.id.buttonDoneAutoAdd).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (CardviewFragment.getInstance() != null)
+                        CardviewFragment.getInstance().actionAutoAddCard(code);
+                    dialog.dismiss();
                 }
-                mFABclicked = !mFABclicked;
-                break;
-            case R.id.FABSmartAdd:
-
-                dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.dialog_smart_add);
-                TextInputLayout textInputLayout = dialog.findViewById(R.id.smartAddinput);
-                String code = textInputLayout.getEditText().getText().toString();
-                dialog.findViewById(R.id.buttonDoneAutoAdd).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (CardviewFragment.getInstance() != null)
-                            CardviewFragment.getInstance().actionAutoAddCard(code);
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-                break;
-            case R.id.FABAdd:
-                dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.dialog_add);
-                //dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.findViewById(R.id.Date_start).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TextView d = dialog.findViewById(R.id.Date_start);
-                        showDatePickerDialog(d);
-                    }
-                });
-                dialog.findViewById(R.id.Date_end).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TextView d = dialog.findViewById(R.id.Date_end);
-                        showDatePickerDialog(d);
-                    }
-                });
-                dialog.findViewById(R.id.Time_start).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TextView d = dialog.findViewById(R.id.Time_start);
-                        showTimePickerDialog(d);
-                    }
-                });
-                dialog.findViewById(R.id.Time_end).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TextView d = dialog.findViewById(R.id.Time_end);
-                        showTimePickerDialog(d);
-                    }
-                });
-                dialog.findViewById(R.id.buttonDoneAdd).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TextInputLayout textInputLayout = dialog.findViewById(R.id.addCardName);
-                        String name = textInputLayout.getEditText().getText().toString();
-                        textInputLayout = dialog.findViewById(R.id.addDescription);
-                        String description = textInputLayout.getEditText().getText().toString();
-                        TextView inf = dialog.findViewById(R.id.Date_start);
-                        String datestart = inf.getText().toString();
-                        inf = dialog.findViewById(R.id.Time_start);
-                        String timestart = inf.getText().toString();
-                        inf = dialog.findViewById(R.id.Date_end);
-                        String dateend = inf.getText().toString();
-                        inf = dialog.findViewById(R.id.Time_end);
-                        String timeend = inf.getText().toString();
-                        int noti = 1;
-                        int type = 0;
-                        int time = 1;
-                        int till = 1;
-                        if (CardviewFragment.getInstance() != null)
-                            CardviewFragment.getInstance().actionAddCard(name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-                break;
-            case R.id.FABFilter:
-                dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.dialog_filter);
-                //dialog3.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                Spinner spinnerFilter = dialog.findViewById(R.id.spinnerFilter);
-                String[] items1 = new String[]{"1", "2", "three"};
-                ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items1);
-                spinnerFilter.setAdapter(adapter1);
-                Spinner spinnerSort = dialog.findViewById(R.id.spinnerSort);
-                String[] items2 = new String[]{"ASC", "DES"};
-                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items2);
-                spinnerSort.setAdapter(adapter2);
-                dialog.findViewById(R.id.buttonDoneFilter).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                        if (CardviewFragment.getInstance() != null)
-                            CardviewFragment.getInstance().actionFilter(spinnerFilter.getSelectedItem().toString(), spinnerSort.getSelectedItem().toString());
-                    }
-                });
-                dialog.show();
-                break;
+            });
+            dialog.show();
+        }
+        else if (view.getId() == R.id.FABAdd) {
+            dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.dialog_add);
+            dialog.findViewById(R.id.Date_start).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView d = dialog.findViewById(R.id.Date_start);
+                    showDatePickerDialog(d);
+                }
+            });
+            dialog.findViewById(R.id.Date_end).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView d = dialog.findViewById(R.id.Date_end);
+                    showDatePickerDialog(d);
+                }
+            });
+            dialog.findViewById(R.id.Time_start).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView d = dialog.findViewById(R.id.Time_start);
+                    showTimePickerDialog(d);
+                }
+            });
+            dialog.findViewById(R.id.Time_end).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView d = dialog.findViewById(R.id.Time_end);
+                    showTimePickerDialog(d);
+                }
+            });
+            dialog.findViewById(R.id.buttonDoneAdd).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextInputLayout textInputLayout = dialog.findViewById(R.id.addCardName);
+                    String name = textInputLayout.getEditText().getText().toString();
+                    textInputLayout = dialog.findViewById(R.id.addDescription);
+                    String description = textInputLayout.getEditText().getText().toString();
+                    TextView inf = dialog.findViewById(R.id.Date_start);
+                    String datestart = inf.getText().toString();
+                    inf = dialog.findViewById(R.id.Time_start);
+                    String timestart = inf.getText().toString();
+                    inf = dialog.findViewById(R.id.Date_end);
+                    String dateend = inf.getText().toString();
+                    inf = dialog.findViewById(R.id.Time_end);
+                    String timeend = inf.getText().toString();
+                    int noti = 1;
+                    int type = 0;
+                    int time = 1;
+                    int till = 1;
+                    if (CardviewFragment.getInstance() != null)
+                        CardviewFragment.getInstance().actionAddCard(name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+        else if (view.getId() == R.id.FABFilter) {
+            dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.dialog_filter);
+            Spinner spinnerFilter = dialog.findViewById(R.id.spinnerFilter);
+            String[] items1 = new String[]{"1", "2", "three"};
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items1);
+            spinnerFilter.setAdapter(adapter1);
+            Spinner spinnerSort = dialog.findViewById(R.id.spinnerSort);
+            String[] items2 = new String[]{"ASC", "DES"};
+            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items2);
+            spinnerSort.setAdapter(adapter2);
+            dialog.findViewById(R.id.buttonDoneFilter).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    if (CardviewFragment.getInstance() != null)
+                        CardviewFragment.getInstance().actionFilter(spinnerFilter.getSelectedItem().toString(), spinnerSort.getSelectedItem().toString());
+                }
+            });
+            dialog.show();
         }
     }
 
