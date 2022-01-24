@@ -18,7 +18,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.tranhulovu.doop.R;
 
 public class SettingsFragment extends ManagerFragment {
-    private NavController navController;
+    //private NavController navController;
 
     @Nullable
     @Override
@@ -86,15 +86,15 @@ public class SettingsFragment extends ManagerFragment {
             }
         });
 
-        navController = Navigation.findNavController(view);
-        MaterialCardView logoutButton = view.findViewById(R.id.settings_logOut);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.getAuthenticator().requestSignOut();
-                navController.navigate(R.id.action_mainFragment_to_authenticatorFragment);
-            }
-        });
+//        navController = Navigation.findNavController(view);
+//        MaterialCardView logoutButton = view.findViewById(R.id.settings_logOut);
+//        logoutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MainActivity.getAuthenticator().requestSignOut();
+//                navController.navigate(R.id.action_mainFragment_to_authenticatorFragment);
+//            }
+//        });
 
     }
 }
