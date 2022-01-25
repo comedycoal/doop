@@ -154,6 +154,14 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                                     @SuppressLint("SimpleDateFormat") SimpleDateFormat sttf = new SimpleDateFormat("a");
                                     String timetype = sttf.format(x);
                                     mTimeType.setText(timetype);
+
+                                    mUrgent = view.findViewById(R.id.urgent);
+                                    int urgentcount = MainActivity.getInstance().getCardManager().getUrgentCount();
+                                    mUrgent.setText(urgentcount > 1 ? urgentcount + " Urgent Tasks " : urgentcount + " Urgent Task ");
+
+                                    mOverdue = view.findViewById(R.id.overdue);
+                                    int overduecount = MainActivity.getInstance().getCardManager().getOverdueCount();
+                                    mOverdue.setText(overduecount > 1 ? overduecount + " Overdued Tasks " : overduecount + " Overdued Task ");
                                 }
                             });
                         }
@@ -161,14 +169,6 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                     catch (InterruptedException ignored){ }
                 }
             }.start();
-
-            mUrgent = view.findViewById(R.id.urgent);
-            int urgentcount = MainActivity.getInstance().getCardManager().getUrgentCount();
-            mUrgent.setText(urgentcount > 1 ? urgentcount + " Urgent Tasks " : urgentcount + " Urgent Task ");
-
-            mOverdue = view.findViewById(R.id.overdue);
-            int overduecount = MainActivity.getInstance().getCardManager().getOverdueCount();
-            mOverdue.setText(overduecount > 1 ? overduecount + " Overdued Tasks " : overduecount + " Overdued Task ");
         }
     }
 
