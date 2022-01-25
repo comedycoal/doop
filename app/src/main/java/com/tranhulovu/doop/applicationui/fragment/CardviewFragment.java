@@ -230,6 +230,13 @@ public class CardviewFragment extends ManagerFragment {
                         b.setDeadlineType(till == 1 ? Notification.DeadlineType.START : Notification.DeadlineType.END);
                         b.setDeadline(till == 1 ? finalStime : finalEtime);
                         b.setMinutesPrior(time == 0 ? 30 : 60);
+
+                        boolean validNotif = (till == 1 && finalStime.minusMinutes(time).isAfter(ZonedDateTime.now()))
+                                        || (till == 0 && finalEtime.minusMinutes(time).isAfter(ZonedDateTime.now()));
+
+                        if (!validNotif)
+                            b.setType(Notification.Type.SILENT);
+
                         Notification notif = b.build();
 
                         data.setNotification(notif);
@@ -433,6 +440,13 @@ public class CardviewFragment extends ManagerFragment {
                 b.setDeadlineType(till == 1 ? Notification.DeadlineType.START : Notification.DeadlineType.END);
                 b.setDeadline(till == 1 ? finalStime : finalEtime);
                 b.setMinutesPrior(time == 0 ? 30 : 60);
+
+                boolean validNotif = (till == 1 && finalStime.minusMinutes(time).isAfter(ZonedDateTime.now()))
+                        || (till == 0 && finalEtime.minusMinutes(time).isAfter(ZonedDateTime.now()));
+
+                if (!validNotif)
+                    b.setType(Notification.Type.SILENT);
+
                 Notification notif = b.build();
 
                 data.setNotification(notif);
