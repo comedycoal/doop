@@ -1,5 +1,8 @@
 package com.tranhulovu.doop;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,13 +15,14 @@ import com.tranhulovu.doop.applicationcontrol.UserManager;
 import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
 import com.tranhulovu.doop.onlinedatabase.OnlineDatabaseAccessor;
 import com.tranhulovu.doop.todocardsystem.CardManager;
-import com.tranhulovu.doop.todocardsystem.NotificationManager;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mNavigationView;
     private ViewPager2 mViewpager2;
 
     private static MainActivity instance;
+
+    private String CHANNEL_ID = "com.doop.tranhulovu";
 
     public static MainActivity getInstance() {
         if (instance == null) {
@@ -28,6 +32,28 @@ public class MainActivity extends AppCompatActivity {
         return instance;
     }
 
+    public String getAppNotificationChannelId()
+    {
+        return CHANNEL_ID;
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = "com.tranhulovu.doop";
+            String description = "Notification channel for com.tranhulovu.doop";
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(description);
+
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        createNotificationChannel();
         initialize();
 
 //        mNavigationView = findViewById(R.id.bottom_nav);
@@ -88,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
     private final SettingManager mSettingManager = new SettingManager(this);
 
     private final LocalAccessorFacade mAccessor = new LocalAccessorFacade();
-    private final NotificationManager mNotifManager = new NotificationManager(mAccessor, this);
+    private final com.tranhulovu.doop.todocardsystem.NotificationManager mNotifManager
+            = new com.tranhulovu.doop.todocardsystem.NotificationManager(mAccessor, this);
     private final CardManager mCardManager = new CardManager(mNotifManager, mAccessor);
 
     public static Authenticator getAuthenticator() {

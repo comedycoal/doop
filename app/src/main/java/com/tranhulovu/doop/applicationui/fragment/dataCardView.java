@@ -8,7 +8,8 @@ public class dataCardView {
     public String status;
     public String notification;
 
-    public dataCardView(    String name,
+    public dataCardView(
+            String name,
             String description,
             String start,
             String end,
@@ -18,6 +19,7 @@ public class dataCardView {
         this.description=description;
         this.start=start;
         this.end=end;
+        this.status = status;
         this.notification=notification;
     }
 }

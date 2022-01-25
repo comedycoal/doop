@@ -175,4 +175,23 @@ public class Notification
     {
         return mAlarmDeadline.minusMinutes(mMinutesPrior);
     }
+
+    public String getStringMessage()
+    {
+        String time = "";
+        if (mMinutesPrior < 60)
+            time += String.valueOf(mMinutesPrior) + "m";
+        else
+            time += String.valueOf(mMinutesPrior / 60) + "h";
+
+        time += " till ";
+
+        if (mDeadlineType == DeadlineType.START)
+            time += "start";
+        else
+            time += "due";
+
+        return time;
+    }
+
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="20dp"
+    android:paddingBottom="80dp"
     android:background="@color/main_window">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:text="Monday"
                     android:textColor="@color/black"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/main_todoCardWeekView_Monday_label_date"
@@ -63,7 +63,7 @@
                 <LinearLayout
                     android:id="@+id/main_todoCardWeekView_Monday_listTask"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:text="Tuesday"
                     android:textColor="@color/black"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/main_todoCardWeekView_Tuesday_label_date"
@@ -129,7 +129,7 @@
                 <LinearLayout
                     android:id="@+id/main_todoCardWeekView_Tuesday_listTask"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:text="Wednesday"
                     android:textColor="@color/black"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/main_todoCardWeekView_Wednesday_label_date"
@@ -195,7 +195,7 @@
                 <LinearLayout
                     android:id="@+id/main_todoCardWeekView_Wednesday_listTask"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -238,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:text="Thursday"
                     android:textColor="@color/black"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/main_todoCardWeekView_Thursday_label_date"
@@ -261,6 +261,7 @@
                 <LinearLayout
                     android:id="@+id/main_todoCardWeekView_Thursday_listTask"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -324,9 +325,9 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/main_todoCardWeekView_Fridayday_listTask"
+                    android:id="@+id/main_todoCardWeekView_Friday_listTask"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -369,7 +370,7 @@
                     android:layout_height="wrap_content"
                     android:text="Saturday"
                     android:textColor="@color/black"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/main_todoCardWeekView_Saturday_label_date"
@@ -392,7 +393,7 @@
                 <LinearLayout
                     android:id="@+id/main_todoCardWeekView_Saturday_listTask"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -435,7 +436,7 @@
                     android:layout_height="wrap_content"
                     android:text="Sunday"
                     android:textColor="@color/black"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/main_todoCardWeekView_Sunday_label_date"
@@ -458,7 +459,7 @@
                 <LinearLayout
                     android:id="@+id/main_todoCardWeekView_Sunday_listTask"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView

@@ -664,7 +664,7 @@ public class ToDoCard implements StringFieldGetter
         map.put("start", this.getStart());
         map.put("end", this.getEnd());
         map.put("status", this.getStatus());
-        map.put("notification", this.getNotification().toMap());
+        map.put("notification", this.getNotification());
         return map;
     }
 

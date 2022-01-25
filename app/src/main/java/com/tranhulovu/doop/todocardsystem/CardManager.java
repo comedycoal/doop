@@ -1,5 +1,7 @@
 package com.tranhulovu.doop.todocardsystem;
 
+import android.app.Activity;
+
 import com.tranhulovu.doop.localdatabase.LocalAccessorFacade;
 import com.tranhulovu.doop.todocardsystem.events.Callback;
 import com.tranhulovu.doop.todocardsystem.filter.FilterOption;
@@ -296,7 +298,9 @@ public class CardManager
             List<String> lines = ParserUtilities.splitLines(textToParse);
             List<TaskFitter.Task> tasks = new ArrayList<>();
 
-            String firstLine = lines.remove(0);
+            String firstLine = lines.get(0);
+            lines = new ArrayList<>(lines);
+            lines.remove(0);
             TaskFitter.Task dummy = ParserUtilities.getTask
                     (ParserUtilities.splitIntoTokens(firstLine), null);
 
@@ -443,7 +447,7 @@ public class CardManager
      * sorted by default sorting method (by Due time).
      * @param onFetchedCallback {@code Callback} to be invoked with the fetched ID list.
      */
-    public void getActiveCards(Callback<List<String>> onFetchedCallback)
+    public void getActiveCards(Callback<List<Map<String, Object>>> onFetchedCallback, Activity activity)
     {
         Runnable task = () ->
         {
@@ -462,12 +466,18 @@ public class CardManager
                     .map(Map.Entry::getKey)
                     .collect(Collectors.toList());
 
+            List<Map<String, Object>> infos = new ArrayList<>();
+
+            for (String id : list)
+            {
+                infos.add(mCards.get(id).toMap());
+            }
+
             if (onFetchedCallback != null)
-                onFetchedCallback.execute(list);
+                onFetchedCallback.execute(infos);
         };
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(task);
+        activity.runOnUiThread(task);
     }
 
     /**
