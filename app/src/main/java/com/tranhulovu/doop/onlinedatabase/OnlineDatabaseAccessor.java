@@ -1,6 +1,8 @@
 package com.tranhulovu.doop.onlinedatabase;
 
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -12,6 +14,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.applicationcontrol.Authenticator;
 
 import java.util.Date;
@@ -25,6 +28,8 @@ public class OnlineDatabaseAccessor {
     private String mUserID;
     private UserProfile mCachedUserProfile;
     private Statistics mCachedStatistics;
+
+    private static String onlineDBTAG = "onlinedb";
 
     /**
     * This init an Online Database Accessor to manipulate data stored in Firebase with
@@ -47,6 +52,14 @@ public class OnlineDatabaseAccessor {
 
     public String getOnlineUserID() {
         return mUserID;
+    }
+
+    public String getUsername() {
+        return mCachedUserProfile.getFullName();
+    }
+
+    public String getUserEmail() {
+        return mFirebaseUser.getEmail();
     }
 
     public UserProfile getUserProfile() {
@@ -72,14 +85,13 @@ public class OnlineDatabaseAccessor {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            // TODO: Show successful messages
+                            Log.d(onlineDBTAG, "modifyUserProfile:success");
+                            Toast.makeText(MainActivity.getInstance(), "User profile modified", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // TODO: Show error messages
+                        else {
+                            Log.d(onlineDBTAG, "modifyUserProfile:failure");
+                            Toast.makeText(MainActivity.getInstance(), "Failed to modify user profile", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }

@@ -46,7 +46,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
-            android:hint="Username"
+            android:hint="Full name"
             android:padding="5dp"
             app:boxStrokeColor="@color/highlight_red"
             app:boxCornerRadiusBottomEnd="12dp"

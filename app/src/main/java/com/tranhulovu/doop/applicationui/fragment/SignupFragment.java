@@ -69,7 +69,7 @@ public class SignupFragment extends ManagerFragment implements View.OnClickListe
             }
             else {
                 mAuthenticator = MainActivity.getAuthenticator();
-                mAuthenticator.requestSignUp(email, password);
+                mAuthenticator.requestSignUp(email, password, username);
                 if (mAuthenticator.getSignInState() == Authenticator.SignInState.SIGNED_UP) {
                     navController.popBackStack();
                 }

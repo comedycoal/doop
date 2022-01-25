@@ -18,9 +18,11 @@ import androidx.navigation.Navigation;
 import com.tranhulovu.doop.MainActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.tranhulovu.doop.R;
+import com.tranhulovu.doop.onlinedatabase.OnlineDatabaseAccessor;
 
 public class SettingsFragment extends ManagerFragment {
 //    private NavController navController;
+    private OnlineDatabaseAccessor mOnlineDatabaseAccessor;
 
     @Nullable
     @Override
@@ -50,6 +52,7 @@ public class SettingsFragment extends ManagerFragment {
             }
         });
 
+        MaterialCardView userInfo = view.findViewById(R.id.settings_userinfo);
         MaterialCardView autoArchiveCard = view.findViewById(R.id.settings_autoArchiveCard);
         ImageView autoArchiveCardIcon = view.findViewById(R.id.settings_autoArchiveCard_icon);
         TextView autoArchiveCardState = view.findViewById(R.id.settings_autoArchiveCard_state);
@@ -87,6 +90,12 @@ public class SettingsFragment extends ManagerFragment {
                 about_info.setVisibility((about_info.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
             }
         });
+
+        TextView username = userInfo.findViewById(R.id.settings_username);
+        TextView email = userInfo.findViewById(R.id.settings_useremail);
+        mOnlineDatabaseAccessor = new OnlineDatabaseAccessor(MainActivity.getAuthenticator());
+        username.setText(mOnlineDatabaseAccessor.getUsername());
+        email.setText(mOnlineDatabaseAccessor.getUserEmail());
 
 //        navController = Navigation.findNavController(view);
 //        MaterialCardView logoutButton = view.findViewById(R.id.settings_logOut);

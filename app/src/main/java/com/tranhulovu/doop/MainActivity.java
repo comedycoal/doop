@@ -127,6 +127,10 @@ public class MainActivity extends AppCompatActivity {
         return mCardManager;
     }
 
+    public static OnlineDatabaseAccessor getOnlineDatabaseAccessor() {
+        return getInstance().mOnlineDatabaseAccessor;
+    }
+
     public void initialize() {
 
     }
