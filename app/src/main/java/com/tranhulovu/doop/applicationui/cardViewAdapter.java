@@ -32,6 +32,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,8 +62,8 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
             return;
         }
         holder.name.setText(mDatacardview.name);
-        holder.start.setText(mDatacardview.start);
-        holder.end.setText(mDatacardview.end);
+        holder.start.setText("Start " + mDatacardview.start.format(DateTimeFormatter.ofPattern("h:mm a MMM dd")));
+        holder.end.setText("Due " + mDatacardview.end.format(DateTimeFormatter.ofPattern("h:mm a MMM dd")));
         holder.descrip.setText(mDatacardview.description);
         if (mDatacardview.status == "DONE")
             holder.mCheckButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check_on, 0, 0 , 0);

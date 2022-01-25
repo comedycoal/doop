@@ -76,8 +76,8 @@ public class CardviewFragment extends ManagerFragment {
                         (String)e.get("id"),
                         (String)e.get("name"),
                         (String)e.get("description"),
-                        "Start " + ((ZonedDateTime)e.get("start")).format(DateTimeFormatter.ofPattern("HH:mma MMM dd yyyy")),
-                        "Due " + ((ZonedDateTime)e.get("end")).format(DateTimeFormatter.ofPattern("HH:mma MMM dd yyyy")),
+                        (ZonedDateTime)e.get("start"),
+                        (ZonedDateTime)e.get("end"),
                         ((ToDoCard.CheckStatus)e.get("status")).name(),
                         ((Notification)e.get("notification")).getStringMessage(),
                         ((Notification)e.get("notification")).getType().name()))
