@@ -65,7 +65,7 @@ public class CardviewFragment extends ManagerFragment {
         mrecyclerView.setLayoutManager(gridLayoutManager);
 
         // Temporarily set to empty, wait for CardManager to return the card list
-        cardViewAdapter adapter = new cardViewAdapter(this, new ArrayList<>());
+        cardViewAdapter adapter = new cardViewAdapter(this, new ArrayList<>(),getActivity());
 
         mFetchCallback = new Callback<List<Map<String, Object>>>()
         {
