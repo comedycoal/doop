@@ -263,21 +263,21 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
                         t= holder.dialog.findViewById(R.id.timelineNoti);
                         if(t.getText().toString()=="Start time")
                             till=1;
-//                    String s=name+description+datestart+datestart+timestart;
-//                    Toast.makeText(MainActivity.getInstance(), s, Toast.LENGTH_SHORT).show();
-                        if (CardviewFragment.getInstance() != null)
-                            CardviewFragment.getInstance().actionAddCard(holder.dialog, name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
+                        if (CardviewFragment.getInstance() != null){
+                            // Code here id = mDatacardview.id data follow below ----v
+                        }
+                        //    CardviewFragment.getInstance().actionAddCard(holder.dialog, name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
                     }
                 });
                 inf = holder.dialog.findViewById(R.id.Date_start);
                 //Toast.makeText(MainActivity.getInstance(), mDatacardview.start, Toast.LENGTH_SHORT).show();
-                inf.setText(mDatacardview.name);
+                inf.setText(mDatacardview.getStartDate());
                 inf = holder.dialog.findViewById(R.id.Time_start);
-                inf.setText(mDatacardview.name);
+                inf.setText(mDatacardview.getStartTime());
                 inf = holder.dialog.findViewById(R.id.Date_end);
-                inf.setText(mDatacardview.name);
+                inf.setText(mDatacardview.getEndDate());
                 inf = holder.dialog.findViewById(R.id.Time_end);
-                inf.setText(mDatacardview.name);
+                inf.setText(mDatacardview.getEndTime());
                 holder.dialog.show();
                 return true;
             }

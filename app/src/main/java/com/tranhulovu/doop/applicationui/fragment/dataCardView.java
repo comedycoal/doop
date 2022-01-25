@@ -36,21 +36,21 @@ public class dataCardView
 
     public String getStartDate()
     {
-        return start.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return start.format(DateTimeFormatter.ofPattern("y/M/d"));
     }
 
     public String getStartTime()
     {
-        return start.format(DateTimeFormatter.ofPattern("hh:mm"));
+        return start.format(DateTimeFormatter.ofPattern("h:m"));
     }
 
     public String getEndDate()
     {
-        return end.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return end.format(DateTimeFormatter.ofPattern("y/M/d"));
     }
 
     public String getEndTime()
     {
-        return end.format(DateTimeFormatter.ofPattern("hh:mm"));
+        return end.format(DateTimeFormatter.ofPattern("h:m"));
     }
 }

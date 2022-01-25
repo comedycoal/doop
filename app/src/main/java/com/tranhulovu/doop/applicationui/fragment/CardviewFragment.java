@@ -145,7 +145,7 @@ public class CardviewFragment extends ManagerFragment {
     {
         Context context = MainActivity.getInstance();
 
-        DateTimeFormatter wholeFormatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+        DateTimeFormatter wholeFormatter = DateTimeFormatter.ofPattern("yyyy/M/d H:mm");
 
         ZonedDateTime stime = ZonedDateTime.now();
         ZonedDateTime etime = stime;
@@ -161,7 +161,7 @@ public class CardviewFragment extends ManagerFragment {
         {
             try
             {
-                String startWholeString = datestart + " " + timestart.trim();
+                String startWholeString = datestart.trim() + " " + timestart.trim();
                 LocalDateTime local = LocalDateTime.parse(startWholeString, wholeFormatter);
                 stime = local.atZone(ZoneOffset.systemDefault());
             }
@@ -175,7 +175,7 @@ public class CardviewFragment extends ManagerFragment {
 
             try
             {
-                String endWholeString = dateend + " " + timeend.trim();
+                String endWholeString = dateend.trim() + " " + timeend.trim();
                 LocalDateTime local = LocalDateTime.parse(endWholeString, wholeFormatter);
                 etime = local.atZone(ZoneOffset.systemDefault());
             }
