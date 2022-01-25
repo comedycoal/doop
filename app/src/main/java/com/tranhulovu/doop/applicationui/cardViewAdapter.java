@@ -120,7 +120,6 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
                 inf=holder.dialog.findViewById(R.id.addOrEdit);
                 inf.setText("Edit card");
 
-
                 Button bt;
                 TextView tt;
 
@@ -266,6 +265,20 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
                             till=1;
                         if (CardviewFragment.getInstance() != null){
                             // Code here id = mDatacardview.id data follow below ----v
+                            mCardViewFragment.actionEdit(
+                                    holder.dialog,
+                                    mDatacardview.id,
+                                    name,
+                                    description,
+                                    datestart,
+                                    timestart,
+                                    dateend,
+                                    timeend,
+                                    noti,
+                                    type,
+                                    time,
+                                    till
+                            );
                         }
                         //    CardviewFragment.getInstance().actionAddCard(holder.dialog, name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
                     }

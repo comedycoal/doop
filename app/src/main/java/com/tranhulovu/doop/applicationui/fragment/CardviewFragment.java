@@ -339,8 +339,107 @@ public class CardviewFragment extends ManagerFragment {
         }, MainActivity.getInstance());
     }
 
-    public void actionEdit(String cardId)
+    public void actionEdit(Dialog addDialog,
+                           String cardId,
+                           String name,
+                           String descrip,
+                           String datestart,
+                           String timestart,
+                           String dateend,
+                           String timeend,
+                           int noti,
+                           int type,
+                           int time,
+                           int till)
     {
+        Context context = MainActivity.getInstance();
 
+        DateTimeFormatter wholeFormatter = DateTimeFormatter.ofPattern("yyyy/M/d H:m");
+
+        ZonedDateTime stime = ZonedDateTime.now();
+        ZonedDateTime etime = stime;
+
+        String error = "";
+        boolean success = true;
+        if (name.isEmpty())
+        {
+            success = false;
+            error = "Please enter card's name";
+        }
+        else
+        {
+            try
+            {
+                String startWholeString = datestart.trim() + " " + timestart.trim();
+                LocalDateTime local = LocalDateTime.parse(startWholeString, wholeFormatter);
+                stime = local.atZone(ZoneOffset.systemDefault());
+            }
+            catch (Exception e)
+            {
+                error = "Invalid start time";
+                success = false;
+                stime = ZonedDateTime.now().withMinute(ZonedDateTime.now().getMinute() / 10 * 10);
+                throw e;
+            }
+
+            try
+            {
+                String endWholeString = dateend.trim() + " " + timeend.trim();
+                LocalDateTime local = LocalDateTime.parse(endWholeString, wholeFormatter);
+                etime = local.atZone(ZoneOffset.systemDefault());
+            }
+            catch (Exception e)
+            {
+                error = "Invalid end time";
+                success = false;
+            }
+
+            if (stime.compareTo(etime) > 0)
+            {
+                error = "Error: end time is after start time.";
+                success = false;
+            }
+        }
+
+        if (!success)
+        {
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        addDialog.dismiss();
+
+        final ZonedDateTime finalStime = stime;
+        final ZonedDateTime finalEtime = etime;
+
+        MainActivity.getInstance().getCardManager().getCardModifier(cardId, new Callback<ToDoCard.Modifier>()
+        {
+            @Override
+            public void execute(ToDoCard.Modifier data)
+            {
+
+                data.setName(name);
+                data.setDescription(descrip);
+
+                data.setTimeRange(finalStime, finalEtime);
+
+                Notification.Builder b = new Notification.Builder();
+
+                b.setName(name);
+                b.setAssociatedCard(cardId);
+                b.setType(noti == 0 ? Notification.Type.SILENT :
+                        (type == 1 ? Notification.Type.NOTIFICATION
+                                : Notification.Type.ALARM));
+                b.setDeadlineType(till == 1 ? Notification.DeadlineType.START : Notification.DeadlineType.END);
+                b.setDeadline(till == 1 ? finalStime : finalEtime);
+                b.setMinutesPrior(time == 0 ? 30 : 60);
+                Notification notif = b.build();
+
+                data.setNotification(notif);
+                data.build();
+
+                loadCards();
+            }
+        }, MainActivity.getInstance());
     }
 }
