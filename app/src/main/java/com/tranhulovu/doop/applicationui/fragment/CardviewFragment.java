@@ -145,7 +145,7 @@ public class CardviewFragment extends ManagerFragment {
     {
         Context context = MainActivity.getInstance();
 
-        DateTimeFormatter wholeFormatter = DateTimeFormatter.ofPattern("yyyy/M/d H:mm");
+        DateTimeFormatter wholeFormatter = DateTimeFormatter.ofPattern("yyyy/M/d H:m");
 
         ZonedDateTime stime = ZonedDateTime.now();
         ZonedDateTime etime = stime;

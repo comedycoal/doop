@@ -1,6 +1,9 @@
 package com.tranhulovu.doop.applicationcontrol;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -9,6 +12,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.tranhulovu.doop.MainActivity;
+import com.tranhulovu.doop.R;
+import com.tranhulovu.doop.onlinedatabase.OnlineDatabaseAccessor;
 
 public class Authenticator {
     public enum SignInState {
@@ -21,10 +28,12 @@ public class Authenticator {
 
     private SignInState mSignInState;
     private final FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
 
     public Authenticator() {
         mFirebaseAuth = FirebaseAuth.getInstance();
-        if (mFirebaseAuth.getCurrentUser() != null) {
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if (mFirebaseUser != null) {
             setSignInState(SignInState.SIGNED_IN);
         }
         else {
@@ -49,7 +58,6 @@ public class Authenticator {
                         if (task.isSuccessful()) {
                             Log.d(auhTAG, "signin:success");
                             setSignInState(SignInState.SIGNED_IN);
-                            // TODO: Toast/Dialog for success
                         }
                         else {
                             Log.d(auhTAG, "signin:failure");
@@ -59,7 +67,7 @@ public class Authenticator {
                 });
     }
 
-    public void requestSignUp(String email, String password) {
+    public void requestSignUp(String email, String password, String username) {
         mFirebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -67,6 +75,26 @@ public class Authenticator {
                         if (task.isSuccessful()) {
                             Log.d(auhTAG, "signup:success");
                             setSignInState(SignInState.SIGNED_UP);
+                            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(username)
+                                    .setPhotoUri(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
+                                            + "://" + MainActivity.getInstance().getResources().getResourcePackageName(R.drawable.ic_account_circle)
+                                            + '/' + MainActivity.getInstance().getResources().getResourceTypeName(R.drawable.ic_account_circle)
+                                            + '/' + MainActivity.getInstance().getResources().getResourceEntryName(R.drawable.ic_account_circle)))
+                                    .build();
+                            mFirebaseUser = mFirebaseAuth.getCurrentUser();
+                            mFirebaseUser.updateProfile(profileChangeRequest)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(MainActivity.getInstance(), "Account created successfully", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else {
+                                                Toast.makeText(MainActivity.getInstance(), "Failed create account", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                         }
                         else {
                             Log.d(auhTAG, "signup:failure");

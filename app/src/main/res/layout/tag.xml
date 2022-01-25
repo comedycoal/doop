@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="2dp"
     app:cardCornerRadius="8dp">
 
     <TextView
@@ -13,12 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="italic"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
         android:textAlignment="center"
         android:text="Tag 1"
+        android:textSize="16sp"
         android:background="@color/light_gray"
         app:drawableEndCompat="@drawable/ic_close" />
 
