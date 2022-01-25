@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -298,7 +299,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
             dialog = new Dialog(getActivity());
             dialog.setContentView(R.layout.dialog_filter);
             Spinner spinnerFilter = dialog.findViewById(R.id.spinnerFilter);
-            String[] items1 = new String[]{"1", "2", "three"};
+            String[] items1 = new String[]{"Name", "TStart", "TEnd"};
             ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items1);
             spinnerFilter.setAdapter(adapter1);
             Spinner spinnerSort = dialog.findViewById(R.id.spinnerSort);
@@ -308,9 +309,13 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
             dialog.findViewById(R.id.buttonDoneFilter).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dialog.dismiss();
+                    Spinner spinFilter = dialog.findViewById(R.id.spinnerFilter);
+                    Spinner spinSort = dialog.findViewById(R.id.spinnerSort);
+                    EditText e= dialog.findViewById(R.id.editText);
+                    //Toast.makeText(MainActivity.getInstance(), e.getText().toString(), Toast.LENGTH_SHORT).show();
                     if (CardviewFragment.getInstance() != null)
-                        CardviewFragment.getInstance().actionFilter(spinnerFilter.getSelectedItem().toString(), spinnerSort.getSelectedItem().toString());
+                        CardviewFragment.getInstance().actionFilter(spinFilter.getSelectedItem().toString(), spinSort.getSelectedItem().toString(),e.getText().toString());
+                    dialog.dismiss();
                 }
             });
             dialog.show();

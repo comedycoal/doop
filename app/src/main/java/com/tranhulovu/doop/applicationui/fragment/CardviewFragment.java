@@ -215,11 +215,11 @@ public class CardviewFragment extends ManagerFragment {
 
     /**
      * Mainfragment call when filter card
-     *
-     * @param field
-     * @param sort  0 is ASC, 1 is DES
+     *  @param field is String "Name", "TStart" or "Tend"
+     * @param sort  is "ASC" or "DES"
+     * @param s is string input
      */
-    public void actionFilter(String field, String sort) {
+    public void actionFilter(String field, String sort, String s) {
 
     }
 }
