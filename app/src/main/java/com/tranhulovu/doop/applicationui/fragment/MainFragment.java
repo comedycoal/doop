@@ -1,5 +1,6 @@
 package com.tranhulovu.doop.applicationui.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -38,9 +39,12 @@ import com.tranhulovu.doop.R;
 import com.tranhulovu.doop.applicationcontrol.Authenticator;
 import com.tranhulovu.doop.applicationui.ViewPagerAdapter;
 
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 public class MainFragment extends ManagerFragment implements View.OnClickListener {
     private BottomNavigationView mTopNavigation;
@@ -55,6 +59,11 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
     private Dialog dialog;
     private boolean mFABclicked = false;
     private Authenticator mAuthenticator;
+    private TextView mTime;
+    private TextView mTimeType;
+    private TextView mDate;
+    private TextView mUrgent;
+    private TextView mOverdue;
 
     @Nullable
     @Override
@@ -121,6 +130,45 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
             mFABAdd.setOnClickListener(this);
             mFABFilter.setOnClickListener(this);
             mFABChangeView.setOnClickListener(this);
+
+            mTime = view.findViewById(R.id.time);
+            mTimeType = view.findViewById(R.id.typeTime);
+            mDate = view.findViewById(R.id.date);
+
+            new Thread(){
+                @Override
+                public void run(){
+                    try{
+                        while (!isInterrupted()){
+                            Thread.sleep(1000);
+                            requireActivity().runOnUiThread(new Runnable(){
+                                @Override
+                                public void run(){
+                                    Date x = Date.from(java.time.ZonedDateTime.now().toInstant());
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+                                    String date = sdf.format(x);
+                                    mDate.setText(date);
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
+                                    String time = stf.format(x);
+                                    mTime.setText(time);
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat sttf = new SimpleDateFormat("a");
+                                    String timetype = sttf.format(x);
+                                    mTimeType.setText(timetype);
+                                }
+                            });
+                        }
+                    }
+                    catch (InterruptedException ignored){ }
+                }
+            }.start();
+
+            mUrgent = view.findViewById(R.id.urgent);
+            int urgentcount = MainActivity.getInstance().getCardManager().getUrgentCount();
+            mUrgent.setText(urgentcount > 1 ? urgentcount + " Urgent Tasks " : urgentcount + " Urgent Task ");
+
+            mOverdue = view.findViewById(R.id.overdue);
+            int overduecount = MainActivity.getInstance().getCardManager().getOverdueCount();
+            mOverdue.setText(overduecount > 1 ? overduecount + " Overdued Tasks " : overduecount + " Overdued Task ");
         }
     }
 

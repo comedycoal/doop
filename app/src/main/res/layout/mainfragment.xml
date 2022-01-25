@@ -43,15 +43,16 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/black"
                 android:layout_alignParentTop="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="left"
                 android:text="10:23"
-                android:textSize="40dp" />
+                android:textColor="@color/black"
+                android:textSize="40dp"
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/time"
@@ -62,33 +63,38 @@
                 android:id="@+id/typeTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/time"
                 android:layout_alignBottom="@id/time"
+                android:layout_toRightOf="@id/time"
                 android:background="?android:attr/selectableItemBackground"
-                android:textSize="30dp"
-                android:text=" PM" />
+                android:text=" PM"
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/urgent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:text="1 urgent task"
-                android:textSize="20dp"
-                android:textColor="@color/yellow_urgent" />
+                android:textColor="@color/yellow_urgent"
+                android:textSize="18sp"
+                app:drawableEndCompat="@drawable/ic_urgent" />
 
             <TextView
                 android:id="@+id/overdue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/urgent"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/red_overdue"
-                android:textSize="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
                 android:background="?android:attr/selectableItemBackground"
-                android:text="1 overdued task" />
+                android:text="1 overdued task"
+                android:textColor="@color/red_overdue"
+                android:textSize="18sp"
+                app:drawableEndCompat="@drawable/ic_overdue"/>
 
         </RelativeLayout>
 

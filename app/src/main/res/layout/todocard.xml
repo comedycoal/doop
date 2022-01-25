@@ -59,8 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             app:cardCornerRadius="11dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -72,10 +72,8 @@
                 android:textStyle="italic"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
                 android:text="Group 1"
-                android:background="@color/main_window"/>
+                android:background="#70EF9E"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -135,8 +133,8 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="2dp"
                 app:cardCornerRadius="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -145,10 +143,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="italic"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
                     android:textAlignment="center"
                     android:text="Tag 1"
                     android:background="@color/light_gray"
@@ -161,8 +157,8 @@
             android:id="@+id/todocard_alarm_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginStart="8dp"
             app:cardCornerRadius="4dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -175,8 +171,8 @@
                 android:textStyle="italic"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
                 android:textSize="16sp"
                 android:text="12h till due"
                 android:background="@color/light_gray"
@@ -184,14 +180,14 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/todocard_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/todocard_tag_layout"
-            android:text="Alarm type"/>
+<!--        <TextView-->
+<!--            android:id="@+id/todocard_alarm"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/todocard_tag_layout"-->
+<!--            android:text="Alarm type"/>-->
 
         <TextView
             android:id="@+id/todocard_delete"

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.tranhulovu.doop.MainActivity;
+import com.google.android.material.card.MaterialCardView;
 import com.tranhulovu.doop.R;
 import com.tranhulovu.doop.applicationui.fragment.CardviewFragment;
 import com.tranhulovu.doop.applicationui.fragment.ManagerFragment;
@@ -72,7 +73,7 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
 
         holder.mNotification.setText(mDatacardview.notification);
         if (mDatacardview.notificationType.equals("SILENT"))
-            holder.mNotification.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_alarm, 0, 0 , 0);
+            holder.mNotification.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_nonoti, 0, 0 , 0);
         else if (mDatacardview.notificationType.equals("NOTIFICATION"))
             holder.mNotification.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_noti, 0, 0 , 0);
         else
@@ -315,6 +316,7 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
                 Calendar.getInstance().get(Calendar.MINUTE),
                 true);
         timePickerDialog.show();
+
     }
 
     @Override
