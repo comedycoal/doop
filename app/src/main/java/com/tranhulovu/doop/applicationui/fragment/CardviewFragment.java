@@ -221,6 +221,6 @@ public class CardviewFragment extends ManagerFragment {
      * @param sort  is "ASC" or "DES"
      * @param s is string input
      */
-    public void actionFilter(String field, String sort) {
+    public void actionFilter(String field, String sort,String s) {
     }
 }
