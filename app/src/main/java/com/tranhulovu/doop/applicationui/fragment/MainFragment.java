@@ -148,7 +148,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
                                     @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
                                     String date = sdf.format(x);
                                     mDate.setText(date);
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat stf = new SimpleDateFormat("hh:mm");
                                     String time = stf.format(x);
                                     mTime.setText(time);
                                     @SuppressLint("SimpleDateFormat") SimpleDateFormat sttf = new SimpleDateFormat("a");
@@ -217,13 +217,13 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
             ZonedDateTime now = ZonedDateTime.now();
 
             timeCtrl = dialog.findViewById(R.id.Date_start);
-            timeCtrl.setText(now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            timeCtrl.setText(now.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
 
             timeCtrl = dialog.findViewById(R.id.Time_start);
             timeCtrl.setText(now.withMinute(now.getMinute() / 10 * 10).format(DateTimeFormatter.ofPattern("HH:mm")));
 
             timeCtrl = dialog.findViewById(R.id.Date_end);
-            timeCtrl.setText(now.plusMinutes(30).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            timeCtrl.setText(now.plusMinutes(30).format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
 
             timeCtrl = dialog.findViewById(R.id.Time_end);
             timeCtrl.setText(now.plusMinutes(30).withMinute(now.plusMinutes(30).getMinute() / 10 * 10).format(DateTimeFormatter.ofPattern("HH:mm")));

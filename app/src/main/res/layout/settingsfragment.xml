@@ -241,7 +241,7 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="20dp"
-                        android:text="24 Hour"
+                        android:text="12 Hour"
                         android:textStyle="bold"
                         android:textColor="@color/purple_200"
                         android:textSize="18sp" />
