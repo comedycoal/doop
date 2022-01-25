@@ -79,12 +79,19 @@
         <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/layout/settingsfragment.xml" value="0.1296875" />
         <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/layout/statisticsfragment.xml" value="0.1296875" />
         <entry key="..\:/Users/ASUS/doop/doop/app/src/main/res/menu/menu_bottom_nav.xml" value="0.264" />
+        <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/drawable-v24/ic_notification_off.xml" value="0.28489583333333335" />
+        <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/drawable/ic_alarm.xml" value="0.28489583333333335" />
+        <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/drawable/ic_check.xml" value="0.28489583333333335" />
+        <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/drawable/ic_check_on.xml" value="0.28489583333333335" />
+        <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/drawable/ic_notification_on.xml" value="0.28489583333333335" />
         <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/layout/authenticatorfragment.xml" value="0.33" />
         <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/layout/cardviewfragment.xml" value="0.253125" />
         <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/layout/createcard.xml" value="0.253125" />
         <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/layout/dialog_add.xml" value="0.23703703703703705" />
         <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/layout/signupfragment.xml" value="0.259375" />
+        <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/layout/todocard.xml" value="0.5" />
+        <entry key="..\:/Users/alti0/AndroidStudioProjects/doop/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.28489583333333335" />
       </map>
     </option>
   </component>

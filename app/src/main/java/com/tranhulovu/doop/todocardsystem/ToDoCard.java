@@ -179,6 +179,12 @@ public class ToDoCard implements StringFieldGetter
             return this;
         }
 
+        public boolean isDone()
+        {
+            return mAssociatedCard.isDone();
+        }
+
+
         /**
          * Remove the Done status, if marked.
          * @return The current {@code ToDoCard.Modifier}
@@ -278,6 +284,11 @@ public class ToDoCard implements StringFieldGetter
             mNotificationChanged = true;
 
             return this;
+        }
+
+        public Notification getNotification()
+        {
+            return mAssociatedCard.getNotification();
         }
 
 

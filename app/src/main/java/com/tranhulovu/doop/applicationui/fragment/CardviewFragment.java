@@ -65,7 +65,7 @@ public class CardviewFragment extends ManagerFragment {
         mrecyclerView.setLayoutManager(gridLayoutManager);
 
         // Temporarily set to empty, wait for CardManager to return the card list
-        cardViewAdapter adapter = new cardViewAdapter(new ArrayList<>());
+        cardViewAdapter adapter = new cardViewAdapter(this, new ArrayList<>());
 
         mFetchCallback = new Callback<List<Map<String, Object>>>()
         {
@@ -79,7 +79,8 @@ public class CardviewFragment extends ManagerFragment {
                         "Start " + ((ZonedDateTime)e.get("start")).format(DateTimeFormatter.ofPattern("HH:mma MMM dd yyyy")),
                         "Due " + ((ZonedDateTime)e.get("end")).format(DateTimeFormatter.ofPattern("HH:mma MMM dd yyyy")),
                         ((ToDoCard.CheckStatus)e.get("status")).name(),
-                        ((Notification)e.get("notification")).getStringMessage()))
+                        ((Notification)e.get("notification")).getStringMessage(),
+                        ((Notification)e.get("notification")).getType().name()))
                         .collect(Collectors.toList());
 
                 adapter.setData(l);
@@ -236,7 +237,7 @@ public class CardviewFragment extends ManagerFragment {
 
                         loadCards();
                     }
-                });
+                }, MainActivity.getInstance());
 
             }
         });
@@ -285,5 +286,61 @@ public class CardviewFragment extends ManagerFragment {
                 loadCards(data);
             }
         });
+    }
+
+    public void actionDone(String cardId)
+    {
+        MainActivity.getInstance().getCardManager().getCardModifier(cardId, new Callback<ToDoCard.Modifier>()
+        {
+            @Override
+            public void execute(ToDoCard.Modifier data)
+            {
+                if (data.isDone())
+                    data.markNotDone();
+                else
+                    data.markDone();
+                data.build();
+
+                loadCards();
+            }
+        }, MainActivity.getInstance());
+    }
+
+    public void actionArchive(String cardId)
+    {
+        MainActivity.getInstance().getCardManager().getCardModifier(cardId, new Callback<ToDoCard.Modifier>()
+        {
+            @Override
+            public void execute(ToDoCard.Modifier data)
+            {
+                data.archive();
+                data.build();
+
+                Toast.makeText(MainActivity.getInstance(), "Card archived", Toast.LENGTH_SHORT).show();
+                loadCards();
+            }
+        }, MainActivity.getInstance());
+    }
+
+    public void actionNotificationChange(String cardId)
+    {
+        MainActivity.getInstance().getCardManager().getCardModifier(cardId, new Callback<ToDoCard.Modifier>()
+        {
+            @Override
+            public void execute(ToDoCard.Modifier data)
+            {
+                Notification.Builder b = new Notification.Builder(data.getNotification());
+                b.setType(data.getNotification().getNextType());
+                data.setNotification(b.build());
+                data.build();
+
+                loadCards();
+            }
+        }, MainActivity.getInstance());
+    }
+
+    public void actionEdit(String cardId)
+    {
+
     }
 }

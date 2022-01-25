@@ -9,6 +9,7 @@ public class dataCardView
     public String end;
     public String status;
     public String notification;
+    public String notificationType;
 
     public dataCardView(
             String id,
@@ -17,7 +18,8 @@ public class dataCardView
             String start,
             String end,
             String status,
-            String notification)
+            String notification,
+            String notificationType)
     {
         this.id = id;
         this.name=name;
@@ -26,5 +28,6 @@ public class dataCardView
         this.end=end;
         this.status = status;
         this.notification=notification;
+        this.notificationType = notificationType;
     }
 }

@@ -379,7 +379,7 @@ public class CardManager
      *                              when it is created.
      * @throws InvalidParameterException when card with ID {@code id} does not exist
      */
-    public void getCardModifier(String id, Callback<ToDoCard.Modifier> onCardFetchedCallback)
+    public void getCardModifier(String id, Callback<ToDoCard.Modifier> onCardFetchedCallback, Activity activity)
                                         throws InvalidParameterException
     {
         CardManager m = this;
@@ -402,8 +402,7 @@ public class CardManager
                 onCardFetchedCallback.execute(card.makeModifier());
         };
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(task);
+        activity.runOnUiThread(task);
     }
 
     /**

@@ -31,7 +31,7 @@ public class Notification
         private Type type = Type.NOTIFICATION;
         private DeadlineType deadlineType = DeadlineType.END;
         private ZonedDateTime deadline = ZonedDateTime.now().plusDays(7);
-        private long minutesPrior = 60 * 12;
+        private long minutesPrior = 60 * 1;
 
         public Builder() {}
 
@@ -176,8 +176,21 @@ public class Notification
         return mAlarmDeadline.minusMinutes(mMinutesPrior);
     }
 
+    public Type getNextType()
+    {
+        if (mType == Type.SILENT)
+            return Type.NOTIFICATION;
+        else if (mType == Type.NOTIFICATION)
+            return Type.ALARM;
+        else
+            return Type.SILENT;
+    }
+
     public String getStringMessage()
     {
+        if (getType()==Type.SILENT)
+            return "OFF";
+
         String time = "";
         if (mMinutesPrior < 60)
             time += String.valueOf(mMinutesPrior) + "m";
