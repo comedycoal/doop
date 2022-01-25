@@ -56,6 +56,9 @@ public class CardManager
 
     private boolean debugMode = false;
 
+    private final String[] mDebugCardNames = {"Do homeword", "Workout", "Submit", "Wake up"};
+    private final String[] mDebugCardDescriptions = {"Do homeword", "Workout", "to the Overlord", "!"};
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Constructors
@@ -127,8 +130,8 @@ public class CardManager
         ToDoCard newC = new ToDoCard(id);
 
         ToDoCard.Modifier m = newC.makeModifier();
-        m.setName("Card " + number);
-        m.setDescription("Card " + number + "'s description");
+        m.setName(mDebugCardNames[number]);
+        m.setDescription(mDebugCardDescriptions[number]);
         m.setTimeRange(ZonedDateTime.now().plusHours(number).withMinute(0).withSecond(0),
                     ZonedDateTime.now().plusDays(number+1).withMinute(0).withSecond(0));
         m.setGroup("Testing");
@@ -529,6 +532,25 @@ public class CardManager
         executor.execute(task);
     }
 
+    public int getUrgentCount()
+    {
+        List<Map.Entry<String, ToDoCard>> list = mCards.entrySet().stream()
+                .filter(p -> p.getValue().getStatus() == ToDoCard.CheckStatus.URGENT)
+                .collect(Collectors.toList());
+
+        return list.size();
+    }
+
+    public int getOverdueCount()
+    {
+        List<Map.Entry<String, ToDoCard>> list = mCards.entrySet().stream()
+                .filter(p -> p.getValue().getStatus() == ToDoCard.CheckStatus.OVERDUED)
+                .collect(Collectors.toList());
+
+        return list.size();
+    }
+
+
     /**
      * Get a list of cards filtered and sorted by a set of criteria.
      * {@code options} is not guaranteed to retain when {@code onFetchedCallback} is called.
@@ -571,7 +593,7 @@ public class CardManager
             {
                 SortOption first = sortOptions.remove(0);
                 Function<ToDoCard, String> a = ToDoCard.getGetterOf(first.Field);
-                if (first.Ascending)
+                if (!first.Ascending)
                     comparator = Comparator.comparing(a);
                 else
                     comparator = Comparator.comparing(a).reversed();
@@ -580,10 +602,10 @@ public class CardManager
                     for (SortOption o : sortOptions)
                     {
                         Function<ToDoCard, String> b = ToDoCard.getGetterOf(o.Field);
-                        if (o.Ascending)
-                            comparator.thenComparing(b);
+                        if (!o.Ascending)
+                            comparator = comparator.thenComparing(b);
                         else
-                            comparator.thenComparing(b).reversed();
+                            comparator = comparator.thenComparing(b).reversed();
                     }
             }
 
