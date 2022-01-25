@@ -1,12 +1,14 @@
 package com.tranhulovu.doop.applicationui.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,8 @@ import com.tranhulovu.doop.todocardsystem.AutogenerationConfirmer;
 import com.tranhulovu.doop.todocardsystem.Notification;
 import com.tranhulovu.doop.todocardsystem.ToDoCard;
 import com.tranhulovu.doop.todocardsystem.events.Callback;
+import com.tranhulovu.doop.todocardsystem.filter.FilterOption;
+import com.tranhulovu.doop.todocardsystem.filter.SortOption;
 
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
@@ -69,10 +73,11 @@ public class CardviewFragment extends ManagerFragment {
             public void execute(List<Map<String, Object>> data)
             {
                 List<dataCardView> l = data.stream().map(e -> new dataCardView(
+                        (String)e.get("id"),
                         (String)e.get("name"),
                         (String)e.get("description"),
-                        ((ZonedDateTime)e.get("start")).format(DateTimeFormatter.ofPattern("MMM dd yyyy")),
-                        ((ZonedDateTime)e.get("end")).format(DateTimeFormatter.ofPattern("MMM dd yyyy")),
+                        "Start " + ((ZonedDateTime)e.get("start")).format(DateTimeFormatter.ofPattern("HH:mma MMM dd yyyy")),
+                        "Due " + ((ZonedDateTime)e.get("end")).format(DateTimeFormatter.ofPattern("HH:mma MMM dd yyyy")),
                         ((ToDoCard.CheckStatus)e.get("status")).name(),
                         ((Notification)e.get("notification")).getStringMessage()))
                         .collect(Collectors.toList());
@@ -104,6 +109,11 @@ public class CardviewFragment extends ManagerFragment {
         MainActivity.getInstance().getCardManager().getActiveCards(mFetchCallback, MainActivity.getInstance());
     }
 
+    public void loadCards(List<String> ids)
+    {
+        MainActivity.getInstance().getCardManager().getCardInfos(ids, mFetchCallback, MainActivity.getInstance());
+    }
+
 
     /**
      * Mainfragment call when add card
@@ -120,7 +130,8 @@ public class CardviewFragment extends ManagerFragment {
      * @param till      0 is {@param timeend}, 1 is {@param timestart}
      * @throws InvalidParameterException when card with ID {@code id} does not exist
      */
-    public void actionAddCard(String name,
+    public void actionAddCard(Dialog addDialog,
+                              String name,
                               String descrip,
                               String datestart,
                               String timestart,
@@ -132,6 +143,64 @@ public class CardviewFragment extends ManagerFragment {
                               int till)
     {
         Context context = MainActivity.getInstance();
+
+        DateTimeFormatter wholeFormatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+
+        ZonedDateTime stime = ZonedDateTime.now();
+        ZonedDateTime etime = stime;
+
+        String error = "";
+        boolean success = true;
+        if (name.isEmpty())
+        {
+            success = false;
+            error = "Please enter card's name";
+        }
+        else
+        {
+            try
+            {
+                String startWholeString = datestart + " " + timestart.trim();
+                LocalDateTime local = LocalDateTime.parse(startWholeString, wholeFormatter);
+                stime = local.atZone(ZoneOffset.systemDefault());
+            }
+            catch (Exception e)
+            {
+                error = "Invalid start time";
+                success = false;
+                stime = ZonedDateTime.now().withMinute(ZonedDateTime.now().getMinute() / 10 * 10);
+                throw e;
+            }
+
+            try
+            {
+                String endWholeString = dateend + " " + timeend.trim();
+                LocalDateTime local = LocalDateTime.parse(endWholeString, wholeFormatter);
+                etime = local.atZone(ZoneOffset.systemDefault());
+            }
+            catch (Exception e)
+            {
+                error = "Invalid end time";
+                success = false;
+            }
+
+            if (stime.compareTo(etime) > 0)
+            {
+                error = "Error: end time is after start time.";
+                success = false;
+            }
+        }
+
+        if (!success)
+        {
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        addDialog.dismiss();
+
+        final ZonedDateTime finalStime = stime;
+        final ZonedDateTime finalEtime = etime;
         MainActivity.getInstance().getCardManager().createNewCard(new Callback<String>()
         {
             @Override
@@ -143,34 +212,11 @@ public class CardviewFragment extends ManagerFragment {
                     @Override
                     public void execute(ToDoCard.Modifier data)
                     {
+
                         data.setName(name);
                         data.setDescription(descrip);
 
-                        DateTimeFormatter wholeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-                        ZonedDateTime stime;
-                        ZonedDateTime etime;
-
-                        try
-                        {
-                            String startWholeString = datestart + " " + timestart;
-                            LocalDateTime local = LocalDateTime.parse(startWholeString, wholeFormatter);
-                            stime = local.atZone(ZoneOffset.systemDefault());
-
-                            String endWholeString = dateend + " " + timeend;
-                            local = LocalDateTime.parse(startWholeString, wholeFormatter);
-                            etime = local.atZone(ZoneOffset.systemDefault());
-
-                        }
-                        catch (Exception e)
-                        {
-                            // Make toast, but do not exit the dialog
-
-                            stime = ZonedDateTime.now();
-                            etime = ZonedDateTime.now();
-                        }
-
-                        data.setTimeRange(stime, etime);
+                        data.setTimeRange(finalStime, finalEtime);
 
 
                         Notification.Builder b = new Notification.Builder();
@@ -181,7 +227,7 @@ public class CardviewFragment extends ManagerFragment {
                                 (type == 1 ? Notification.Type.NOTIFICATION
                                     : Notification.Type.ALARM));
                         b.setDeadlineType(till == 1 ? Notification.DeadlineType.START : Notification.DeadlineType.END);
-                        b.setDeadline(till == 1 ? stime : etime);
+                        b.setDeadline(till == 1 ? finalStime : finalEtime);
                         b.setMinutesPrior(time == 0 ? 30 : 60);
                         Notification notif = b.build();
 
@@ -221,6 +267,23 @@ public class CardviewFragment extends ManagerFragment {
      * @param sort  is "ASC" or "DES"
      * @param s is string input
      */
-    public void actionFilter(String field, String sort,String s) {
+    public void actionFilter(String field, String sort, String s)
+    {
+        field = field.equals("Name") ? "name" : (field.equals("TStart") ? "start" : "end");
+
+        List<FilterOption> a = new ArrayList<>();
+        a.add(new FilterOption(field, s));
+
+        List<SortOption> b = new ArrayList<>();
+        b.add(new SortOption(field, sort.equals("ASC") ? true : false));
+
+        MainActivity.getInstance().getCardManager().filterAndSort(a, b, new Callback<List<String>>()
+        {
+            @Override
+            public void execute(List<String> data)
+            {
+                loadCards(data);
+            }
+        });
     }
 }

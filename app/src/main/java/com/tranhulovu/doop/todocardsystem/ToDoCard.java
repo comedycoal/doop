@@ -488,7 +488,7 @@ public class ToDoCard implements StringFieldGetter
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //---// Fields
     public static DateTimeFormatter DefaultFormatter
-            = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+            = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 
     public static long DefaultUrgentHours = 12;
 
@@ -655,6 +655,7 @@ public class ToDoCard implements StringFieldGetter
     public Map<String, Object> toMap()
     {
         Map<String, Object> map = new HashMap<String, Object>();
+        map.put("id", this.getId());
         map.put("name", this.getName());
         map.put("description", this.getDescription());
         map.put("note", this.getNote());

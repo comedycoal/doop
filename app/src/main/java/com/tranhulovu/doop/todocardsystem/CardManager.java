@@ -442,6 +442,25 @@ public class CardManager
         executor.execute(task);
     }
 
+    public void getCardInfos(List<String> ids, Callback<List<Map<String, Object>>> onCardInfosFetchedCallback, Activity activity)
+            throws InvalidParameterException
+    {
+        Runnable task = () ->
+        {
+            List<Map<String, Object>> infos = new ArrayList<>();
+
+            for (String id : ids)
+            {
+                infos.add(mCards.get(id).toMap());
+            }
+
+            if (onCardInfosFetchedCallback != null)
+                onCardInfosFetchedCallback.execute(infos);
+        };
+
+        activity.runOnUiThread(task);
+    }
+
     /**
      * Get a list of active card's IDs (an active card is not marked as archived),
      * sorted by default sorting method (by Due time).
@@ -532,15 +551,19 @@ public class CardManager
             {
                 for (FilterOption o : filterOptions)
                 {
+                    if (o.Value.isEmpty())
+                        continue;
+
                     Predicate<ToDoCard> p = new Predicate<ToDoCard>()
                     {
                         @Override
                         public boolean test(ToDoCard toDoCard)
                         {
-                            return toDoCard.getValueOf(o.Field).equals(o.Value);
+                            boolean res = toDoCard.getValueOf(o.Field).equals(o.Value);
+                            return res;
                         }
                     };
-                    filterPredicate.and(p);
+                    filterPredicate = filterPredicate.and(p);
                 }
             }
 

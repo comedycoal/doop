@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tranhulovu.doop.R;
 import com.tranhulovu.doop.applicationui.fragment.dataCardView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardViewHolder>{
@@ -48,6 +49,7 @@ public class cardViewAdapter extends RecyclerView.Adapter<cardViewAdapter.cardVi
 
     public void setData(List<dataCardView> newData)
     {
+        Collections.reverse(newData);
         mListCard = newData;
         notifyDataSetChanged();
     }

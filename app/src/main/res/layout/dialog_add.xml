@@ -29,6 +29,7 @@
         android:hint="Card name...">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_cardName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />

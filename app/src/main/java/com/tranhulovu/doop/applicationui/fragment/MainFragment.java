@@ -31,12 +31,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.tranhulovu.doop.MainActivity;
 import com.tranhulovu.doop.R;
 import com.tranhulovu.doop.applicationcontrol.Authenticator;
 import com.tranhulovu.doop.applicationui.ViewPagerAdapter;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class MainFragment extends ManagerFragment implements View.OnClickListener {
@@ -161,6 +164,22 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
             dialog.setContentView(R.layout.dialog_add);
             Button bt;
             TextView tt;
+
+            TextView timeCtrl;
+            ZonedDateTime now = ZonedDateTime.now();
+
+            timeCtrl = dialog.findViewById(R.id.Date_start);
+            timeCtrl.setText(now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+            timeCtrl = dialog.findViewById(R.id.Time_start);
+            timeCtrl.setText(now.withMinute(now.getMinute() / 10 * 10).format(DateTimeFormatter.ofPattern("HH:mm")));
+
+            timeCtrl = dialog.findViewById(R.id.Date_end);
+            timeCtrl.setText(now.plusMinutes(30).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+            timeCtrl = dialog.findViewById(R.id.Time_end);
+            timeCtrl.setText(now.plusMinutes(30).withMinute(now.plusMinutes(30).getMinute() / 10 * 10).format(DateTimeFormatter.ofPattern("HH:mm")));
+
             bt=dialog.findViewById(R.id.buttonOnOffNoti);
             bt.setText("ON");
             bt.setOnClickListener(new View.OnClickListener() {
@@ -289,8 +308,7 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
 //                    String s=name+description+datestart+datestart+timestart;
 //                    Toast.makeText(MainActivity.getInstance(), s, Toast.LENGTH_SHORT).show();
                     if (CardviewFragment.getInstance() != null)
-                        CardviewFragment.getInstance().actionAddCard(name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
-                    dialog.dismiss();
+                        CardviewFragment.getInstance().actionAddCard(dialog, name, description, datestart, timestart, dateend, timeend, noti, type, time, till);
                 }
             });
             dialog.show();

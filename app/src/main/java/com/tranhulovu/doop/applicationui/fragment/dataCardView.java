@@ -1,6 +1,8 @@
 package com.tranhulovu.doop.applicationui.fragment;
 
-public class dataCardView {
+public class dataCardView
+{
+    public String id;
     public String name;
     public String description;
     public String start;
@@ -9,12 +11,15 @@ public class dataCardView {
     public String notification;
 
     public dataCardView(
+            String id,
             String name,
             String description,
             String start,
             String end,
             String status,
-            String notification){
+            String notification)
+    {
+        this.id = id;
         this.name=name;
         this.description=description;
         this.start=start;
