@@ -43,6 +43,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class MainFragment extends ManagerFragment implements View.OnClickListener {
+    private static MainFragment instance = null;
     private BottomNavigationView mTopNavigation;
     private FloatingActionButton mFloatingActionButton;
     private BottomAppBar mBottomAppBar;
@@ -55,11 +56,14 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
     private Dialog dialog;
     private boolean mFABclicked = false;
     private Authenticator mAuthenticator;
-
+    public static MainFragment getInstance() {
+        return instance;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mainfragment, container, false);
+        instance=this;
         return view;
     }
 
@@ -123,7 +127,9 @@ public class MainFragment extends ManagerFragment implements View.OnClickListene
             mFABChangeView.setOnClickListener(this);
         }
     }
-
+    public void signout(){
+        navController.navigate(R.id.action_mainFragment_to_authenticatorFragment);
+    }
 
     @Override
     public void onClick(View view) {
